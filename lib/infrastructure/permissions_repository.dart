@@ -1,4 +1,4 @@
-part of 'package:flutter_app_template_atoms/domain/controllers/permissions_controller.dart';
+part of 'package:word_link/domain/controllers/permissions_controller.dart';
 
 class _PermissionsRepository extends PermissionsController {
   @override

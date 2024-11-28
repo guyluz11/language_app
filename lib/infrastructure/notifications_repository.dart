@@ -1,4 +1,4 @@
-part of 'package:flutter_app_template_atoms/domain/controllers/notifications_controller.dart';
+part of 'package:word_link/domain/controllers/notifications_controller.dart';
 
 class _NotificationsRepository extends NotificationsController {
   late AwesomeNotifications controller;

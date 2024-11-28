@@ -1,4 +1,4 @@
-part of 'package:flutter_app_template_atoms/domain/controllers/player_controller.dart';
+part of 'package:word_link/domain/controllers/player_controller.dart';
 
 class _PlayerRepository extends PlayerController {
   late AudioPlayer player;

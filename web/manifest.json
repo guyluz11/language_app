@@ -1,6 +1,6 @@
 {
-    "name": "flutter_app_template_atoms",
-    "short_name": "flutter_app_template_atoms",
+    "name": "word_link",
+    "short_name": "word_link",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

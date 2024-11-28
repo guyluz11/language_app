@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'package:flutter_app_template_atoms/infrastructure/preferences_repository.dart';
+part 'package:word_link/infrastructure/preferences_repository.dart';
 
 abstract class PreferencesController {
   static PreferencesController? _instance;

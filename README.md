@@ -1,4 +1,4 @@
-# flutter_app_template_atoms
+# word_link
 
 A new Flutter project.
 

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app_template_atoms/presentation/core/theme_data.dart';
+import 'package:word_link/presentation/core/theme_data.dart';
 
 class SeparatorAtom extends StatelessWidget {
   const SeparatorAtom({this.variant = SeparatorVariant.generalSpacing});

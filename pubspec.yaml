@@ -1,5 +1,5 @@
-name: flutter_app_template_atoms
-description: "A new Flutter project."
+name: word_link
+description: "Help to learn new language"
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -33,6 +33,7 @@ dependencies:
   wakelock_plus: ^1.2.5
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.1
   flutter_test:
     sdk: flutter
 

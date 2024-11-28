@@ -1,4 +1,4 @@
-part of 'package:flutter_app_template_atoms/domain/controllers/vibration_controller.dart';
+part of 'package:word_link/domain/controllers/vibration_controller.dart';
 
 class _VibrationRepository extends VibrationController {
   @override

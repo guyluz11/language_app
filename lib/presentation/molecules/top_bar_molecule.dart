@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template_atoms/presentation/atoms/atoms.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
 
 class TopBarMolecule extends StatelessWidget {
   const TopBarMolecule({

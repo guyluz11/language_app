@@ -1,4 +1,4 @@
-part of 'package:flutter_app_template_atoms/domain/controllers/preferences_controller.dart';
+part of 'package:word_link/domain/controllers/preferences_controller.dart';
 
 class _PreferencesRepository extends PreferencesController {
   late SharedPreferences preferences;

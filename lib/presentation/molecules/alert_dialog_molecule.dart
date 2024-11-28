@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template_atoms/presentation/atoms/atoms.dart';
-import 'package:flutter_app_template_atoms/presentation/core/global_variables.dart';
-import 'package:flutter_app_template_atoms/presentation/core/theme_data.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
+import 'package:word_link/presentation/core/global_variables.dart';
+import 'package:word_link/presentation/core/theme_data.dart';
 
 void openAlertDialog(BuildContext context, Widget body) {
   showDialog(

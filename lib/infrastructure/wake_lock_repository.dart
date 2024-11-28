@@ -1,4 +1,4 @@
-part of 'package:flutter_app_template_atoms/domain/controllers/wake_lock_controller.dart';
+part of 'package:word_link/domain/controllers/wake_lock_controller.dart';
 
 class _WakeLockRepository extends WakeLockController {
   @override

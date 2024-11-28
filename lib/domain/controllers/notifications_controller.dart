@@ -1,8 +1,8 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter_app_template_atoms/domain/controllers/controllers.dart';
-import 'package:flutter_app_template_atoms/presentation/core/theme_data.dart';
+import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/presentation/core/theme_data.dart';
 
-part 'package:flutter_app_template_atoms/infrastructure/notifications_repository.dart';
+part 'package:word_link/infrastructure/notifications_repository.dart';
 
 abstract class NotificationsController {
   static NotificationsController? _instance;

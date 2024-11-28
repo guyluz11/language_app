@@ -1,6 +1,6 @@
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-part 'package:flutter_app_template_atoms/infrastructure/wake_lock_repository.dart';
+part 'package:word_link/infrastructure/wake_lock_repository.dart';
 
 abstract class WakeLockController {
   static WakeLockController? _instance;

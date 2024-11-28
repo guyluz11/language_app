@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 
-part 'package:flutter_app_template_atoms/infrastructure/player_repository.dart';
+part 'package:word_link/infrastructure/player_repository.dart';
 
 abstract class PlayerController {
   static PlayerController? _instance;

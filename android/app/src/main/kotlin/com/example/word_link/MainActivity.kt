@@ -1,4 +1,4 @@
-package com.example.flutter_app_template_atoms
+package com.example.word_link
 
 import io.flutter.embedding.android.FlutterActivity
 

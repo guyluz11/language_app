@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_template_atoms/domain/controllers/controllers.dart';
+import 'package:word_link/domain/controllers/controllers.dart';
 
 class CheckBoxAtom extends StatefulWidget {
   const CheckBoxAtom({
