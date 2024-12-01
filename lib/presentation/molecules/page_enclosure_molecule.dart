@@ -12,6 +12,7 @@ class PageEnclosureMolecule extends StatelessWidget {
     this.topBarTranslate = true,
     this.topBarType = TopBarType.none,
     this.scaffold = true,
+    this.floatingActionButtonOnTap,
     this.topBarRightOnTap,
     this.expendChild = true,
     this.topBarRightIcon,
@@ -25,6 +26,7 @@ class PageEnclosureMolecule extends StatelessWidget {
   final bool margin;
   final bool topMargin;
   final bool scaffold;
+  final VoidCallback? floatingActionButtonOnTap;
   final TopBarType topBarType;
   final VoidCallback? topBarRightOnTap;
   final bool expendChild;
@@ -32,6 +34,7 @@ class PageEnclosureMolecule extends StatelessWidget {
 
   Widget topBarHelper() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TopBarMolecule(
           topBarType: topBarType,
@@ -63,7 +66,16 @@ class PageEnclosureMolecule extends StatelessWidget {
     }
 
     if (scaffold) {
-      page = Scaffold(body: page);
+      page = Scaffold(
+        body: page,
+        floatingActionButton: floatingActionButtonOnTap == null
+            ? null
+            : FloatingActionButton(
+                onPressed: floatingActionButtonOnTap,
+                child: const Icon(Icons.add),
+              ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      );
     }
     if (expendChild) {
       page = Expanded(child: page);
