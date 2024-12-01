@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/presentation/core/theme_data.dart';
+import 'package:word_link/presentation/pages/pages.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -28,14 +29,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future _navigate() async {
-    // TODO: Choose your home page
-    // Navigator.of(context).pop();
-    //
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => HomePage(),
-    //   ),
-    // );
+    Navigator.of(context).pop();
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => HomePage(),
+      ),
+    );
   }
 
   @override

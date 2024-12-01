@@ -8,22 +8,12 @@ class _NotificationsRepository extends NotificationsController {
   void init() {
     controller = AwesomeNotifications();
     controller.initialize(
-      'resource://drawable/res_app_icon',
+      'resource://drawable/ic_launcher',
       [
         NotificationChannel(
-          channelKey: NotificationVariant.workEnded.channelKey,
+          channelKey: NotificationVariant.dailyPractice.channelKey,
           channelName: 'Work Ended',
           channelDescription: 'Work time ended',
-          soundSource: 'resource://raw/session_completed',
-          defaultColor: AppThemeData.logoBackgroundColor,
-          ledColor: AppThemeData.logoBackgroundColor,
-          criticalAlerts: true,
-        ),
-        NotificationChannel(
-          channelKey: NotificationVariant.breakEnded.channelKey,
-          channelName: 'Break Ended',
-          channelDescription: 'Break time ended',
-          soundSource: 'resource://raw/break_ended',
           defaultColor: AppThemeData.logoBackgroundColor,
           ledColor: AppThemeData.logoBackgroundColor,
           criticalAlerts: true,
@@ -111,8 +101,7 @@ class _NotificationsRepository extends NotificationsController {
 }
 
 enum NotificationVariant {
-  workEnded('work_ended'),
-  breakEnded('break_ended'),
+  dailyPractice('daily_practice'),
   ;
 
   const NotificationVariant(this.channelKey);
