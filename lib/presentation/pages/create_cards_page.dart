@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
+import 'package:word_link/presentation/organisms/create_card_organism.dart';
 
 class CreateCardsPage extends StatelessWidget {
   @override
@@ -9,18 +10,16 @@ class CreateCardsPage extends StatelessWidget {
       title: 'Custom Collections',
       subTitle: 'Create collections and review them',
       expendChild: false,
+      topMargin: false,
       child: Column(
         children: [
+          const SeparatorAtom(variant: SeparatorVariant.farApart),
           Expanded(
-            child: CardAtom(
-              child: const SizedBox(
-                width: double.infinity,
-                child: TextAtom('Test'),
-              ),
-              onClick: () {},
+            child: SingleChildScrollView(
+              child: CreateCardOrganism(),
             ),
           ),
-          const SeparatorAtom(),
+          const SeparatorAtom(variant: SeparatorVariant.farApart),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -37,7 +36,7 @@ class CreateCardsPage extends StatelessWidget {
               ),
             ],
           ),
-          const SeparatorAtom(),
+          const SeparatorAtom(variant: SeparatorVariant.farApart),
         ],
       ),
     );
