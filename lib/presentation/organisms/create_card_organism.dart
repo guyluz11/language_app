@@ -19,6 +19,13 @@ class CreateCardOrganism extends StatelessWidget {
         width: double.infinity,
         child: Column(
           children: [
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FlutterLogo(),
+              ],
+            ),
+            const SeparatorAtom(),
             TextInputAtom(
               labelText: 'Item Name',
               onChanged: onNameChanged,

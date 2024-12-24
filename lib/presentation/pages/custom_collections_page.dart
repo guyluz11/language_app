@@ -27,6 +27,8 @@ class CustomCollectionsPage extends StatelessWidget {
 
           return ListTileAtom(
             collection.name,
+            subtitle: collection.cards.length.toString(),
+            leading: const Icon(Icons.collections),
             trailing: const Icon(Icons.arrow_forward_rounded),
             onTap: () {
               // TODO: Navigate to the card page

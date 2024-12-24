@@ -3,11 +3,11 @@ import 'package:word_link/domain/objects/card_object.dart';
 class CardsCollectionObject {
   CardsCollectionObject({
     required this.name,
-    this.customCards = const [],
+    this.cards = const [],
   });
 
   String name;
-  List<CardObject> customCards;
+  List<CardObject> cards;
 }
 
 class CollectionsManager {
