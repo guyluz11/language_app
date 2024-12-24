@@ -1,9 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:word_link/domain/objects/card_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/organisms/create_card_organism.dart';
 
-class CreateCardsPage extends StatelessWidget {
+class CreateCardsPage extends StatefulWidget {
+  @override
+  State<CreateCardsPage> createState() => _CreateCardsPageState();
+}
+
+class _CreateCardsPageState extends State<CreateCardsPage> {
+  CardObject currentMemoryObject = CardObject();
+  List<CardObject> addedCards = [];
+  bool nextAnimation = false;
+
   @override
   Widget build(BuildContext context) {
     return PageEnclosureMolecule(
@@ -12,12 +22,21 @@ class CreateCardsPage extends StatelessWidget {
       expendChild: false,
       topMargin: false,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SeparatorAtom(variant: SeparatorVariant.farApart),
+          TextAtom('Cards Saved: ${addedCards.length}'),
+          const SeparatorAtom(),
           Expanded(
-            child: SingleChildScrollView(
-              child: CreateCardOrganism(),
-            ),
+            child: nextAnimation
+                ? Center(child: ProgressAtom())
+                : SingleChildScrollView(
+                    child: CreateCardOrganism(
+                      onNameChanged: onNameChanged,
+                      onSecondaryNameChanged: onSecondaryNameChanged,
+                      onAnswerChanged: onAnswerChanged,
+                    ),
+                  ),
           ),
           const SeparatorAtom(variant: SeparatorVariant.farApart),
           Row(
@@ -25,13 +44,13 @@ class CreateCardsPage extends StatelessWidget {
             children: [
               ButtonAtom(
                 variant: ButtonVariant.mediumHighEmphasisFilledTonal,
-                onPressed: () {},
+                onPressed: onDone,
                 text: 'Done',
               ),
               const SeparatorAtom(),
               ButtonAtom(
                 variant: ButtonVariant.highEmphasisFilled,
-                onPressed: () {},
+                onPressed: anotherCard,
                 text: 'Another Card',
               ),
             ],
@@ -40,5 +59,23 @@ class CreateCardsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void onNameChanged(String value) => currentMemoryObject.name = value;
+  void onSecondaryNameChanged(String value) =>
+      currentMemoryObject.secondaryName = value;
+  void onAnswerChanged(String value) => currentMemoryObject.answer = value;
+
+  void onDone() {
+    addedCards.add(currentMemoryObject);
+    Navigator.pop(context);
+  }
+
+  Future<void> anotherCard() async {
+    setState(() => nextAnimation = true);
+    await Future.delayed(const Duration(seconds: 1));
+    addedCards.add(currentMemoryObject);
+    currentMemoryObject = CardObject();
+    setState(() => nextAnimation = false);
   }
 }

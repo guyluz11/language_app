@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/infrastructure/core/logger.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/pages/create_cards_page.dart';
 
@@ -11,6 +12,8 @@ class CustomCollectionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.v('d');
+
     return PageEnclosureMolecule(
       title: 'Custom Collections',
       subTitle: 'Create collections and review them',
