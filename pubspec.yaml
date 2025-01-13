@@ -1,6 +1,7 @@
 name: word_link
 description: "Help to learn new language"
 publish_to: 'none'
+repository: https://github.com/guyluz11/language_app
 
 version: 1.0.0+1
 
