@@ -45,7 +45,8 @@ class _PreferencesRepository extends PreferencesController {
 
     // Convert the list of JSON strings back to a list of objects
     return jsonStringList.map((jsonString) {
-      final Map<String, dynamic> jsonData = json.decode(jsonString);
+      final Map<String, dynamic> jsonData =
+          json.decode(jsonString) as Map<String, dynamic>;
       return CardsCollectionObject.fromJson(jsonData);
     }).toList();
   }

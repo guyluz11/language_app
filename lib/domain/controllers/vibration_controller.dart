@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:vibration/vibration.dart';
 
 part 'package:word_link/infrastructure/vibration_repository.dart';
 

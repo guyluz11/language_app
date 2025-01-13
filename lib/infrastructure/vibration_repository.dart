@@ -10,16 +10,13 @@ class _VibrationRepository extends VibrationController {
       return;
     }
 
-    FeedbackType feedbackType;
     switch (type) {
       case VibrationType.light:
-        feedbackType = FeedbackType.success;
+        Vibration.vibrate(amplitude: 128);
       case VibrationType.medium:
-        feedbackType = FeedbackType.warning;
+        Vibration.vibrate(duration: 501);
       case VibrationType.heavy:
-        feedbackType = FeedbackType.error;
+        Vibration.vibrate(duration: 1000);
     }
-
-    Vibrate.feedback(feedbackType);
   }
 }
