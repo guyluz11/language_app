@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:word_link/domain/objects/cards_collection_object.dart';
 
 part 'package:word_link/infrastructure/preferences_repository.dart';
 
@@ -20,17 +23,28 @@ abstract class PreferencesController {
 
   DateTime? getDateTime(PreferenceKeys key);
 
+  List<String>? getStringList(PreferenceKeys key);
+
+  List<CardsCollectionObject>? getCardsCollectionObject(PreferenceKeys key);
+
   void remove(PreferenceKeys key);
 
-  void setString(PreferenceKeys key, String value);
+  Future setString(PreferenceKeys key, String value);
 
-  void setInt(PreferenceKeys key, int value);
+  Future setInt(PreferenceKeys key, int value);
 
-  void setBool(PreferenceKeys key, bool value);
+  Future setBool(PreferenceKeys key, {required bool value});
 
-  void setDuration(PreferenceKeys key, Duration value);
+  Future setDuration(PreferenceKeys key, Duration value);
 
-  void setDateTime(PreferenceKeys key, DateTime value);
+  Future setDateTime(PreferenceKeys key, DateTime value);
+
+  Future setStringList(PreferenceKeys key, List<String> value);
+
+  Future setCardsCollectionObject(
+    PreferenceKeys key,
+    List<CardsCollectionObject> collection,
+  );
 }
 
 enum PreferenceKeys {
@@ -43,4 +57,5 @@ enum PreferenceKeys {
   freeText,
   tipType,
   sleepPermissionGranted,
+  customCollections,
 }

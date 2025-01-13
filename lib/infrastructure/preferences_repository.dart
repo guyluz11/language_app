@@ -30,25 +30,64 @@ class _PreferencesRepository extends PreferencesController {
   }
 
   @override
+  List<String>? getStringList(PreferenceKeys key) =>
+      preferences.getStringList(key.name);
+
+  @override
+  List<CardsCollectionObject>? getCardsCollectionObject(PreferenceKeys key) {
+    // Get the list of JSON strings
+    final jsonStringList = getStringList(key);
+
+    if (jsonStringList == null) {
+      // Return an empty list if no data is found
+      return [];
+    }
+
+    // Convert the list of JSON strings back to a list of objects
+    return jsonStringList.map((jsonString) {
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+      return CardsCollectionObject.fromJson(jsonData);
+    }).toList();
+  }
+
+  @override
   void remove(PreferenceKeys key) => preferences.remove(key.name);
 
   @override
-  void setString(PreferenceKeys key, String value) =>
+  Future setString(PreferenceKeys key, String value) =>
       preferences.setString(key.name, value);
 
   @override
-  void setInt(PreferenceKeys key, int value) =>
+  Future setInt(PreferenceKeys key, int value) =>
       preferences.setInt(key.name, value);
 
   @override
-  void setBool(PreferenceKeys key, bool value) =>
+  Future setBool(PreferenceKeys key, {required bool value}) =>
       preferences.setBool(key.name, value);
 
   @override
-  void setDuration(PreferenceKeys key, Duration value) =>
+  Future setDuration(PreferenceKeys key, Duration value) =>
       preferences.setInt(key.name, value.inMilliseconds);
 
   @override
-  void setDateTime(PreferenceKeys key, DateTime value) =>
+  Future setDateTime(PreferenceKeys key, DateTime value) =>
       preferences.setInt(key.name, value.millisecondsSinceEpoch);
+
+  @override
+  Future setStringList(PreferenceKeys key, List<String> value) =>
+      preferences.setStringList(key.name, value);
+
+  @override
+  Future setCardsCollectionObject(
+    PreferenceKeys key,
+    List<CardsCollectionObject> collections,
+  ) async {
+    // Convert the list of objects to a list of JSON strings
+    final List<String> jsonStringList = collections.map((collection) {
+      return json.encode(collection.toJson());
+    }).toList();
+
+    // Save the list of JSON strings
+    await setStringList(key, jsonStringList);
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/card_object.dart';
 import 'package:word_link/domain/objects/cards_collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
@@ -97,6 +98,10 @@ class _CreateCardsPageState extends State<CreateCardsPage> {
           cards: addedCards,
         );
         CollectionsManager.customCards.add(collection);
+        PreferencesController.instance.setCardsCollectionObject(
+          PreferenceKeys.customCollections,
+          CollectionsManager.customCards,
+        );
 
         Navigator.pop(context);
         Navigator.pop(context);
