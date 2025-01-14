@@ -22,23 +22,25 @@ class CardAtom extends StatelessWidget {
       child: Card.filled(
         margin: EdgeInsets.zero,
         clipBehavior: Clip.hardEdge,
-        child: Column(
-          children: [
-            if (image != null)
-              ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(bottom: Radius.circular(15)),
-                child: SizedBox(
-                  height: 150,
-                  width: double.infinity,
-                  child: image,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (image != null)
+                ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(15)),
+                  child: SizedBox(
+                    height: 150,
+                    width: double.infinity,
+                    child: image,
+                  ),
                 ),
+              Padding(
+                padding: const EdgeInsets.all(AppThemeData.generalSpacing),
+                child: child,
               ),
-            Padding(
-              padding: const EdgeInsets.all(AppThemeData.generalSpacing),
-              child: child,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

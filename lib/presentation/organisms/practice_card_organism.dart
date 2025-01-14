@@ -6,10 +6,12 @@ class PracticeCardOrganism extends StatelessWidget {
   const PracticeCardOrganism({
     required this.card,
     required this.onFlipped,
+    this.showSecond = false,
   });
 
   final CardObject card;
   final VoidCallback onFlipped;
+  final bool showSecond;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +37,10 @@ class PracticeCardOrganism extends StatelessWidget {
             const SeparatorAtom(),
             TextAtom(card.name ?? ''),
             const SeparatorAtom(),
-            TextAtom(card.secondaryName ?? ''),
-            const SeparatorAtom(),
+            if (showSecond || !isFront) ...[
+              TextAtom(card.secondaryName ?? ''),
+              const SeparatorAtom(),
+            ],
             TextAtom(isFront ? '' : card.answer ?? ''),
             const SeparatorAtom(),
           ],

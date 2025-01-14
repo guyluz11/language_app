@@ -17,6 +17,7 @@ class _PracticeCardsPageState extends State<PracticeCardsPage> {
   int currentCardIndex = 0;
   bool isCardFlipped = false;
   bool isLoadingNext = false;
+  bool showHint = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,49 +40,62 @@ class _PracticeCardsPageState extends State<PracticeCardsPage> {
                 Expanded(
                   child: isLoadingNext
                       ? Center(child: ProgressAtom())
-                      : SingleChildScrollView(
-                          child: PracticeCardOrganism(
-                            card: widget.cardCollection.cards[currentCardIndex],
-                            onFlipped: () {
-                              setState(() => isCardFlipped = true);
-                            },
-                          ),
+                      : PracticeCardOrganism(
+                          card: widget.cardCollection.cards[currentCardIndex],
+                          onFlipped: () {
+                            setState(() => isCardFlipped = true);
+                          },
+                          showSecond: showHint,
                         ),
                 ),
                 const SeparatorAtom(),
-                IgnorePointer(
-                  ignoring: !isCardFlipped,
-                  child: Visibility(
-                    visible: isCardFlipped,
-                    child: Column(
-                      children: [
-                        const SeparatorAtom(),
-                        const TextAtom('Did you remember it correctly?'),
-                        const SeparatorAtom(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ButtonAtom(
-                              onPressed: () => userResponse(remembered: false),
-                              variant:
-                                  ButtonVariant.mediumHighEmphasisFilledTonal,
-                              text: 'No',
-                              icon: Icons.close,
-                            ),
-                            const SeparatorAtom(),
-                            ButtonAtom(
-                              variant:
-                                  ButtonVariant.mediumHighEmphasisFilledTonal,
-                              onPressed: () => userResponse(remembered: true),
-                              text: 'Yes',
-                              icon: Icons.check_circle_outline,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                if (!isCardFlipped)
+                  Column(
+                    children: [
+                      const SeparatorAtom(),
+                      const SizedBox(width: double.infinity),
+                      const TextAtom(''),
+                      const SeparatorAtom(),
+                      const SeparatorAtom(),
+                      ButtonAtom(
+                        variant: ButtonVariant.highEmphasisFilled,
+                        onPressed: toggleHint,
+                        text: 'Hint',
+                        icon: showHint
+                            ? Icons.mail_rounded
+                            : Icons.mail_lock_rounded,
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      const SeparatorAtom(),
+                      const TextAtom('Did you remember it correctly?'),
+                      const SeparatorAtom(),
+                      const SeparatorAtom(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ButtonAtom(
+                            onPressed: () => userResponse(remembered: false),
+                            variant:
+                                ButtonVariant.mediumHighEmphasisFilledTonal,
+                            text: 'No',
+                            icon: Icons.close,
+                          ),
+                          const SeparatorAtom(),
+                          ButtonAtom(
+                            variant:
+                                ButtonVariant.mediumHighEmphasisFilledTonal,
+                            onPressed: () => userResponse(remembered: true),
+                            text: 'Yes',
+                            icon: Icons.check_circle_outline,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
                 const SeparatorAtom(),
               ],
             ),
@@ -97,6 +111,12 @@ class _PracticeCardsPageState extends State<PracticeCardsPage> {
       currentCardIndex++;
       isCardFlipped = false;
       isLoadingNext = false;
+    });
+  }
+
+  void toggleHint() {
+    setState(() {
+      showHint = !showHint;
     });
   }
 }
