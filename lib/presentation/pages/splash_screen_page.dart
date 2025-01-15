@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/objects/cards_collection_object.dart';
 import 'package:word_link/presentation/core/theme_data.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
@@ -24,6 +25,7 @@ class _SplashPageState extends State<SplashPage> {
         PreferencesController.instance.getInt(PreferenceKeys.loginCounter) ?? 0;
     PreferencesController.instance
         .setInt(PreferenceKeys.loginCounter, loginCounter + 1);
+    CollectionsManager.init();
 
     _navigate();
   }

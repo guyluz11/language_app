@@ -1,3 +1,4 @@
+import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/card_object.dart';
 
 class CardsCollectionObject {
@@ -30,5 +31,22 @@ class CardsCollectionObject {
 }
 
 class CollectionsManager {
-  static List<CardsCollectionObject> customCards = [];
+  static List<CardsCollectionObject> _customCards = [];
+
+  static void init() =>
+      _customCards = PreferencesController.instance.getCardsCollectionObject(
+            PreferenceKeys.customCollections,
+          ) ??
+          [];
+
+  static Future addCollection(CardsCollectionObject collection) async {
+    _customCards.add(collection);
+
+    await PreferencesController.instance.setCardsCollectionObject(
+      PreferenceKeys.customCollections,
+      _customCards,
+    );
+  }
+
+  static List<CardsCollectionObject> getCollections() => _customCards;
 }

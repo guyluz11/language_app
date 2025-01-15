@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/cards_collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
@@ -16,18 +15,12 @@ class _CustomCollectionsPageState extends State<CustomCollectionsPage> {
   @override
   void initState() {
     super.initState();
-    customCards = getCards();
+    customCards = CollectionsManager.getCollections();
   }
-
-  List<CardsCollectionObject> getCards() =>
-      PreferencesController.instance.getCardsCollectionObject(
-        PreferenceKeys.customCollections,
-      ) ??
-      [];
 
   void reloadCards() {
     setState(() {
-      customCards = getCards();
+      customCards = CollectionsManager.getCollections();
     });
   }
 
