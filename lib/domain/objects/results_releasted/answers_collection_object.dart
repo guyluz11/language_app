@@ -16,7 +16,8 @@ class AnswersCollectionObject implements JsonHelperObject {
       collectionUniqueId: json['collectionUniqueId'] as String,
       resultsTemp: (json['results'] as List<dynamic>)
           .map(
-              (item) => AnswerCardObject.fromJson(item as Map<String, dynamic>))
+            (item) => AnswerCardObject.fromJson(item as Map<String, dynamic>),
+          )
           .toList(),
     );
   }

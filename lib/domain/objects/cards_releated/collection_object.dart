@@ -17,8 +17,9 @@ class CollectionObject {
     return CollectionObject(
       name: json['name'] as String,
       cards: (json['cards'] as List<dynamic>)
-          .map((cardJson) =>
-              CardObject.fromJson(cardJson as Map<String, dynamic>))
+          .map(
+            (cardJson) => CardObject.fromJson(cardJson as Map<String, dynamic>),
+          )
           .toList(),
       uniqueId: json['uniqueId'] as String,
     );

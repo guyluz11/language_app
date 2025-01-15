@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
 
 class ListTileAtom extends StatelessWidget {
   const ListTileAtom(

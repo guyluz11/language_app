@@ -5,11 +5,12 @@ import 'package:word_link/domain/objects/results_releasted/answers_collection_ob
 
 /// Answers for all of the collections
 class AnswersCollectionsObject {
-  static HashMap<String, AnswersCollectionObject> _customCards = HashMap();
+  /// Answers by collection id
+  static HashMap<String, AnswersCollectionObject> _answers = HashMap();
 
   /// Initialize `_customCards` from persistent storage
   static void init() =>
-      _customCards = PreferencesController.instance.getAnswersCollectionObject(
+      _answers = PreferencesController.instance.getAnswersCollectionObject(
             PreferenceKeys.customCollections,
           ) ??
           HashMap();
@@ -33,17 +34,17 @@ class AnswersCollectionsObject {
     String key,
     AnswersCollectionObject collection,
   ) async {
-    _customCards[key] = collection;
+    _answers[key] = collection;
 
     // Save updated data to persistent storage
     await PreferencesController.instance.setMap(
       PreferenceKeys.customCollections,
-      _customCards,
+      _answers,
     );
   }
 
   /// Get all collections
   static HashMap<String, AnswersCollectionObject> getCollections() {
-    return _customCards;
+    return _answers;
   }
 }

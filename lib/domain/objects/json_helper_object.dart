@@ -1,3 +1,3 @@
 abstract class JsonHelperObject {
-  toJson();
+  void toJson();
 }
