@@ -34,7 +34,24 @@ class _PreferencesRepository extends PreferencesController {
       preferences.getStringList(key.name);
 
   @override
-  List<CardsCollectionObject>? getCardsCollectionObject(PreferenceKeys key) {
+  Map<String, dynamic>? getMap(PreferenceKeys key) {
+    // Retrieve the JSON string from SharedPreferences
+    final String? jsonString = getString(key);
+
+    if (jsonString == null) {
+      // Return an empty HashMap if no data is found
+      return null;
+    }
+
+    // Parse the JSON string and convert it back to a HashMap
+    final Map<String, dynamic> jsonMap =
+        jsonDecode(jsonString) as Map<String, dynamic>;
+
+    return jsonMap;
+  }
+
+  @override
+  List<CollectionObject>? getCardsCollectionObject(PreferenceKeys key) {
     // Get the list of JSON strings
     final jsonStringList = getStringList(key);
 
@@ -47,8 +64,27 @@ class _PreferencesRepository extends PreferencesController {
     return jsonStringList.map((jsonString) {
       final Map<String, dynamic> jsonData =
           json.decode(jsonString) as Map<String, dynamic>;
-      return CardsCollectionObject.fromJson(jsonData);
+      return CollectionObject.fromJson(jsonData);
     }).toList();
+  }
+
+  @override
+  HashMap<String, AnswersCollectionObject>? getAnswersCollectionObject(
+    PreferenceKeys key,
+  ) {
+    final Map<String, dynamic>? mapFromDb = getMap(key);
+    if (mapFromDb == null) {
+      return null;
+    }
+
+    return HashMap<String, AnswersCollectionObject>.from(
+      mapFromDb.map(
+        (key, value) => MapEntry(
+          key,
+          AnswersCollectionObject.fromJson(value as Map<String, dynamic>),
+        ),
+      ),
+    );
   }
 
   @override
@@ -79,12 +115,30 @@ class _PreferencesRepository extends PreferencesController {
       preferences.setStringList(key.name, value);
 
   @override
+  Future setMap(
+    PreferenceKeys key,
+    HashMap<String, JsonHelperObject> hashMap,
+  ) async {
+    // Convert the HashMap to JSON
+    final String jsonString = jsonEncode(
+      hashMap.map(
+        (key, value) => MapEntry(
+          key,
+          value.toJson(),
+        ),
+      ),
+    );
+
+    await setString(key, jsonString);
+  }
+
+  @override
   Future setCardsCollectionObject(
     PreferenceKeys key,
-    List<CardsCollectionObject> collections,
+    List<CollectionObject> value,
   ) async {
     // Convert the list of objects to a list of JSON strings
-    final List<String> jsonStringList = collections.map((collection) {
+    final List<String> jsonStringList = value.map((collection) {
       return json.encode(collection.toJson());
     }).toList();
 

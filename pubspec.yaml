@@ -31,6 +31,7 @@ dependencies:
     # Small, easy to use and extensible logger which prints beautiful logs.
   logger: ^2.5.0
   shared_preferences: ^2.3.5
+  uuid: ^4.5.1
   vibration: ^2.0.1
   wakelock_plus: ^1.2.10
 

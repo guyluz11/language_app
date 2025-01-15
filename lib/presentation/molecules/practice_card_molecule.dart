@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:word_link/domain/objects/card_object.dart';
+import 'package:word_link/domain/objects/cards_releated/card_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 
-class PracticeCardOrganism extends StatelessWidget {
-  const PracticeCardOrganism({
+class PracticeCardMolecule extends StatelessWidget {
+  const PracticeCardMolecule({
     required this.card,
     required this.onFlipped,
     this.showSecond = false,

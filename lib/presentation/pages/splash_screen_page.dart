@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/domain/objects/cards_collection_object.dart';
+import 'package:word_link/domain/objects/cards_releated/collections_object.dart';
+import 'package:word_link/domain/objects/results_releasted/answers_collections_object.dart';
 import 'package:word_link/presentation/core/theme_data.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
@@ -20,12 +21,14 @@ class _SplashPageState extends State<SplashPage> {
     await PreferencesController.instance.init();
     PlayerController.instance.init();
     await VibrationController.instance.init();
+    RandomIdController.instance.init();
     NotificationsController.instance.init();
     final int loginCounter =
         PreferencesController.instance.getInt(PreferenceKeys.loginCounter) ?? 0;
     PreferencesController.instance
         .setInt(PreferenceKeys.loginCounter, loginCounter + 1);
-    CollectionsManager.init();
+    CollectionsObject.init();
+    AnswersCollectionsObject.init();
 
     _navigate();
   }
