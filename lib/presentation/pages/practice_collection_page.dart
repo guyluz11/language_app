@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/domain/objects/card_object.dart';
 import 'package:word_link/domain/objects/cards_collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
@@ -14,10 +15,18 @@ class PracticeCardsPage extends StatefulWidget {
 }
 
 class _PracticeCardsPageState extends State<PracticeCardsPage> {
+  @override
+  void initState() {
+    super.initState();
+    cards = widget.cardCollection.cards;
+    cards.shuffle();
+  }
+
   int currentCardIndex = 0;
   bool isCardFlipped = false;
   bool isLoadingNext = false;
   bool showHint = false;
+  late List<CardObject> cards;
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +36,21 @@ class _PracticeCardsPageState extends State<PracticeCardsPage> {
       expendChild: false,
       topMargin: false,
       topBarType: TopBarType.back,
-      child: currentCardIndex == widget.cardCollection.cards.length
+      child: currentCardIndex == cards.length
           ? const TextAtom('Done')
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SeparatorAtom(variant: SeparatorVariant.farApart),
                 TextAtom(
-                  '$currentCardIndex/${widget.cardCollection.cards.length}',
+                  '$currentCardIndex/${cards.length}',
                 ),
                 const SeparatorAtom(),
                 Expanded(
                   child: isLoadingNext
                       ? Center(child: ProgressAtom())
                       : PracticeCardOrganism(
-                          card: widget.cardCollection.cards[currentCardIndex],
+                          card: cards[currentCardIndex],
                           onFlipped: () {
                             setState(() => isCardFlipped = true);
                           },
