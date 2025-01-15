@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:word_link/domain/objects/cards_releated/card_object.dart';
+import 'package:word_link/domain/objects/cards_related/card_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 
 class PracticeCardMolecule extends StatelessWidget {

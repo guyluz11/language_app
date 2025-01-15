@@ -7,7 +7,14 @@ class _PreferencesRepository extends PreferencesController {
   Future init() async => preferences = await SharedPreferences.getInstance();
 
   @override
-  String? getString(PreferenceKeys key) => preferences.getString(key.name);
+  String? getString(PreferenceKeys key) {
+    try {
+      return preferences.getString(key.name);
+    } catch (e) {
+      logger.e('getString the key $key is not the type of string\n$e');
+      return null;
+    }
+  }
 
   @override
   int? getInt(PreferenceKeys key) => preferences.getInt(key.name);
@@ -48,43 +55,6 @@ class _PreferencesRepository extends PreferencesController {
         jsonDecode(jsonString) as Map<String, dynamic>;
 
     return jsonMap;
-  }
-
-  @override
-  List<CollectionObject>? getCardsCollectionObject(PreferenceKeys key) {
-    // Get the list of JSON strings
-    final jsonStringList = getStringList(key);
-
-    if (jsonStringList == null) {
-      // Return an empty list if no data is found
-      return [];
-    }
-
-    // Convert the list of JSON strings back to a list of objects
-    return jsonStringList.map((jsonString) {
-      final Map<String, dynamic> jsonData =
-          json.decode(jsonString) as Map<String, dynamic>;
-      return CollectionObject.fromJson(jsonData);
-    }).toList();
-  }
-
-  @override
-  HashMap<String, AnswersCollectionObject>? getAnswersCollectionObject(
-    PreferenceKeys key,
-  ) {
-    final Map<String, dynamic>? mapFromDb = getMap(key);
-    if (mapFromDb == null) {
-      return null;
-    }
-
-    return HashMap<String, AnswersCollectionObject>.from(
-      mapFromDb.map(
-        (key, value) => MapEntry(
-          key,
-          AnswersCollectionObject.fromJson(value as Map<String, dynamic>),
-        ),
-      ),
-    );
   }
 
   @override
@@ -130,19 +100,5 @@ class _PreferencesRepository extends PreferencesController {
     );
 
     await setString(key, jsonString);
-  }
-
-  @override
-  Future setCardsCollectionObject(
-    PreferenceKeys key,
-    List<CollectionObject> value,
-  ) async {
-    // Convert the list of objects to a list of JSON strings
-    final List<String> jsonStringList = value.map((collection) {
-      return json.encode(collection.toJson());
-    }).toList();
-
-    // Save the list of JSON strings
-    await setStringList(key, jsonStringList);
   }
 }

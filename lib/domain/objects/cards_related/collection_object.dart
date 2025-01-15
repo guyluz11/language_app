@@ -1,7 +1,8 @@
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/domain/objects/cards_releated/card_object.dart';
+import 'package:word_link/domain/objects/cards_related/card_object.dart';
+import 'package:word_link/domain/objects/json_helper_object.dart';
 
-class CollectionObject {
+class CollectionObject extends JsonHelperObject {
   CollectionObject({
     required this.name,
     this.cards = const [],
@@ -30,6 +31,7 @@ class CollectionObject {
   late String uniqueId;
 
   // Method to convert a CardsCollectionObject to JSON
+  @override
   Map<String, dynamic> toJson() {
     return {
       'name': name,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/objects/cards_releated/collection_object.dart';
+import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 import 'package:word_link/presentation/organisms/practice_collection_organism.dart';
 import 'package:word_link/presentation/organisms/practice_results_organism.dart';
 

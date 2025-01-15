@@ -1,10 +1,10 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:word_link/domain/objects/cards_releated/collection_object.dart';
 import 'package:word_link/domain/objects/json_helper_object.dart';
-import 'package:word_link/domain/objects/results_releasted/answers_collection_object.dart';
+import 'package:word_link/infrastructure/core/logger.dart';
 
 part 'package:word_link/infrastructure/preferences_repository.dart';
 
@@ -30,12 +30,6 @@ abstract class PreferencesController {
 
   Map<String, dynamic>? getMap(PreferenceKeys key);
 
-  List<CollectionObject>? getCardsCollectionObject(PreferenceKeys key);
-
-  HashMap<String, AnswersCollectionObject>? getAnswersCollectionObject(
-    PreferenceKeys key,
-  );
-
   void remove(PreferenceKeys key);
 
   Future setString(PreferenceKeys key, String value);
@@ -54,11 +48,6 @@ abstract class PreferencesController {
     PreferenceKeys key,
     HashMap<String, JsonHelperObject> hashMap,
   );
-
-  Future setCardsCollectionObject(
-    PreferenceKeys key,
-    List<CollectionObject> value,
-  );
 }
 
 enum PreferenceKeys {
@@ -72,4 +61,5 @@ enum PreferenceKeys {
   tipType,
   sleepPermissionGranted,
   customCollections,
+  answersCollections,
 }

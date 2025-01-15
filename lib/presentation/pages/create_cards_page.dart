@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/objects/cards_releated/card_object.dart';
-import 'package:word_link/domain/objects/cards_releated/collection_object.dart';
-import 'package:word_link/domain/objects/cards_releated/collections_object.dart';
+import 'package:word_link/domain/objects/cards_related/card_object.dart';
+import 'package:word_link/domain/objects/cards_related/collection_object.dart';
+import 'package:word_link/domain/objects/cards_related/collections_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/organisms/create_card_organism.dart';

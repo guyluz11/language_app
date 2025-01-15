@@ -1,6 +1,8 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/objects/cards_releated/collection_object.dart';
-import 'package:word_link/domain/objects/cards_releated/collections_object.dart';
+import 'package:word_link/domain/objects/cards_related/collection_object.dart';
+import 'package:word_link/domain/objects/cards_related/collections_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/pages/pages.dart';
@@ -11,7 +13,7 @@ class CustomCollectionsPage extends StatefulWidget {
 }
 
 class _CustomCollectionsPageState extends State<CustomCollectionsPage> {
-  late List<CollectionObject> customCards;
+  late HashMap<String, CollectionObject> customCards;
 
   @override
   void initState() {
@@ -44,7 +46,8 @@ class _CustomCollectionsPageState extends State<CustomCollectionsPage> {
       child: ListView.builder(
         itemCount: customCards.length,
         itemBuilder: (context, index) {
-          final CollectionObject collection = customCards[index];
+          final CollectionObject collection =
+              customCards.entries.toList()[index].value;
 
           return ListTileAtom(
             collection.name,
