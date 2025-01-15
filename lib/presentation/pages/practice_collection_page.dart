@@ -43,7 +43,7 @@ class _PracticeCardsPageState extends State<PracticeCardsPage> {
               children: [
                 const SeparatorAtom(variant: SeparatorVariant.farApart),
                 TextAtom(
-                  '$currentCardIndex/${cards.length}',
+                  '${currentCardIndex + 1}/${cards.length}',
                 ),
                 const SeparatorAtom(),
                 Expanded(
