@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:universal_io/io.dart';
 import 'package:vibration/vibration.dart';
 
 part 'package:word_link/infrastructure/vibration_repository.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:universal_io/io.dart';
 
 part 'package:word_link/infrastructure/permissions_repository.dart';
 
