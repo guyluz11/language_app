@@ -8,7 +8,7 @@ class AnswerCardsObject implements JsonHelperObject {
     String? uniqueIdTemp,
     List<AnswerCardObject> resultsTemp = const [],
   }) {
-    _results = resultsTemp;
+    _results = List.of(resultsTemp);
     {
       uniqueId = uniqueIdTemp ??= RandomIdController.instance.getUniqueId();
     }

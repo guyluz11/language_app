@@ -40,7 +40,8 @@ class CollectionsObject {
       mapFromDb = PreferencesController.instance.getMap(key);
     } catch (e) {
       logger.w(
-          '_getCollectionsFromPreference preferences for key $key is wrong type');
+        '_getCollectionsFromPreference preferences for key $key is wrong type',
+      );
     }
     if (mapFromDb == null) {
       return null;

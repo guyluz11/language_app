@@ -7,7 +7,7 @@ class AnswersCollectionObject implements JsonHelperObject {
     required this.uniqueId,
     List<AnswerCardsObject> resultsTemp = const [],
   }) {
-    _results = resultsTemp;
+    _results = List.of(resultsTemp);
   }
 
   /// Factory method to create a `ResultsObject` from JSON

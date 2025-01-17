@@ -137,10 +137,10 @@ class _PracticeCollectionOrganismState
       isLoadingNext = true;
     });
     await Future.delayed(const Duration(seconds: 1));
-    if (currentCardIndex == cards.length) {
+    if (currentCardIndex == cards.length - 1) {
       widget.onComplete?.call(answerCardsObject);
+      return;
     }
-
     setState(() {
       currentCardIndex++;
       currentCard = cards[currentCardIndex];

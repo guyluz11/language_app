@@ -95,7 +95,7 @@ class _CreateCardsPageState extends State<CreateCardsPage> {
       onConfirm: () {
         final CollectionObject collection = CollectionObject(
           name: collectionName ?? 'Empty Name',
-          cards: addedCards,
+          cardsTemp: addedCards,
         );
         CollectionsObject.addCollection(collection);
 

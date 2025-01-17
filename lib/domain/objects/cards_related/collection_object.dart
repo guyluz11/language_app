@@ -5,9 +5,10 @@ import 'package:word_link/domain/objects/json_helper_object.dart';
 class CollectionObject extends JsonHelperObject {
   CollectionObject({
     required this.name,
-    this.cards = const [],
+    List<CardObject> cardsTemp = const [],
     this.uniqueId = '-1',
   }) {
+    cards = List.of(cardsTemp);
     if (uniqueId == '-1') {
       uniqueId = RandomIdController.instance.getUniqueId();
     }
@@ -17,7 +18,7 @@ class CollectionObject extends JsonHelperObject {
   factory CollectionObject.fromJson(Map<String, dynamic> json) {
     return CollectionObject(
       name: json['name'] as String,
-      cards: (json['cards'] as List<dynamic>)
+      cardsTemp: (json['cards'] as List<dynamic>)
           .map(
             (cardJson) => CardObject.fromJson(cardJson as Map<String, dynamic>),
           )
@@ -27,7 +28,7 @@ class CollectionObject extends JsonHelperObject {
   }
 
   String name;
-  List<CardObject> cards;
+  late List<CardObject> cards;
   late String uniqueId;
 
   // Method to convert a CardsCollectionObject to JSON
