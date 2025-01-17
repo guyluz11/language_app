@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/domain/objects/answers_related/answer_card_object.dart';
+import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
@@ -11,7 +13,7 @@ class PracticeCollectionOrganism extends StatefulWidget {
   });
 
   final CollectionObject cardCollection;
-  final VoidCallback? onComplete;
+  final Function(AnswerCardsObject answer)? onComplete;
 
   @override
   State<PracticeCollectionOrganism> createState() =>
@@ -25,6 +27,7 @@ class _PracticeCollectionOrganismState
     super.initState();
     cards = widget.cardCollection.cards;
     cards.shuffle();
+    currentCard = cards[currentCardIndex];
   }
 
   int currentCardIndex = 0;
@@ -32,6 +35,9 @@ class _PracticeCollectionOrganismState
   bool isLoadingNext = false;
   bool showHint = false;
   late List<CardObject> cards;
+  AnswerCardsObject answerCardsObject = AnswerCardsObject();
+
+  CardObject? currentCard;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,7 @@ class _PracticeCollectionOrganismState
       expendChild: false,
       topMargin: false,
       topBarType: TopBarType.back,
-      child: currentCardIndex == cards.length
+      child: currentCardIndex == cards.length || currentCard == null
           ? const TextAtom('Done')
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +61,7 @@ class _PracticeCollectionOrganismState
                   child: isLoadingNext
                       ? Center(child: ProgressAtom())
                       : PracticeCardMolecule(
-                          card: cards[currentCardIndex],
+                          card: currentCard!,
                           onFlipped: () {
                             setState(() => isCardFlipped = true);
                           },
@@ -117,16 +123,27 @@ class _PracticeCollectionOrganismState
   }
 
   Future<void> userResponse({required bool remembered}) async {
+    if (currentCard == null) {
+      return;
+    }
+
+    final AnswerCardObject answerCardObject = AnswerCardObject(
+      correctAnswer: remembered,
+      cardUniqueId: currentCard!.uniqueId,
+    );
+    answerCardsObject.addAnswer(answerCardObject);
+
     setState(() {
       isLoadingNext = true;
     });
     await Future.delayed(const Duration(seconds: 1));
     if (currentCardIndex == cards.length) {
-      widget.onComplete?.call();
+      widget.onComplete?.call(answerCardsObject);
     }
 
     setState(() {
       currentCardIndex++;
+      currentCard = cards[currentCardIndex];
       isCardFlipped = false;
       isLoadingNext = false;
     });

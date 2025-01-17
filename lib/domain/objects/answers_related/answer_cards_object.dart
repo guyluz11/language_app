@@ -1,6 +1,6 @@
 import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/objects/answers_related/answer_card_object.dart';
 import 'package:word_link/domain/objects/json_helper_object.dart';
-import 'package:word_link/domain/objects/results_related/answer_card_object.dart';
 
 /// Stores one session of answering the questions of a collection
 class AnswerCardsObject implements JsonHelperObject {
@@ -28,6 +28,16 @@ class AnswerCardsObject implements JsonHelperObject {
 
   late String uniqueId;
   late List<AnswerCardObject> _results;
+
+  void addAnswer(AnswerCardObject answer) => _results.add(answer);
+
+  List<AnswerCardObject> getAnswers() => _results;
+
+  Iterable<AnswerCardObject> getCorrectAnswers() =>
+      _results.where((answer) => answer.correctAnswer);
+
+  Iterable<AnswerCardObject> getCorrectIncorrect() =>
+      _results.where((answer) => !answer.correctAnswer);
 
   /// Method to convert a `ResultsObject` to JSON
   @override

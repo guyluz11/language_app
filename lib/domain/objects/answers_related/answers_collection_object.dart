@@ -1,5 +1,5 @@
+import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/json_helper_object.dart';
-import 'package:word_link/domain/objects/results_related/answer_cards_object.dart';
 
 // Stores all of the the answers for one collection
 class AnswersCollectionObject implements JsonHelperObject {

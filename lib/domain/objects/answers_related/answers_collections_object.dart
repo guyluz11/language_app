@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/domain/objects/results_related/answers_collection_object.dart';
+import 'package:word_link/domain/objects/answers_related/answers_collection_object.dart';
 
 /// Answers for all of the collections
 class AnswersCollectionsObject {

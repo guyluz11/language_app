@@ -4,26 +4,31 @@ import 'package:word_link/domain/controllers/controllers.dart';
 class AnswerCardObject {
   AnswerCardObject({
     required this.correctAnswer,
-    String? cardUniqueIdTemp,
+    required this.cardUniqueId,
+    String? answerUniqueIdTemp,
   }) {
-    uniqueId = cardUniqueIdTemp ??= RandomIdController.instance.getUniqueId();
+    answerUniqueId =
+        answerUniqueIdTemp ??= RandomIdController.instance.getUniqueId();
   }
 
   // Factory method to create a CardsCollectionObject from JSON
   factory AnswerCardObject.fromJson(Map<String, dynamic> json) {
     return AnswerCardObject(
-      cardUniqueIdTemp: json['uniqueId'] as String,
+      cardUniqueId: json['cardUniqueId'] as String,
+      answerUniqueIdTemp: json['answerUniqueId'] as String,
       correctAnswer: json['correctAnswer'] as bool,
     );
   }
 
-  late String uniqueId;
+  String cardUniqueId;
+  late String answerUniqueId;
   bool correctAnswer;
 
   // Method to convert a CardsCollectionObject to JSON
   Map<String, dynamic> toJson() {
     return {
-      'uniqueId': uniqueId,
+      'cardUniqueId': cardUniqueId,
+      'answerUniqueId': answerUniqueId,
       'correctAnswer': correctAnswer,
     };
   }
