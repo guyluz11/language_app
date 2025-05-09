@@ -12,12 +12,16 @@ class ButtonAtom extends StatelessWidget {
     this.disabled = false,
     this.disableActionType = false,
     this.translate = true,
+    this.isVibrating = true,
+    this.onBlueBackground = false,
   });
 
   final ButtonVariant variant;
   final VoidCallback onPressed;
   final String? text;
   final IconData? icon;
+  final bool isVibrating;
+  final bool onBlueBackground;
 
   double get width => 150;
 
@@ -27,24 +31,26 @@ class ButtonAtom extends StatelessWidget {
   final bool disableActionType;
 
   void onPressVibrate() {
-    VibrationController.instance.vibrate(VibrationType.light);
+    if (isVibrating) {
+      VibrationController.instance.vibrate(VibrationType.light);
+    }
     onPressed();
   }
 
   Widget buttonConstraints({required Widget child}) => Container(
-        constraints: BoxConstraints(
-          minWidth: width,
-        ),
-        height: _height,
-        child: child,
-      );
+    constraints: BoxConstraints(
+      minWidth: width,
+    ),
+    height: _height,
+    child: child,
+  );
 
   Widget label(TextTheme textTheme, {Color? color}) => TextAtom(
-        text ?? '',
-        translate: translate,
-        maxLines: 1,
-        style: textTheme.bodyLarge!.copyWith(color: color),
-      );
+    text ?? '',
+    translate: translate,
+    maxLines: 1,
+    style: textTheme.bodyLarge!.copyWith(color: color),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -57,29 +63,29 @@ class ButtonAtom extends StatelessWidget {
         if (icon == null) {
           return buttonConstraints(
             child: FilledButton(
-              onPressed: disabled ? null : onPressed,
+              onPressed: disabled ? null : onPressVibrate,
               style: disabled
                   ? null
                   : FilledButton.styleFrom().copyWith(
-                      alignment: Alignment.center,
-                      backgroundColor: WidgetStateProperty.all(
-                        colorScheme.secondaryContainer,
-                      ),
-                    ),
+                alignment: Alignment.center,
+                backgroundColor: WidgetStateProperty.all(
+                  colorScheme.secondaryContainer,
+                ),
+              ),
               child: label(textTheme, color: colorScheme.onPrimaryContainer),
             ),
           );
         }
         return buttonConstraints(
           child: FilledButton.icon(
-            onPressed: disabled ? null : onPressed,
+            onPressed: disabled ? null : onPressVibrate,
             style: disabled
                 ? null
                 : FilledButton.styleFrom().copyWith(
-                    alignment: Alignment.center,
-                    backgroundColor:
-                        WidgetStateProperty.all(colorScheme.secondaryContainer),
-                  ),
+              alignment: Alignment.center,
+              backgroundColor:
+              WidgetStateProperty.all(colorScheme.secondaryContainer),
+            ),
             icon: Icon(icon, color: colorScheme.onPrimaryContainer),
             label: label(textTheme, color: colorScheme.onPrimaryContainer),
           ),
@@ -89,29 +95,29 @@ class ButtonAtom extends StatelessWidget {
         if (icon == null) {
           return buttonConstraints(
             child: FilledButton.tonal(
-              onPressed: disabled ? null : onPressed,
+              onPressed: disabled ? null : onPressVibrate,
               style: disabled
                   ? null
                   : FilledButton.styleFrom().copyWith(
-                      alignment: Alignment.center,
-                      backgroundColor: WidgetStateProperty.all(
-                        colorScheme.secondaryContainer,
-                      ),
-                    ),
+                alignment: Alignment.center,
+                backgroundColor: WidgetStateProperty.all(
+                  colorScheme.secondaryContainer,
+                ),
+              ),
               child: label(textTheme, color: colorScheme.onSecondaryContainer),
             ),
           );
         }
         return buttonConstraints(
           child: FilledButton.tonalIcon(
-            onPressed: disabled ? null : onPressed,
+            onPressed: disabled ? null : onPressVibrate,
             style: disabled
                 ? null
                 : FilledButton.styleFrom().copyWith(
-                    alignment: Alignment.center,
-                    backgroundColor:
-                        WidgetStateProperty.all(colorScheme.secondaryContainer),
-                  ),
+              alignment: Alignment.center,
+              backgroundColor:
+              WidgetStateProperty.all(colorScheme.secondaryContainer),
+            ),
             icon: Icon(icon, color: colorScheme.onSecondaryContainer),
             label: label(textTheme, color: colorScheme.onSecondaryContainer),
           ),
@@ -120,37 +126,46 @@ class ButtonAtom extends StatelessWidget {
         if (icon == null) {
           return buttonConstraints(
             child: OutlinedButton(
-              onPressed: disabled ? null : onPressed,
-              child: label(textTheme, color: colorScheme.primary),
+              onPressed: disabled ? null : onPressVibrate,
+              child: label(
+                textTheme,
+                color: onBlueBackground ? Colors.white : colorScheme.primary,
+              ),
             ),
           );
         }
         return buttonConstraints(
           child: OutlinedButton.icon(
-            onPressed: disabled ? null : onPressed,
-            icon: Icon(icon, color: colorScheme.primary),
-            label: label(textTheme, color: colorScheme.primary),
+            onPressed: disabled ? null : onPressVibrate,
+            icon: Icon(
+              icon,
+              color: onBlueBackground ? Colors.white : colorScheme.primary,
+            ),
+            label: label(
+              textTheme,
+              color: onBlueBackground ? Colors.white : colorScheme.primary,
+            ),
           ),
         );
       case ButtonVariant.lowEmphasisText:
         if (icon == null) {
           return buttonConstraints(
             child: TextButton(
-              onPressed: disabled ? null : onPressed,
+              onPressed: disabled ? null : onPressVibrate,
               child: label(textTheme, color: colorScheme.primary),
             ),
           );
         }
         return buttonConstraints(
           child: TextButton.icon(
-            onPressed: disabled ? null : onPressed,
+            onPressed: disabled ? null : onPressVibrate,
             icon: Icon(icon, color: colorScheme.primary),
             label: label(textTheme, color: colorScheme.primary),
           ),
         );
       case ButtonVariant.lowEmphasisIcon:
         return IconButton(
-          onPressed: onPressed,
+          onPressed: onPressVibrate,
           color: colorScheme.primary,
           icon: Icon(icon),
         );
