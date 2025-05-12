@@ -1,12 +1,12 @@
 name: word_link
 description: "Help to learn new language"
-publish_to: 'none'
+publish_to: "none"
 repository: https://github.com/guyluz11/language_app
 
 version: 1.0.0+1
 
 environment:
-  sdk: ''>=3.4.4 <4.0.0'
+  sdk: ">=3.4.4 <4.0.0"
 
 dependencies:
   animated_toggle_switch: ^0.8.4
@@ -27,7 +27,8 @@ dependencies:
   fluttertoast: ^8.2.10
   # Font Awesome Icon pack available as Flutter Icons.
   font_awesome_flutter: ^10.8.0
-  google_fonts: ^6.2.1
+  google_fonts:
+    ^6.2.1
     # Small, easy to use and extensible logger which prints beautiful logs.
   logger: ^2.5.0
   shared_preferences: ^2.3.5
@@ -44,7 +45,6 @@ dev_dependencies:
   # Collection of lint rules for Dart and Flutter projects.
   lint: ^2.3.0
 flutter:
-
   uses-material-design: true
   assets:
     - assets/
