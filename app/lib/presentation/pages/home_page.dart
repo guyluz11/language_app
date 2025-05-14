@@ -18,6 +18,17 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DetailedCardOrganism(
+              titleText: 'Polish',
+              subTitle: 'Practice your Polish vocabulary',
+              buttonText: 'Open',
+              background: SvgPicture.asset(
+                'assets/images/folders_image.svg',
+                fit: BoxFit.cover,
+              ),
+              onClick: () => practiceCollectionsClicked(context),
+            ),
+            const SeparatorAtom(variant: SeparatorVariant.farApart),
+            DetailedCardOrganism(
               titleText: 'Custom Collections',
               subTitle: 'Create and manage your flip cards list',
               buttonText: 'Open',
