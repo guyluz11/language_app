@@ -4,7 +4,8 @@ import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/organisms/detailed_card_organism.dart';
-import 'package:word_link/presentation/pages/custom_collections_page.dart';
+import 'package:word_link/presentation/pages/pages.dart';
+import 'package:word_link/domain/controllers/words_controller.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
                 'assets/images/folders_image.svg',
                 fit: BoxFit.cover,
               ),
-              onClick: () => practiceCollectionsClicked(context),
+              onClick: () => practiceCollectionsClicked(context, 'Polish'),
             ),
             const SeparatorAtom(variant: SeparatorVariant.farApart),
             DetailedCardOrganism(
@@ -51,4 +52,14 @@ class HomePage extends StatelessWidget {
           builder: (context) => CustomCollectionsPage(),
         ),
       );
+
+  void practiceCollectionsClicked(BuildContext context, String collectionName) {
+      final cardCollection = WordsController.instance.generateCollection(collectionName);
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PracticeCardsPage(cardCollection: cardCollection),
+        ),
+      );
+  }
 }
