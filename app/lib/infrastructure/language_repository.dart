@@ -1,7 +1,38 @@
-part of 'package:word_link/domain/controllers/words_controller.dart';
+part of 'package:word_link/domain/controllers/language_controller.dart';
 
-class _WordsRepository extends WordsController {
-  static const Map<String, String> polishWords = {
+class _LanguageRepository extends LanguageController {
+  
+  @override
+  CollectionObject getMostUsedWords({required Language language, int count = 5}) {
+    final Map<String, String> wordMap = _getWordMapForLanguage(language);
+    
+    final wordPairs = wordMap.entries
+    .take(count)
+    .map((entry) => CardObject(name: entry.key, answer: entry.value))
+    .toList();
+    return CollectionObject(name: Language.polish.displayName, cardsTemp: wordPairs);
+    
+  }
+
+  Map<String, String> _getWordMapForLanguage(Language language) {
+  switch (language) {
+    case Language.polish:
+      return polishWords;
+  }
+}
+
+}
+
+  enum Language {
+  polish('Polish');
+
+  final String displayName;
+
+  const Language(this.displayName);
+}
+
+
+const Map<String, String> polishWords = {
     'i': 'and',
     'w': 'in',
     'nie': 'not',
@@ -102,19 +133,3 @@ class _WordsRepository extends WordsController {
     'kim': 'who',
     'znowu': 'again',
   };
-
-
-  @override
-  CollectionObject generateCollection(String name) {
-
-    
-    final keys = polishWords.keys.toList()..shuffle(Random());
-    final selected = keys.take(5);
-    final wordPairs = selected.map((key) => CardObject(name: key, answer: polishWords[key])).toList();
-
-    return CollectionObject(name: name, cardsTemp: wordPairs);
-
-    
-  }
-
-}

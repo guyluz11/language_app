@@ -4,9 +4,9 @@ import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/organisms/detailed_card_organism.dart';
-import 'package:word_link/presentation/pages/custom_collections_page.dart';
 import 'package:word_link/presentation/pages/pages.dart';
-import 'package:word_link/domain/controllers/words_controller.dart';
+import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -20,14 +20,14 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DetailedCardOrganism(
-              titleText: 'Polish',
-              subTitle: 'Practice your Polish vocabulary',
+              titleText: Language.polish.displayName,
+              subTitle: 'Practice your ${Language.polish.displayName} vocabulary',
               buttonText: 'Open',
               background: SvgPicture.asset(
                 'assets/images/folders_image.svg',
                 fit: BoxFit.cover,
               ),
-              onClick: () => practiceCollectionsClicked(context, 'Polish'),
+              onClick: () => practiceCollectionsClicked(context, Language.polish),
             ),
             const SeparatorAtom(variant: SeparatorVariant.farApart),
             DetailedCardOrganism(
@@ -54,8 +54,8 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  void practiceCollectionsClicked(BuildContext context, String collectionName) {
-      final cardCollection = WordsController.instance.generateCollection(collectionName);
+  void practiceCollectionsClicked(BuildContext context, Language language) {
+      final CollectionObject cardCollection = LanguageController.instance.getMostUsedWords(language: language);
 
       Navigator.of(context).push(
         MaterialPageRoute(
