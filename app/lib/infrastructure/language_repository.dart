@@ -3,11 +3,11 @@ part of 'package:word_link/domain/controllers/language_controller.dart';
 class _LanguageRepository extends LanguageController {
   
   @override
-  CollectionObject getMostUsedWords({required Language language, int count = 5}) {
+  CollectionObject getMostUsedWords({required Language language, int numberOfWords = 5}) {
     final Map<String, String> wordMap = _getWordMapForLanguage(language);
     
     final wordPairs = wordMap.entries
-    .take(count)
+    .take(numberOfWords)
     .map((entry) => CardObject(name: entry.key, answer: entry.value))
     .toList();
     return CollectionObject(name: Language.polish.displayName, cardsTemp: wordPairs);

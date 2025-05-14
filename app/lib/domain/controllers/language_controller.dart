@@ -9,7 +9,7 @@ part 'package:word_link/infrastructure/language_repository.dart';
 
     static LanguageController get instance => _instance ??= _LanguageRepository();
 
-    CollectionObject getMostUsedWords({required Language language, int count = 5});
+    CollectionObject getMostUsedWords({required Language language, int numberOfWords = 5});
 
     Map<String, String> _getWordMapForLanguage(Language language);
    
