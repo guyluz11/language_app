@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/answers_related/answers_collections_object.dart';
 import 'package:word_link/domain/objects/cards_related/collections_object.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/theme_data.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
@@ -49,12 +50,10 @@ class _SplashPageState extends State<SplashPage> {
       body: ColoredBox(
         color: AppThemeData.logoBackgroundColor,
         child: const Center(
-          child: SizedBox(),
-          // TODO: Add your product logo
-          // ImageAtom(
-          //   'assets/logo.png',
-          //   hero: 'full_logo',
-          // ),
+          child: ImageAtom(
+            'assets/logo.png',
+            hero: 'full_logo',
+          ),
         ),
       ),
     );

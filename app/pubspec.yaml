@@ -13,9 +13,10 @@ dependencies:
   audioplayers: ^6.1.0
   # Automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^3.0.0
-  awesome_notifications: ^0.10.0
-  awesome_notifications_core: ^0.10.0
+  awesome_notifications: ^0.10.1
+  awesome_notifications_core: ^0.10.1
   # Adds the Cupertino Icons font.
+  cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8
   device_info_plus: ^11.2.0
   flip_card: ^0.7.0
@@ -37,7 +38,7 @@ dependencies:
   wakelock_plus: ^1.2.10
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.14.2
+  flutter_launcher_icons: ^0.14.3
   flutter_test:
     sdk: flutter
 
@@ -50,3 +51,36 @@ flutter:
     - assets/
     - assets/images/
 
+
+# flutter pub run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: "assets/logo.png"
+
+  android: "ic_launcher"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/logo.png"
+#  adaptive_icon_monochrome: "assets/logo_with_bg.png"
+
+  ios: true
+  image_path_ios: "assets/logo.png"
+  # image_path_ios: "assets/icon/logo.png"
+  remove_alpha_channel_ios: true
+  # image_path_ios_dark_transparent: "assets/icon/icon_dark.png"
+  # image_path_ios_tinted_grayscale: "assets/icon/icon_tinted.png"
+  # desaturate_tinted_to_grayscale_ios: true
+
+  web:
+    generate: true
+    image_path: "assets/logo_with_bg.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+
+  windows:
+    generate: true
+    image_path: "assets/logo.png"
+    icon_size: 48
+
+  macos:
+    generate: true
+    image_path: "assets/logo_with_bg.png"

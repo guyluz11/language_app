@@ -3,7 +3,7 @@ part of 'package:word_link/domain/controllers/language_controller.dart';
 class _LanguageRepository extends LanguageController {
   @override
   CollectionObject getMostUsedWords(
-      {required LanguageEnum language, int numberOfWords = 5}) {
+      {required LanguageEnum language, int numberOfWords = 5,}) {
     final Map<String, String> wordMap = _getWordMapForLanguage(language);
 
     final wordPairs = wordMap.entries
@@ -11,7 +11,7 @@ class _LanguageRepository extends LanguageController {
         .map((entry) => CardObject(name: entry.key, answer: entry.value))
         .toList();
     return CollectionObject(
-        name: LanguageEnum.polish.displayName, cardsTemp: wordPairs);
+        name: LanguageEnum.polish.displayName, cardsTemp: wordPairs,);
   }
 
   Map<String, String> _getWordMapForLanguage(LanguageEnum language) {
@@ -23,11 +23,11 @@ class _LanguageRepository extends LanguageController {
 }
 
 enum LanguageEnum {
-  polish('Polish');
+  polish('Polish'),;
 
-  final String displayName;
 
   const LanguageEnum(this.displayName);
+  final String displayName;
 }
 
 const Map<String, String> polishWords = {

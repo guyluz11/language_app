@@ -9,5 +9,5 @@ abstract class LanguageController {
   static LanguageController get instance => _instance ??= _LanguageRepository();
 
   CollectionObject getMostUsedWords(
-      {required LanguageEnum language, int numberOfWords = 5});
+      {required LanguageEnum language, int numberOfWords = 5,});
 }
