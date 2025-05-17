@@ -145,10 +145,6 @@ class _PracticeCollectionOrganismState
       return;
     }
 
-    if (currentCard?.name?.isNotEmpty == true) {
-      _ttsController.speak(currentCard!.name!);
-    }
-
     final AnswerCardObject answerCardObject = AnswerCardObject(
       correctAnswer: remembered,
       cardUniqueId: currentCard!.uniqueId,
