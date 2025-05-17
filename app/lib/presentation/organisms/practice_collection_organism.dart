@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/domain/controllers/tts_controller.dart';
 import 'package:word_link/domain/objects/answers_related/answer_card_object.dart';
 import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
@@ -22,12 +23,28 @@ class PracticeCollectionOrganism extends StatefulWidget {
 
 class _PracticeCollectionOrganismState
     extends State<PracticeCollectionOrganism> {
+  final TtsController _ttsController = TtsController.instance;
+
   @override
   void initState() {
     super.initState();
     cards = widget.cardCollection.cards;
     cards.shuffle();
     currentCard = cards[currentCardIndex];
+  }
+
+  Future<void> _speakCardContent() async {
+    if (currentCard == null) return;
+
+    String textToSpeak = "";
+
+    if (currentCard!.answer?.isNotEmpty == true) {
+      textToSpeak += currentCard!.answer!;
+    }
+
+    if (textToSpeak.isNotEmpty) {
+      await _ttsController.speak(textToSpeak);
+    }
   }
 
   int currentCardIndex = 0;
@@ -64,6 +81,7 @@ class _PracticeCollectionOrganismState
                           card: currentCard!,
                           onFlipped: () {
                             setState(() => isCardFlipped = true);
+                            _speakCardContent();
                           },
                           showSecond: showHint,
                         ),
@@ -125,6 +143,10 @@ class _PracticeCollectionOrganismState
   Future<void> userResponse({required bool remembered}) async {
     if (currentCard == null) {
       return;
+    }
+
+    if (currentCard?.name?.isNotEmpty == true) {
+      _ttsController.speak(currentCard!.name!);
     }
 
     final AnswerCardObject answerCardObject = AnswerCardObject(
