@@ -21,6 +21,7 @@ dependencies:
   device_info_plus: ^11.2.0
   flip_card: ^0.7.0
   flutter:
+  
     sdk: flutter
   flutter_tts: ^4.2.2
 

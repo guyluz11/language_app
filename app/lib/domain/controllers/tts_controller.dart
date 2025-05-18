@@ -11,8 +11,6 @@ abstract class TtsController {
 
   Future<void> initialize();
 
-  void onStateChange(Function(TtsState) callback);
-
   Future<void> speak(String text);
 
   Future<void> stop();
@@ -29,11 +27,11 @@ abstract class TtsController {
 
   Future<void> setVoice(Map<String, String> voice);
 
-  Future<dynamic> getLanguages();
+  Future<List<dynamic>> getLanguages();
 
-  Future<dynamic> getVoices();
+  Future<List<Map>> getVoices();
 
-  void dispose();
+  Future<void> dispose();
 }
 
 enum TtsState { playing, stopped, paused, continued }

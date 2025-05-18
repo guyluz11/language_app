@@ -23,8 +23,6 @@ class PracticeCollectionOrganism extends StatefulWidget {
 
 class _PracticeCollectionOrganismState
     extends State<PracticeCollectionOrganism> {
-  final TtsController _ttsController = TtsController.instance;
-
   @override
   void initState() {
     super.initState();
@@ -34,17 +32,7 @@ class _PracticeCollectionOrganismState
   }
 
   Future<void> _speakCardContent() async {
-    if (currentCard == null) return;
-
-    String textToSpeak = "";
-
-    if (currentCard!.answer?.isNotEmpty == true) {
-      textToSpeak += currentCard!.answer!;
-    }
-
-    if (textToSpeak.isNotEmpty) {
-      await _ttsController.speak(textToSpeak);
-    }
+    TtsController.instance.speak(currentCard!.answer ?? '');
   }
 
   int currentCardIndex = 0;
