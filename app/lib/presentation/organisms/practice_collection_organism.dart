@@ -31,9 +31,6 @@ class _PracticeCollectionOrganismState
     currentCard = cards[currentCardIndex];
   }
 
-  Future<void> _speakCardContent() async =>
-      await TtsController.instance.speak(currentCard!.answer ?? '');
-
   int currentCardIndex = 0;
   bool isCardFlipped = false;
   bool isLoadingNext = false;
@@ -68,7 +65,8 @@ class _PracticeCollectionOrganismState
                           card: currentCard!,
                           onFlipped: () {
                             setState(() => isCardFlipped = true);
-                            _speakCardContent();
+                            TtsController.instance
+                                .speak(currentCard!.answer ?? '');
                           },
                           showSecond: showHint,
                         ),
