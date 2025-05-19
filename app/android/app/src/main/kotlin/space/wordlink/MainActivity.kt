@@ -1,4 +1,4 @@
-package com.example.word_link
+package space.wordlink
 
 import io.flutter.embedding.android.FlutterActivity
 
