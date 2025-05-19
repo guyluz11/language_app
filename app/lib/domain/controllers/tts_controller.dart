@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:logger/logger.dart';
 
@@ -8,7 +10,7 @@ abstract class TtsController {
 
   static TtsController get instance => _instance ??= _TtsRepository();
 
-  Future<void> _initialize();
+  Future<void> init();
 
   Future<void> speak(String text);
 }

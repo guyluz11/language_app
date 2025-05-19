@@ -3,10 +3,20 @@ part of 'package:word_link/domain/controllers/tts_controller.dart';
 class _TtsRepository extends TtsController {
   late FlutterTts? _flutterTts;
   final _logger = Logger();
-  bool _isInitialized = false;
+  late bool supported;
 
   @override
-  Future<void> _initialize() async {
+  Future<void> init() async {
+    supported = kIsWeb ||
+        Platform.isAndroid ||
+        Platform.isIOS ||
+        Platform.isMacOS ||
+        Platform.isWindows;
+
+    if (!supported) {
+      return;
+    }
+
     _flutterTts = FlutterTts()
       ..setLanguage('en-US')
       ..setSpeechRate(0.5)
@@ -16,15 +26,13 @@ class _TtsRepository extends TtsController {
     _flutterTts!.setErrorHandler((msg) {
       _logger.e('TTS Error $msg');
     });
-
-    _isInitialized = true;
   }
 
   @override
   Future<void> speak(String text) async {
-    if (!_isInitialized) {
-      await _initialize();
+    if (!supported) {
+      return;
     }
-    await _flutterTts!.speak(text);
+    _flutterTts!.speak(text);
   }
 }
