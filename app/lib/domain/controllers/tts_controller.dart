@@ -10,6 +10,10 @@ abstract class TtsController {
 
   static TtsController get instance => _instance ??= _TtsRepository();
 
+  late FlutterTts? _flutterTts;
+  final _logger = Logger();
+  late bool _supported;
+
   Future<void> init();
 
   Future<void> speak(String text);

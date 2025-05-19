@@ -1,10 +1,6 @@
 part of 'package:word_link/domain/controllers/tts_controller.dart';
 
 class _TtsRepository extends TtsController {
-  late FlutterTts? _flutterTts;
-  final _logger = Logger();
-  late bool _supported;
-
   @override
   Future<void> init() async {
     _supported = kIsWeb ||
