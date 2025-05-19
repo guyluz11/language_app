@@ -3,17 +3,17 @@ part of 'package:word_link/domain/controllers/tts_controller.dart';
 class _TtsRepository extends TtsController {
   late FlutterTts? _flutterTts;
   final _logger = Logger();
-  late bool supported;
+  late bool _supported;
 
   @override
   Future<void> init() async {
-    supported = kIsWeb ||
+    _supported = kIsWeb ||
         Platform.isAndroid ||
         Platform.isIOS ||
         Platform.isMacOS ||
         Platform.isWindows;
 
-    if (!supported) {
+    if (!_supported) {
       return;
     }
 
@@ -30,7 +30,7 @@ class _TtsRepository extends TtsController {
 
   @override
   Future<void> speak(String text) async {
-    if (!supported) {
+    if (!_supported) {
       return;
     }
     _flutterTts!.speak(text);
