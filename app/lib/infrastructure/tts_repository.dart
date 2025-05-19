@@ -1,6 +1,9 @@
 part of 'package:word_link/domain/controllers/tts_controller.dart';
 
 class _TtsRepository extends TtsController {
+  late FlutterTts _flutterTts;
+  late bool _supported;
+
   @override
   Future<void> init() async {
     _supported = kIsWeb ||
@@ -19,8 +22,8 @@ class _TtsRepository extends TtsController {
       ..setVolume(1.0)
       ..setPitch(1.0);
 
-    _flutterTts!.setErrorHandler((msg) {
-      _logger.e('TTS Error $msg');
+    _flutterTts.setErrorHandler((msg) {
+      logger.e('TTS Error $msg');
     });
   }
 
@@ -29,6 +32,6 @@ class _TtsRepository extends TtsController {
     if (!_supported) {
       return;
     }
-    _flutterTts!.speak(text);
+    _flutterTts.speak(text);
   }
 }
