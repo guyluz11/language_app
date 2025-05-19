@@ -6,11 +6,7 @@ class _TtsRepository extends TtsController {
 
   @override
   Future<void> init() async {
-    _supported = kIsWeb ||
-        Platform.isAndroid ||
-        Platform.isIOS ||
-        Platform.isMacOS ||
-        Platform.isWindows;
+    _supported = !Platform.isLinux;
 
     if (!_supported) {
       return;
@@ -21,10 +17,6 @@ class _TtsRepository extends TtsController {
       ..setSpeechRate(0.5)
       ..setVolume(1.0)
       ..setPitch(1.0);
-
-    _flutterTts.setErrorHandler((msg) {
-      logger.e('TTS Error $msg');
-    });
   }
 
   @override
@@ -32,6 +24,6 @@ class _TtsRepository extends TtsController {
     if (!_supported) {
       return;
     }
-    _flutterTts.speak(text);
+    await _flutterTts.speak(text);
   }
 }
