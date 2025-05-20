@@ -12,11 +12,7 @@ class _TtsRepository extends TtsController {
       return;
     }
 
-    _flutterTts = FlutterTts()
-      ..setLanguage('en-US')
-      ..setSpeechRate(0.5)
-      ..setVolume(1.0)
-      ..setPitch(1.0);
+    _flutterTts = FlutterTts();
   }
 
   @override
