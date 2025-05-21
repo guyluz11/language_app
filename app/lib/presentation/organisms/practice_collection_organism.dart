@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/domain/controllers/tts_controller.dart';
 import 'package:word_link/domain/objects/answers_related/answer_card_object.dart';
 import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
@@ -64,6 +65,8 @@ class _PracticeCollectionOrganismState
                           card: currentCard!,
                           onFlipped: () {
                             setState(() => isCardFlipped = true);
+                            TtsController.instance
+                                .speak(currentCard!.answer ?? '');
                           },
                           showSecond: showHint,
                         ),

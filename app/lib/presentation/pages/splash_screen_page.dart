@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
         .setInt(PreferenceKeys.loginCounter, loginCounter + 1);
     CollectionsObject.init();
     AnswersCollectionsObject.init();
-
+    TtsController.instance.init();
     _navigate();
   }
 
