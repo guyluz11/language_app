@@ -10,10 +10,10 @@
 
 <div align="center"><img alt="Logo" height="400" src="https://raw.githubusercontent.com/guyluz11/language_app/refs/heads/main/app/assets/logo.png"></div>
 
-Learn a new language using proven methods and not just fun games.  
+Our app is an essential learning tool when learning a new language.
+By utilizing techniques that Nelson Dellis "The National Memory Champion" recommends, you will learn a new language faster than ever.
 
-We are creating a learning tool for new Languages.
-Our goal is to make it accessible and convenient to utilize the technics that Nelson Dellis - national memory champion recommends.
+So join us and become an expert in no time.
 
 Link to his video teaching the technics
 https://www.youtube.com/watch?v=Fjk5nBtqM3c

@@ -44,6 +44,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  integration_test:
+    sdk: flutter
   # Collection of lint rules for Dart and Flutter projects.
   lint: ^2.3.0
 flutter:
