@@ -41,15 +41,15 @@ enum LanguageEnum {
 
 Future<Map<String, String>> _getTranslatedWords(
     TranslateLanguage language, List<String> words) async {
-  final Map<String, String> translatedWords = {};
+  final Map<String, String> wordPairs = {};
 
   for (final word in words) {
-    final translatedWord = await _translateText(
-        TranslateLanguage.polish, TranslateLanguage.english, word);
-    translatedWords[word] = translatedWord;
+    final translatedWord =
+        await _translateText(language, TranslateLanguage.english, word);
+    wordPairs[word] = translatedWord;
   }
 
-  return translatedWords;
+  return wordPairs;
 }
 
 Future<String> _translateText(TranslateLanguage sourceLanguage,
