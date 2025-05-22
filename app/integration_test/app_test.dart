@@ -5,11 +5,9 @@ import 'package:integration_test/integration_test.dart';
 import 'package:word_link/infrastructure/core/logger.dart';
 import 'package:word_link/main.dart' as app;
 import 'package:word_link/presentation/atoms/atoms.dart';
+import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
-import 'domain_test/test_audio_transcribe_repository.dart';
-import 'domain_test/test_clipboard_repository.dart';
-import 'domain_test/test_online_video_repository.dart';
 import 'domain_test/test_preferences_repository.dart';
 
 void main() {
@@ -23,7 +21,7 @@ void main() {
       return;
     }
 
-    final Directory path = Directory('/tmp/maptube_screenshots');
+    final Directory path = Directory('/tmp/${GlobalVariables.appNameForFolders }_screenshots');
     if (!path.existsSync()) {
       path.createSync(recursive: true);
     }
@@ -36,9 +34,6 @@ void main() {
 
   testWidgets('Navigate and take screenshots', (WidgetTester tester) async {
     TestPreferencesRepository();
-    TestAudioTranscribeRepository();
-    TestClipboardRepository();
-    TestOnlineVideoRepository();
     app.main(debugBanner: false);
 
     /// Welcome page
@@ -60,17 +55,12 @@ void main() {
 
     /// Home page
     await tester.pumpAndSettle();
-    nextButtonFinder = find.widgetWithText(ButtonAtom, 'Paste');
-    await tester.tap(nextButtonFinder);
-    await tester.pumpAndSettle();
-    await tester.pump(ButtonAtom.loadSuccessDuration);
-    await tester.pumpAndSettle();
     takeScreenshot('2_home_page');
-    nextButtonFinder = find.widgetWithText(ButtonAtom, 'Transcribe Now');
+    nextButtonFinder = find.widgetWithText(ButtonAtom, 'Open');
     await tester.tap(nextButtonFinder);
 
-    /// Results Page
+    /// Practice Cards Page
     await tester.pumpAndSettle();
-    takeScreenshot('3_results_page');
+    takeScreenshot('3_practice_cards_page');
   });
 }

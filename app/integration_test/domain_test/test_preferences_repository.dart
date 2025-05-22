@@ -1,4 +1,7 @@
-import 'package:map_tube/domain/controllers/controllers.dart';
+import 'dart:collection';
+
+import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/objects/json_helper_object.dart';
 
 class TestPreferencesRepository extends PreferencesController {
   TestPreferencesRepository() {
@@ -27,17 +30,26 @@ class TestPreferencesRepository extends PreferencesController {
   void remove(PreferenceKeys key) {}
 
   @override
-  void setBool(PreferenceKeys key, {required bool value}) {}
+  Map<String, dynamic>? getMap(PreferenceKeys key) => null;
 
   @override
-  void setDateTime(PreferenceKeys key, DateTime value) {}
+  List<String>? getStringList(PreferenceKeys key) => null;
 
   @override
-  void setDuration(PreferenceKeys key, Duration value) {}
+  Future setMap(PreferenceKeys key, HashMap<String, JsonHelperObject> hashMap) async => null;
+  @override
+  Future setStringList(PreferenceKeys key, List<String> value) async => null;
+  @override
+  Future setBool(PreferenceKeys key, {required bool value}) async => null;
 
   @override
-  void setInt(PreferenceKeys key, int value) {}
+  Future setDateTime(PreferenceKeys key, DateTime value) async => null;
 
   @override
-  void setString(PreferenceKeys key, String value) {}
+  Future setDuration(PreferenceKeys key, Duration value) async => null;
+
+  @override
+  Future setInt(PreferenceKeys key, int value)async => null;
+  @override
+  Future setString(PreferenceKeys key, String value) async => null;
 }
