@@ -3,46 +3,42 @@ part of 'package:word_link/domain/controllers/language_controller.dart';
 class _LanguageRepository extends LanguageController {
   @override
   Future<CollectionObject> getMostUsedWords({
-    required LanguageEnum language,
+    required LanguageEnum sourceLanguage,
     int numberOfWords = 5,
   }) async {
-    final List<String> words = _getSourceLanguageWords(language);
+    final List<String> words = getSourceLanguageWords(sourceLanguage);
 
-    final Map<String, String> wordPairs = await _getTranslatedWords(
-        language.translateLang, words.sublist(0, numberOfWords));
+    final cardCollection = await createCollectionFromWords(
+        sourceLanguage, words.sublist(0, numberOfWords));
 
-    final cards = wordPairs.entries
-        .take(numberOfWords)
-        .map((entry) => CardObject(name: entry.key, answer: entry.value))
-        .toList();
-
-    return CollectionObject(
-      name: LanguageEnum.polish.displayName,
-      cardsTemp: cards,
-    );
+    return cardCollection;
   }
 
-  List<String> _getSourceLanguageWords(LanguageEnum language) {
+  @override
+  List<String> getSourceLanguageWords(LanguageEnum language) {
     switch (language) {
       case LanguageEnum.polish:
         return polishWords;
     }
   }
 
-  Future<Map<String, String>> _getTranslatedWords(
-      TranslateLanguage language, List<String> words) async {
-    final Map<String, String> wordPairs = {};
+  @override
+  Future<CollectionObject> createCollectionFromWords(
+      LanguageEnum sourceLanguage, List<String> words) async {
+    final CollectionObject cardsCollection =
+        CollectionObject(name: sourceLanguage.displayName);
 
     for (final word in words) {
-      final translatedWord =
-          await _translateText(language, TranslateLanguage.english, word);
-      wordPairs[word] = translatedWord;
+      final translatedWord = await translateText(
+          sourceLanguage.translateLang, TranslateLanguage.english, word);
+      cardsCollection.cards.add(CardObject(name: word, answer: translatedWord));
     }
 
-    return wordPairs;
+    return cardsCollection;
   }
 
-  Future<String> _translateText(TranslateLanguage sourceLanguage,
+  @override
+  Future<String> translateText(TranslateLanguage sourceLanguage,
       TranslateLanguage targetLanguage, String word) async {
     final translator = OnDeviceTranslator(
         sourceLanguage: sourceLanguage, targetLanguage: targetLanguage);
@@ -61,15 +57,6 @@ class _LanguageRepository extends LanguageController {
 
     return result;
   }
-}
-
-enum LanguageEnum {
-  polish('Polish', TranslateLanguage.polish),
-  ;
-
-  const LanguageEnum(this.displayName, this.translateLang);
-  final String displayName;
-  final TranslateLanguage translateLang;
 }
 
 const List<String> polishWords = [

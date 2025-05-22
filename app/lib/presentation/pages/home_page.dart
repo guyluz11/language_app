@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
@@ -58,8 +57,8 @@ class HomePage extends StatelessWidget {
 
   Future<void> practiceCollectionsClicked(
       BuildContext context, LanguageEnum language) async {
-    final cardCollection =
-        await LanguageController.instance.getMostUsedWords(language: language);
+    final cardCollection = await LanguageController.instance
+        .getMostUsedWords(sourceLanguage: language);
 
     if (!context.mounted) return;
 
