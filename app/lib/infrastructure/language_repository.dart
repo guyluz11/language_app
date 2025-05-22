@@ -28,6 +28,39 @@ class _LanguageRepository extends LanguageController {
         return polishWords;
     }
   }
+
+  Future<Map<String, String>> _getTranslatedWords(
+      TranslateLanguage language, List<String> words) async {
+    final Map<String, String> wordPairs = {};
+
+    for (final word in words) {
+      final translatedWord =
+          await _translateText(language, TranslateLanguage.english, word);
+      wordPairs[word] = translatedWord;
+    }
+
+    return wordPairs;
+  }
+
+  Future<String> _translateText(TranslateLanguage sourceLanguage,
+      TranslateLanguage targetLanguage, String word) async {
+    final translator = OnDeviceTranslator(
+        sourceLanguage: sourceLanguage, targetLanguage: targetLanguage);
+
+    final modelManager = OnDeviceTranslatorModelManager();
+    final bool isModelDownloaded =
+        await modelManager.isModelDownloaded(targetLanguage.bcpCode);
+
+    if (!isModelDownloaded) {
+      await modelManager.downloadModel(targetLanguage.bcpCode);
+    }
+
+    final String result = await translator.translateText(word);
+
+    translator.close();
+
+    return result;
+  }
 }
 
 enum LanguageEnum {
@@ -37,39 +70,6 @@ enum LanguageEnum {
   const LanguageEnum(this.displayName, this.translateLang);
   final String displayName;
   final TranslateLanguage translateLang;
-}
-
-Future<Map<String, String>> _getTranslatedWords(
-    TranslateLanguage language, List<String> words) async {
-  final Map<String, String> wordPairs = {};
-
-  for (final word in words) {
-    final translatedWord =
-        await _translateText(language, TranslateLanguage.english, word);
-    wordPairs[word] = translatedWord;
-  }
-
-  return wordPairs;
-}
-
-Future<String> _translateText(TranslateLanguage sourceLanguage,
-    TranslateLanguage targetLanguage, String word) async {
-  final translator = OnDeviceTranslator(
-      sourceLanguage: sourceLanguage, targetLanguage: targetLanguage);
-
-  final modelManager = OnDeviceTranslatorModelManager();
-  final bool isModelDownloaded =
-      await modelManager.isModelDownloaded(targetLanguage.bcpCode);
-
-  if (!isModelDownloaded) {
-    await modelManager.downloadModel(targetLanguage.bcpCode);
-  }
-
-  final String result = await translator.translateText(word);
-
-  translator.close();
-
-  return result;
 }
 
 const List<String> polishWords = [
