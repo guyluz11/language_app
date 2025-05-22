@@ -51,7 +51,7 @@ class _WelcomePageState extends State<WelcomePage> {
             GlobalVariables.appName,
             style: Theme.of(context)
                 .textTheme
-                .displayMedium
+                .displayMedium,
           ),
           const SeparatorAtom(variant: SeparatorVariant.relatedElements),
           if (showSubTitle)
