@@ -56,9 +56,12 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  void practiceCollectionsClicked(BuildContext context, LanguageEnum language) {
-    final CollectionObject cardCollection =
-        LanguageController.instance.getMostUsedWords(language: language);
+  Future<void> practiceCollectionsClicked(
+      BuildContext context, LanguageEnum language) async {
+    final cardCollection =
+        await LanguageController.instance.getMostUsedWords(language: language);
+
+    if (!context.mounted) return;
 
     Navigator.of(context).push(
       MaterialPageRoute(
