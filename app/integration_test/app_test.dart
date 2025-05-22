@@ -21,7 +21,8 @@ void main() {
       return;
     }
 
-    final Directory path = Directory('/tmp/${GlobalVariables.appNameForFolders }_screenshots');
+    final Directory path =
+        Directory('/tmp/${GlobalVariables.appNameForFolders}_screenshots');
     if (!path.existsSync()) {
       path.createSync(recursive: true);
     }
@@ -56,7 +57,7 @@ void main() {
     /// Home page
     await tester.pumpAndSettle();
     takeScreenshot('2_home_page');
-    nextButtonFinder = find.widgetWithText(ButtonAtom, 'Open');
+    nextButtonFinder = find.widgetWithText(ButtonAtom, 'Open').first;
     await tester.tap(nextButtonFinder);
 
     /// Practice Cards Page
