@@ -1,3 +1,4 @@
+export 'package:word_link/presentation/atoms/animated_text_atom.dart';
 export 'package:word_link/presentation/atoms/button_atom.dart';
 export 'package:word_link/presentation/atoms/card_atom.dart';
 export 'package:word_link/presentation/atoms/check_box_atom.dart';
@@ -11,4 +12,3 @@ export 'package:word_link/presentation/atoms/separator_atom.dart';
 export 'package:word_link/presentation/atoms/text_atom.dart';
 export 'package:word_link/presentation/atoms/text_input_atom.dart';
 export 'package:word_link/presentation/atoms/toggle_switch_atom.dart';
-export 'package:word_link/presentation/atoms/animated_text_atom.dart';

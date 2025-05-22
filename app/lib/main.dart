@@ -3,7 +3,6 @@ import 'package:word_link/presentation/core/color_schemes.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
-
 Future<void> main({bool debugBanner = true}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,4 +28,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

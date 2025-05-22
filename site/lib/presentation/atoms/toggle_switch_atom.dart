@@ -14,7 +14,7 @@ class ToggleSwitchAtom extends StatefulWidget {
 
   final IconData offIcon;
   final IconData onIcon;
-  final Function(bool value) onChange;
+  final Function({required bool value}) onChange;
   final bool initialValue;
   final bool controlByParent;
   final bool disable;
@@ -32,9 +32,9 @@ class _ToggleSwitchAtomState extends State<ToggleSwitchAtom> {
 
   late bool toggle;
 
-  void onChange(bool value) {
+  void onChange({required bool value}) {
     setState(() => toggle = value);
-    widget.onChange(value);
+    widget.onChange(value: value);
   }
 
   @override
@@ -50,11 +50,11 @@ class _ToggleSwitchAtomState extends State<ToggleSwitchAtom> {
       style: ToggleStyle(
         backgroundColor: toggle
             ? (widget.disable
-            ? colorScheme.onSurface.withAlpha((0.12 * 255).toInt())
-
+                ? colorScheme.onSurface.withAlpha((0.12 * 255).toInt())
                 : colorScheme.primary)
             : (widget.disable
-                ? colorScheme.surfaceContainerHighest.withAlpha((0.12 * 255).toInt())
+                ? colorScheme.surfaceContainerHighest
+                    .withAlpha((0.12 * 255).toInt())
                 : colorScheme.surfaceContainerHighest),
         borderColor: widget.disable
             ? colorScheme.onSurface
@@ -69,12 +69,13 @@ class _ToggleSwitchAtomState extends State<ToggleSwitchAtom> {
       ),
       current: toggle,
       values: const [false, true],
-      onChanged: widget.disable ? null : onChange,
+      onChanged: (value) => widget.disable ? null : onChange(value: value),
       iconList: [
         FaIcon(
           widget.offIcon,
           color: widget.disable
-              ? colorScheme.surfaceContainerHighest.withAlpha((0.38 * 255).toInt())
+              ? colorScheme.surfaceContainerHighest
+                  .withAlpha((0.38 * 255).toInt())
               : colorScheme.surfaceContainerHighest,
         ),
         FaIcon(

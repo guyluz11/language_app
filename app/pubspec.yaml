@@ -26,8 +26,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_tts: ^4.2.2
   flutter_svg: ^2.0.17
+  flutter_tts: ^4.2.2
   # Toast Library for Flutter, Easily create toast messages in single line of code.
   fluttertoast: ^8.2.10
   # Font Awesome Icon pack available as Flutter Icons.
