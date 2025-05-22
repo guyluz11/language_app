@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 
 class GlobalVariables {
   static String appName = 'Word Link';
+  static String appNameForFolders = 'word_link';
   static const BoxConstraints maxWidth = BoxConstraints(maxWidth: 600);
 
   static EdgeInsetsGeometry defaultPadding = const EdgeInsets.all(8.0);

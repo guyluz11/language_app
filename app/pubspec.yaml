@@ -9,6 +9,9 @@ environment:
   sdk: '>=3.4.4 <4.0.0'
 
 dependencies:
+  animated_text_kit:
+    git:
+      url: https://github.com/guyluz11/Animated-Text-Kit.git
   animated_toggle_switch: ^0.8.4
   audioplayers: ^6.1.0
   # Automatically resizes text to fit perfectly within its bounds.
@@ -21,10 +24,9 @@ dependencies:
   device_info_plus: ^11.2.0
   flip_card: ^0.7.0
   flutter:
-  
     sdk: flutter
-  flutter_tts: ^4.2.2
 
+  flutter_tts: ^4.2.2
   flutter_svg: ^2.0.17
   # Toast Library for Flutter, Easily create toast messages in single line of code.
   fluttertoast: ^8.2.10
@@ -44,6 +46,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  integration_test:
+    sdk: flutter
   # Collection of lint rules for Dart and Flutter projects.
   lint: ^2.3.0
 flutter:

@@ -30,6 +30,9 @@ class ButtonAtom extends StatelessWidget {
   final bool translate;
   final bool disableActionType;
 
+  static Duration loadSuccessDuration =
+  const Duration(seconds: 1, milliseconds: 200);
+
   void onPressVibrate() {
     if (isVibrating) {
       VibrationController.instance.vibrate(VibrationType.light);
