@@ -35,14 +35,19 @@ class PracticeCardMolecule extends StatelessWidget {
               ],
             ),
             const SeparatorAtom(),
-            TextAtom(card.name ?? ''),
-            const SeparatorAtom(),
+            if (isFront) ...[
+              TextAtom(card.name ?? ''),
+              const SeparatorAtom(),
+            ] else ...[
+              TextAtom(card.answer ?? ''),
+              const SeparatorAtom(),
+              TextAtom(card.name ?? ''),
+              const SeparatorAtom(),
+            ],
             if (showSecond || !isFront) ...[
               TextAtom(card.secondaryName ?? ''),
               const SeparatorAtom(),
             ],
-            TextAtom(isFront ? '' : card.answer ?? ''),
-            const SeparatorAtom(),
           ],
         ),
       ),
