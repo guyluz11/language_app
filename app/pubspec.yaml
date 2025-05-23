@@ -16,8 +16,6 @@ dependencies:
   audioplayers: ^6.1.0
   # Automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^3.0.0
-  awesome_notifications: ^0.10.1
-  awesome_notifications_core: ^0.10.1
   # Adds the Cupertino Icons font.
   cached_network_image: ^3.4.1
   cupertino_icons: ^1.0.8

@@ -23,7 +23,6 @@ class _SplashPageState extends State<SplashPage> {
     PlayerController.instance.init();
     await VibrationController.instance.init();
     RandomIdController.instance.init();
-    NotificationsController.instance.init();
     final int loginCounter =
         PreferencesController.instance.getInt(PreferenceKeys.loginCounter) ?? 0;
     PreferencesController.instance
