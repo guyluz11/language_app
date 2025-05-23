@@ -4,13 +4,12 @@ on:
   push:
     branches: [ main, dev ]
   pull_request:
-    #    branches: [ main, dev ]
     branches: [ main, dev ]
   workflow_dispatch:
 
 env:
   flutter_channel: 'stable'
-  flutter_version: '3.27.1'
+  flutter_version: '3.29.3'
 
 jobs:
   build:
