@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/language_controller.dart';
-import 'package:word_link/presentation/organisms/detailed_card_organism.dart';
+import 'package:word_link/presentation/organisms/organisms.dart';
 
 class LanguageCardMolecule extends StatelessWidget {
   const LanguageCardMolecule({

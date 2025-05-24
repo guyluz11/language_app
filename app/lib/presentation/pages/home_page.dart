@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';
-import 'package:word_link/presentation/atoms/carousel_atom.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
-import 'package:word_link/presentation/organisms/detailed_card_organism.dart';
+import 'package:word_link/presentation/organisms/organisms.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
 class HomePage extends StatelessWidget {

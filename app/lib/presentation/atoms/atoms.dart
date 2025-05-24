@@ -1,6 +1,7 @@
 export 'package:word_link/presentation/atoms/animated_text_atom.dart';
 export 'package:word_link/presentation/atoms/button_atom.dart';
 export 'package:word_link/presentation/atoms/card_atom.dart';
+export 'package:word_link/presentation/atoms/carousel_atom.dart';
 export 'package:word_link/presentation/atoms/check_box_atom.dart';
 export 'package:word_link/presentation/atoms/flip_atom.dart';
 export 'package:word_link/presentation/atoms/image_atom.dart';
