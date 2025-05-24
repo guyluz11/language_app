@@ -10,7 +10,7 @@ class _LanguageRepository extends LanguageController {
     required LanguageEnum sourceLanguage,
     LanguageEnum targetLanguage = LanguageEnum.english,
     int numberOfWords = 10,
-  }) async {
+  }) {
     final List<String> words = getSourceLanguageWords(sourceLanguage);
 
     return createCollectionFromWords(

@@ -7,6 +7,7 @@ class CollectionObject extends JsonHelperObject {
     required this.name,
     List<CardObject> cardsTemp = const [],
     this.uniqueId = '-1',
+    this.language,
   }) {
     cards = List.of(cardsTemp);
     if (uniqueId == '-1') {
@@ -24,12 +25,14 @@ class CollectionObject extends JsonHelperObject {
           )
           .toList(),
       uniqueId: json['uniqueId'] as String,
+      language: json['language'] as String?,
     );
   }
 
   String name;
   late List<CardObject> cards;
   late String uniqueId;
+  String? language;
 
   // Method to convert a CardsCollectionObject to JSON
   @override
@@ -38,6 +41,7 @@ class CollectionObject extends JsonHelperObject {
       'name': name,
       'cards': cards.map((card) => card.toJson()).toList(),
       'uniqueId': uniqueId,
+      'language': language,
     };
   }
 }

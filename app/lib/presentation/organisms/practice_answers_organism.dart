@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:word_link/domain/controllers/language_controller.dart';
 import 'package:word_link/domain/objects/answers_related/answer_card_object.dart';
 import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';
@@ -15,6 +16,13 @@ class PracticeAnswersOrganism extends StatelessWidget {
   final CollectionObject cardCollection;
   final AnswerCardsObject? answerCards;
   final VoidCallback? restart;
+
+  LanguageEnum get language {
+    return LanguageEnum.values.firstWhere(
+      (lang) => lang.displayName == cardCollection.name,
+      orElse: () => LanguageEnum.polish,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +68,30 @@ class PracticeAnswersOrganism extends StatelessWidget {
       topMargin: false,
       expendChild: false,
       topBarType: TopBarType.back,
+      topBarRightWidget: Hero(
+        tag: 'language_flag_${cardCollection.name}',
+        child: Container(
+          width: 48,
+          height: 32,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withAlpha(
+                    (0.5 * 255).toInt(),
+                  ),
+            ),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: Image.network(
+              language.flagUrl,
+              width: 48,
+              height: 32,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
       child: body,
     );
   }
