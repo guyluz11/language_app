@@ -16,9 +16,13 @@ abstract class LanguageController {
 }
 
 enum LanguageEnum {
-  polish('Polish'),
-  english('English');
+  polish('Polish', 'https://flagcdn.com/w2560/pl.png',
+      'https://media.giphy.com/media/3o7TKz2eMXx7dn95FS/giphy.gif'),
+  english('English', 'https://flagcdn.com/w2560/gb.png',
+      'https://media.giphy.com/media/3o7TKz2eMXx7dn95FS/giphy.gif');
 
-  const LanguageEnum(this.displayName);
+  const LanguageEnum(this.displayName, this.flagUrl, this.gifUrl);
   final String displayName;
+  final String flagUrl;
+  final String gifUrl;
 }
