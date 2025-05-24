@@ -23,9 +23,6 @@ dependencies:
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
-    
-  google_mlkit_translation: ^0.13.0
-
   flutter_svg: ^2.0.17
   flutter_tts: ^4.2.2
   # Toast Library for Flutter, Easily create toast messages in single line of code.
@@ -33,7 +30,8 @@ dependencies:
   # Font Awesome Icon pack available as Flutter Icons.
   font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
-    # Small, easy to use and extensible logger which prints beautiful logs.
+  google_mlkit_translation: ^0.13.0
+  # Small, easy to use and extensible logger which prints beautiful logs.
   logger: ^2.5.0
   shared_preferences: ^2.3.5
   universal_io: ^2.2.2
