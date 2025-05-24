@@ -9,10 +9,8 @@ class _LanguageRepository extends LanguageController {
   }) async {
     final List<String> words = getSourceLanguageWords(sourceLanguage);
 
-    final cardCollection = await createCollectionFromWords(
-        sourceLanguage, targetLanguage, words.sublist(0, numberOfWords));
-
-    return cardCollection;
+    return await createCollectionFromWords(
+        sourceLanguage, targetLanguage, words.sublist(numberOfWords));
   }
 
   List<String> getSourceLanguageWords(LanguageEnum language) {
