@@ -1,3 +1,4 @@
+export 'package:word_link/presentation/atoms/animated_text_atom.dart';
 export 'package:word_link/presentation/atoms/button_atom.dart';
 export 'package:word_link/presentation/atoms/card_atom.dart';
 export 'package:word_link/presentation/atoms/check_box_atom.dart';

@@ -41,7 +41,7 @@ class _PreferencesRepository extends PreferencesController {
       preferences.setInt(key.name, value);
 
   @override
-  void setBool(PreferenceKeys key, bool value) =>
+  void setBool(PreferenceKeys key, {required bool value}) =>
       preferences.setBool(key.name, value);
 
   @override

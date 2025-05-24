@@ -5,7 +5,7 @@ class _WakeLockRepository extends WakeLockController {
   Future<bool> getWakeLock() => WakelockPlus.enabled;
 
   @override
-  Future setWakeLock(bool state) async {
+  Future setWakeLock({required bool state}) async {
     if (state) {
       WakelockPlus.enable();
       return;

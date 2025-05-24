@@ -13,6 +13,8 @@ abstract class PreferencesController {
   static PreferencesController get instance =>
       _instance ??= _PreferencesRepository();
 
+  static set instance(PreferencesController value) => _instance = value;
+
   Future init();
 
   String? getString(PreferenceKeys key);

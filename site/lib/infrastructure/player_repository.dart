@@ -16,7 +16,7 @@ class _PlayerRepository extends PlayerController {
   }
 
   @override
-  void setIsSound(bool value) => _isSound = value;
+  void setIsSound({required bool value}) => _isSound = value;
 
   @override
   bool isSound() => _isSound;

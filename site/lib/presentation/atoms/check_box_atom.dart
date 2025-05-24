@@ -10,7 +10,7 @@ class CheckBoxAtom extends StatefulWidget {
   });
 
   final bool initialValue;
-  final Function(bool) callback;
+  final Function({required bool value}) callback;
   final bool controlByParent;
   final bool isSound;
 
@@ -27,7 +27,7 @@ class _CheckBoxAtomState extends State<CheckBoxAtom> {
     isChecked = widget.initialValue;
   }
 
-  void onChange(bool? value) {
+  void onChange({required bool? value}) {
     setState(() {
       isChecked = value!;
     });
@@ -37,7 +37,7 @@ class _CheckBoxAtomState extends State<CheckBoxAtom> {
       PlayerController.instance.play(SoundType.checkBoxChecked);
     }
 
-    widget.callback(isChecked);
+    widget.callback(value: isChecked);
   }
 
   @override
@@ -48,7 +48,7 @@ class _CheckBoxAtomState extends State<CheckBoxAtom> {
 
     return Checkbox(
       value: isChecked,
-      onChanged: onChange,
+      onChanged: (value) => onChange(value: value),
     );
   }
 }

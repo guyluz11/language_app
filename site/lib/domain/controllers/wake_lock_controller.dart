@@ -9,5 +9,5 @@ abstract class WakeLockController {
 
   Future<bool> getWakeLock();
 
-  Future setWakeLock(bool state);
+  Future setWakeLock({required bool state});
 }

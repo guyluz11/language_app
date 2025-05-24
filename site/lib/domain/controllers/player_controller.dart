@@ -9,7 +9,7 @@ abstract class PlayerController {
 
   void init();
 
-  void setIsSound(bool value);
+  void setIsSound({required bool value});
 
   bool isSound();
 

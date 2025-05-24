@@ -64,9 +64,11 @@ class _PracticeCollectionOrganismState
                       : PracticeCardMolecule(
                           card: currentCard!,
                           onFlipped: () {
-                            setState(() => isCardFlipped = true);
-                            TtsController.instance
-                                .speak(currentCard!.answer ?? '');
+                            setState(() => isCardFlipped = !isCardFlipped);
+                            if (isCardFlipped) {
+                              TtsController.instance
+                                  .speak(currentCard!.answer ?? '');
+                            }
                           },
                           showSecond: showHint,
                         ),

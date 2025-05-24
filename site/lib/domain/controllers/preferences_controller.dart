@@ -26,7 +26,7 @@ abstract class PreferencesController {
 
   void setInt(PreferenceKeys key, int value);
 
-  void setBool(PreferenceKeys key, bool value);
+  void setBool(PreferenceKeys key, {required bool value});
 
   void setDuration(PreferenceKeys key, Duration value);
 
