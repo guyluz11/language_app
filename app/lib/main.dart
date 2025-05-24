@@ -3,14 +3,16 @@ import 'package:word_link/presentation/core/color_schemes.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
-Future<void> main() async {
+Future<void> main({bool debugBanner = true}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const MyApp());
+  runApp(MyApp(debugBanner: debugBanner));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.debugBanner = true});
+
+  final bool debugBanner;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: theme.light(),
       darkTheme: theme.dark(),
+      debugShowCheckedModeBanner: debugBanner,
       title: GlobalVariables.appName,
       home: SplashPage(),
     );

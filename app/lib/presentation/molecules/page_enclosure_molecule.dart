@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
+import 'package:word_link/presentation/core/theme_data.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 
 class PageEnclosureMolecule extends StatelessWidget {
@@ -12,10 +13,13 @@ class PageEnclosureMolecule extends StatelessWidget {
     this.topBarTranslate = true,
     this.topBarType = TopBarType.none,
     this.scaffold = true,
+    this.topBarLeftOnTap,
     this.floatingActionButtonOnTap,
     this.topBarRightOnTap,
+    this.rightPopupMenu,
     this.expendChild = true,
     this.topBarRightIcon,
+    this.logoBackgroundColor = false,
     super.key,
   });
 
@@ -28,9 +32,12 @@ class PageEnclosureMolecule extends StatelessWidget {
   final bool scaffold;
   final VoidCallback? floatingActionButtonOnTap;
   final TopBarType topBarType;
+  final VoidCallback? topBarLeftOnTap;
   final VoidCallback? topBarRightOnTap;
+  final List<PopupMenuEntryAtom<Enum>>? rightPopupMenu;
   final bool expendChild;
   final IconData? topBarRightIcon;
+  final bool logoBackgroundColor;
 
   Widget topBarHelper() {
     return Column(
@@ -41,7 +48,9 @@ class PageEnclosureMolecule extends StatelessWidget {
           title: title,
           margin: false,
           translate: topBarTranslate,
+          leftOnTap: topBarLeftOnTap,
           rightOnTap: topBarRightOnTap,
+          rightPopupMenu: rightPopupMenu,
           rightIcon: topBarRightIcon,
         ),
         if (subTitle != null)
@@ -49,7 +58,7 @@ class PageEnclosureMolecule extends StatelessWidget {
             subTitle!,
             variant: TextVariant.smallTitle,
           ),
-        if (topMargin) const SeparatorAtom(variant: SeparatorVariant.farApart),
+        if (topMargin) const SeparatorAtom(),
         Expanded(
           child: child,
         ),
@@ -63,6 +72,13 @@ class PageEnclosureMolecule extends StatelessWidget {
 
     if (margin) {
       page = MarginedExpandedAtom(child: page);
+    }
+
+    if (logoBackgroundColor) {
+      page = ColoredBox(
+        color: AppThemeData.logoSecondaryBackgroundColor,
+        child: page,
+      );
     }
 
     if (scaffold) {

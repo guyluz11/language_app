@@ -47,24 +47,22 @@ class _SplashPageState extends State<SplashPage> {
       body: ColoredBox(
         color: AppThemeData.logoBackgroundColor,
         child: Center(
-          child:
-           Column(
-             children: [
-               Expanded(
-                 child: const ImageAtom(
+          child: Column(
+            children: [
+              const Expanded(
+                child: ImageAtom(
                   'assets/logo.png',
                   hero: 'full_logo',
-                           ),
-               ),
-          const SeparatorAtom(),
-          ElevatedButton(
-            onPressed: () => context.go(Pages.privacy.name),
-            child: const Text('To Privacy Policy Page'),
+                ),
+              ),
+              const SeparatorAtom(),
+              ElevatedButton(
+                onPressed: () => context.go(Pages.privacy.name),
+                child: const Text('To Privacy Policy Page'),
+              ),
+              const SeparatorAtom(),
+            ],
           ),
-               const SeparatorAtom(),
-
-             ],
-           ),
         ),
       ),
     );

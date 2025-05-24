@@ -34,9 +34,12 @@ class _CreateCardsPageState extends State<CreateCardsPage> {
                 ? Center(child: ProgressAtom())
                 : SingleChildScrollView(
                     child: CreateCardOrganism(
-                      onNameChanged: onNameChanged,
-                      onSecondaryNameChanged: onSecondaryNameChanged,
-                      onAnswerChanged: onAnswerChanged,
+                      onNameChanged: (String value) =>
+                          currentMemoryObject.name = value,
+                      onSecondaryNameChanged: (String value) =>
+                          currentMemoryObject.secondaryName = value,
+                      onAnswerChanged: (value) =>
+                          currentMemoryObject.answer = value,
                     ),
                   ),
           ),
@@ -62,11 +65,6 @@ class _CreateCardsPageState extends State<CreateCardsPage> {
       ),
     );
   }
-
-  void onNameChanged(String value) => currentMemoryObject.name = value;
-  void onSecondaryNameChanged(String value) =>
-      currentMemoryObject.secondaryName = value;
-  void onAnswerChanged(String value) => currentMemoryObject.answer = value;
 
   void onDone() {
     addedCards.add(currentMemoryObject);
