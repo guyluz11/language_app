@@ -7,7 +7,7 @@ class CardAtom extends StatelessWidget {
   const CardAtom({required this.child, this.onClick, this.image});
 
   final Widget child;
-  final SvgPicture? image;
+  final Widget? image;
   final VoidCallback? onClick;
 
   @override
@@ -26,13 +26,44 @@ class CardAtom extends StatelessWidget {
           child: Column(
             children: [
               if (image != null)
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(bottom: Radius.circular(15)),
-                  child: SizedBox(
-                    height: 150,
-                    width: double.infinity,
-                    child: image,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.5),
+                        width: 2,
+                      ),
+                      left: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.5),
+                        width: 2,
+                      ),
+                      right: BorderSide(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.5),
+                        width: 2,
+                      ),
+                    ),
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(15),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(15),
+                    ),
+                    child: SizedBox(
+                      height: 150,
+                      width: double.infinity,
+                      child: image,
+                    ),
                   ),
                 ),
               Padding(

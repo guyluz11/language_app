@@ -9,13 +9,15 @@ class DetailedCardOrganism extends StatelessWidget {
     required this.buttonText,
     required this.onClick,
     required this.background,
+    this.customContent,
   });
 
   final String titleText;
   final String subTitle;
   final String buttonText;
   final VoidCallback onClick;
-  final SvgPicture background;
+  final Widget background;
+  final Widget? customContent;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,10 @@ class DetailedCardOrganism extends StatelessWidget {
             TextAtom(
               subTitle,
             ),
+            if (customContent != null) ...[
+              const SeparatorAtom(),
+              customContent!,
+            ],
             const SeparatorAtom(),
             ButtonAtom(
               text: buttonText,
