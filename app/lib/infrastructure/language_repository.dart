@@ -4,40 +4,43 @@ class _LanguageRepository extends LanguageController {
   @override
   Future<CollectionObject> getMostUsedWords({
     required LanguageEnum sourceLanguage,
+    LanguageEnum targetLanguage = LanguageEnum.english,
     int numberOfWords = 5,
   }) async {
     final List<String> words = getSourceLanguageWords(sourceLanguage);
 
     final cardCollection = await createCollectionFromWords(
-        sourceLanguage, words.sublist(0, numberOfWords));
+        sourceLanguage, targetLanguage, words.sublist(0, numberOfWords));
 
     return cardCollection;
   }
 
-  @override
   List<String> getSourceLanguageWords(LanguageEnum language) {
     switch (language) {
       case LanguageEnum.polish:
         return polishWords;
+
+      case LanguageEnum.english:
+        return [];
     }
   }
 
-  @override
   Future<CollectionObject> createCollectionFromWords(
-      LanguageEnum sourceLanguage, List<String> words) async {
+      LanguageEnum sourceLanguage,
+      LanguageEnum targetLanguage,
+      List<String> words) async {
     final CollectionObject cardsCollection =
         CollectionObject(name: sourceLanguage.displayName);
 
     for (final word in words) {
       final translatedWord = await translateText(
-          sourceLanguage.translateLang, TranslateLanguage.english, word);
+          sourceLanguage.translateLang, targetLanguage.translateLang, word);
       cardsCollection.cards.add(CardObject(name: word, answer: translatedWord));
     }
 
     return cardsCollection;
   }
 
-  @override
   Future<String> translateText(TranslateLanguage sourceLanguage,
       TranslateLanguage targetLanguage, String word) async {
     final translator = OnDeviceTranslator(
@@ -56,6 +59,18 @@ class _LanguageRepository extends LanguageController {
     translator.close();
 
     return result;
+  }
+}
+
+extension LanguageEnumExtension on LanguageEnum {
+  TranslateLanguage get translateLang {
+    switch (this) {
+      case LanguageEnum.polish:
+        return TranslateLanguage.polish;
+
+      case LanguageEnum.english:
+        return TranslateLanguage.english;
+    }
   }
 }
 

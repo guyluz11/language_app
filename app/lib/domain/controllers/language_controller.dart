@@ -10,29 +10,15 @@ abstract class LanguageController {
   static LanguageController get instance => _instance ??= _LanguageRepository();
 
   Future<CollectionObject> getMostUsedWords(
-      {required LanguageEnum sourceLanguage, int numberOfWords = 5});
-
-  List<String> getSourceLanguageWords(LanguageEnum language);
-
-  Future<CollectionObject> createCollectionFromWords(
-      LanguageEnum sourceLanguage, List<String> words);
-
-  Future<String> translateText(TranslateLanguage sourceLanguage,
-      TranslateLanguage targetLanguage, String word);
+      {required LanguageEnum sourceLanguage,
+      LanguageEnum targetLanguage = LanguageEnum.english,
+      int numberOfWords = 5});
 }
 
 enum LanguageEnum {
-  polish('Polish');
+  polish('Polish'),
+  english('English');
 
   const LanguageEnum(this.displayName);
   final String displayName;
-}
-
-extension LanguageEnumExtension on LanguageEnum {
-  TranslateLanguage get translateLang {
-    switch (this) {
-      case LanguageEnum.polish:
-        return TranslateLanguage.polish;
-    }
-  }
 }
