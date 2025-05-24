@@ -23,12 +23,7 @@ dependencies:
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
-<<<<<<< HEAD
     
-=======
-
->>>>>>> d37aa67c59ad98b0da4316d4ef85ffd5d570c160
-  flutter_tts: ^4.2.2
   google_mlkit_translation: ^0.13.0
 
   flutter_svg: ^2.0.17
