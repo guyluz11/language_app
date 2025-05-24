@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter_svg/svg.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/core/theme_data.dart';
@@ -56,9 +55,12 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  void practiceCollectionsClicked(BuildContext context, LanguageEnum language) {
-    final CollectionObject cardCollection =
-        LanguageController.instance.getMostUsedWords(language: language);
+  Future<void> practiceCollectionsClicked(
+      BuildContext context, LanguageEnum language) async {
+    final cardCollection = await LanguageController.instance
+        .getMostUsedWords(sourceLanguage: language);
+
+    if (!context.mounted) return;
 
     Navigator.of(context).push(
       MaterialPageRoute(
