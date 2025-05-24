@@ -1,6 +1,9 @@
 part of 'package:word_link/domain/controllers/language_controller.dart';
 
 class _LanguageRepository extends LanguageController {
+  final _downloadedModels = <String>{};
+  final _modelManager = OnDeviceTranslatorModelManager();
+
   @override
   Future<CollectionObject> getMostUsedWords({
     required LanguageEnum sourceLanguage,
@@ -10,7 +13,7 @@ class _LanguageRepository extends LanguageController {
     final List<String> words = getSourceLanguageWords(sourceLanguage);
 
     return await createCollectionFromWords(
-        sourceLanguage, targetLanguage, words.sublist(numberOfWords));
+        sourceLanguage, targetLanguage, words.sublist(0, numberOfWords));
   }
 
   List<String> getSourceLanguageWords(LanguageEnum language) {
@@ -30,6 +33,8 @@ class _LanguageRepository extends LanguageController {
     final CollectionObject cardsCollection =
         CollectionObject(name: sourceLanguage.displayName);
 
+    await ensureModelDownloaded(targetLanguage.translateLang);
+
     for (final word in words) {
       final translatedWord = await translateText(
           sourceLanguage.translateLang, targetLanguage.translateLang, word);
@@ -44,19 +49,24 @@ class _LanguageRepository extends LanguageController {
     final translator = OnDeviceTranslator(
         sourceLanguage: sourceLanguage, targetLanguage: targetLanguage);
 
-    final modelManager = OnDeviceTranslatorModelManager();
-    final bool isModelDownloaded =
-        await modelManager.isModelDownloaded(targetLanguage.bcpCode);
-
-    if (!isModelDownloaded) {
-      await modelManager.downloadModel(targetLanguage.bcpCode);
-    }
-
     final String result = await translator.translateText(word);
 
     translator.close();
 
     return result;
+  }
+
+  Future<void> ensureModelDownloaded(TranslateLanguage targetLanguage) async {
+    final code = targetLanguage.bcpCode;
+
+    if (_downloadedModels.contains(code)) return;
+
+    final isDownloaded = await _modelManager.isModelDownloaded(code);
+    if (!isDownloaded) {
+      await _modelManager.downloadModel(code);
+    }
+
+    _downloadedModels.add(code);
   }
 }
 
