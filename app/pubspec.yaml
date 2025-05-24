@@ -18,6 +18,7 @@ dependencies:
   auto_size_text: ^3.0.0
   # Adds the Cupertino Icons font.
   cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
   device_info_plus: ^11.2.0
   flip_card: ^0.7.0

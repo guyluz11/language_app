@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 
 class DetailedCardOrganism extends StatelessWidget {

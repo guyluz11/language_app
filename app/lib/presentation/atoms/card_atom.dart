@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/presentation/core/theme_data.dart';
 
@@ -32,22 +31,22 @@ class CardAtom extends StatelessWidget {
                       top: BorderSide(
                         color: Theme.of(context)
                             .colorScheme
-                            .outline
-                            .withOpacity(0.5),
+                            .outline.
+          withAlpha((0.5 * 255).toInt()),
                         width: 2,
                       ),
                       left: BorderSide(
                         color: Theme.of(context)
                             .colorScheme
                             .outline
-                            .withOpacity(0.5),
+                            .withAlpha((0.5 * 255).toInt()),
                         width: 2,
                       ),
                       right: BorderSide(
                         color: Theme.of(context)
                             .colorScheme
                             .outline
-                            .withOpacity(0.5),
+                            .withAlpha((0.5 * 255).toInt()),
                         width: 2,
                       ),
                     ),
