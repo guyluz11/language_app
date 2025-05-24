@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/controllers/tts_controller.dart';
+import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/answers_related/answer_card_object.dart';
 import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
@@ -40,6 +40,13 @@ class _PracticeCollectionOrganismState
 
   CardObject? currentCard;
 
+  LanguageEnum get language {
+    return LanguageEnum.values.firstWhere(
+      (lang) => lang.displayName == widget.cardCollection.name,
+      orElse: () => LanguageEnum.polish,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageEnclosureMolecule(
@@ -48,6 +55,30 @@ class _PracticeCollectionOrganismState
       expendChild: false,
       topMargin: false,
       topBarType: TopBarType.back,
+      topBarRightWidget: Hero(
+        tag: 'language_flag_${widget.cardCollection.name}',
+        child: Container(
+          width: 48,
+          height: 32,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline.withAlpha(
+                    (0.5 * 255).toInt(),
+                  ),
+            ),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: Image.network(
+              language.flagUrl,
+              width: 48,
+              height: 32,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
       child: currentCardIndex == cards.length || currentCard == null
           ? const TextAtom('Done')
           : Column(
@@ -127,6 +158,12 @@ class _PracticeCollectionOrganismState
     );
   }
 
+  void toggleHint() {
+    setState(() {
+      showHint = !showHint;
+    });
+  }
+
   Future<void> userResponse({required bool remembered}) async {
     if (currentCard == null) {
       return;
@@ -141,22 +178,23 @@ class _PracticeCollectionOrganismState
     setState(() {
       isLoadingNext = true;
     });
+
     await Future.delayed(const Duration(seconds: 1));
-    if (currentCardIndex == cards.length - 1) {
-      widget.onComplete?.call(answerCardsObject);
+
+    if (!mounted) {
       return;
     }
-    setState(() {
-      currentCardIndex++;
-      currentCard = cards[currentCardIndex];
-      isCardFlipped = false;
-      isLoadingNext = false;
-    });
-  }
 
-  void toggleHint() {
     setState(() {
-      showHint = !showHint;
+      isLoadingNext = false;
+      isCardFlipped = false;
+      showHint = false;
+      currentCardIndex++;
+      if (currentCardIndex < cards.length) {
+        currentCard = cards[currentCardIndex];
+      } else {
+        widget.onComplete?.call(answerCardsObject);
+      }
     });
   }
 }

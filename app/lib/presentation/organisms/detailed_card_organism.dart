@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 
 class DetailedCardOrganism extends StatelessWidget {
@@ -9,13 +8,15 @@ class DetailedCardOrganism extends StatelessWidget {
     required this.buttonText,
     required this.onClick,
     required this.background,
+    this.customContent,
   });
 
   final String titleText;
   final String subTitle;
   final String buttonText;
   final VoidCallback onClick;
-  final SvgPicture background;
+  final Widget background;
+  final Widget? customContent;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,10 @@ class DetailedCardOrganism extends StatelessWidget {
             TextAtom(
               subTitle,
             ),
+            if (customContent != null) ...[
+              const SeparatorAtom(),
+              customContent!,
+            ],
             const SeparatorAtom(),
             ButtonAtom(
               text: buttonText,

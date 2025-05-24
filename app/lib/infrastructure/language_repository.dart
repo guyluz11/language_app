@@ -1,5 +1,6 @@
 part of 'package:word_link/domain/controllers/language_controller.dart';
 
+/// Repository class that handles language-related operations
 class _LanguageRepository extends LanguageController {
   final _downloadedModels = <String>{};
   final _modelManager = OnDeviceTranslatorModelManager();
@@ -8,14 +9,18 @@ class _LanguageRepository extends LanguageController {
   Future<CollectionObject> getMostUsedWords({
     required LanguageEnum sourceLanguage,
     LanguageEnum targetLanguage = LanguageEnum.english,
-    int numberOfWords = 5,
-  }) async {
+    int numberOfWords = 10,
+  }) {
     final List<String> words = getSourceLanguageWords(sourceLanguage);
 
-    return await createCollectionFromWords(
-        sourceLanguage, targetLanguage, words.sublist(0, numberOfWords));
+    return createCollectionFromWords(
+      sourceLanguage,
+      targetLanguage,
+      words.sublist(0, numberOfWords),
+    );
   }
 
+  /// Returns a list of words for the given language
   List<String> getSourceLanguageWords(LanguageEnum language) {
     switch (language) {
       case LanguageEnum.polish:
@@ -26,10 +31,12 @@ class _LanguageRepository extends LanguageController {
     }
   }
 
+  /// Creates a collection of cards from the given words
   Future<CollectionObject> createCollectionFromWords(
-      LanguageEnum sourceLanguage,
-      LanguageEnum targetLanguage,
-      List<String> words) async {
+    LanguageEnum sourceLanguage,
+    LanguageEnum targetLanguage,
+    List<String> words,
+  ) async {
     final CollectionObject cardsCollection =
         CollectionObject(name: sourceLanguage.displayName);
 
@@ -37,40 +44,62 @@ class _LanguageRepository extends LanguageController {
 
     for (final word in words) {
       final translatedWord = await translateText(
-          sourceLanguage.translateLang, targetLanguage.translateLang, word);
+        sourceLanguage.translateLang,
+        targetLanguage.translateLang,
+        word,
+      );
       cardsCollection.cards.add(CardObject(name: word, answer: translatedWord));
     }
 
     return cardsCollection;
   }
 
-  Future<String> translateText(TranslateLanguage sourceLanguage,
-      TranslateLanguage targetLanguage, String word) async {
-    final translator = OnDeviceTranslator(
-        sourceLanguage: sourceLanguage, targetLanguage: targetLanguage);
+  /// Translates a word from source language to target language
+  Future<String> translateText(
+    TranslateLanguage sourceLanguage,
+    TranslateLanguage targetLanguage,
+    String word,
+  ) async {
+    try {
+      final translator = OnDeviceTranslator(
+        sourceLanguage: sourceLanguage,
+        targetLanguage: targetLanguage,
+      );
 
-    final String result = await translator.translateText(word);
-
-    translator.close();
-
-    return result;
+      final String result = await translator.translateText(word);
+      translator.close();
+      return result;
+    } catch (e) {
+      logger.e('Translation error: $e');
+      // Return the original word if translation fails
+      return word;
+    }
   }
 
+  /// Ensures that the translation model for the target language is downloaded
   Future<void> ensureModelDownloaded(TranslateLanguage targetLanguage) async {
     final code = targetLanguage.bcpCode;
 
     if (_downloadedModels.contains(code)) return;
 
-    final isDownloaded = await _modelManager.isModelDownloaded(code);
-    if (!isDownloaded) {
-      await _modelManager.downloadModel(code);
+    try {
+      final isDownloaded = await _modelManager.isModelDownloaded(code);
+      if (!isDownloaded) {
+        await _modelManager.downloadModel(code);
+      }
+      _downloadedModels.add(code);
+    } catch (e) {
+      logger.e('Error downloading model: $e');
+      // If model download fails, we'll try to use the model anyway
+      // as it might be partially downloaded or available in a different way
+      _downloadedModels.add(code);
     }
-
-    _downloadedModels.add(code);
   }
 }
 
+/// Extension to convert LanguageEnum to TranslateLanguage
 extension LanguageEnumExtension on LanguageEnum {
+  /// Returns the corresponding TranslateLanguage for this LanguageEnum
   TranslateLanguage get translateLang {
     switch (this) {
       case LanguageEnum.polish:
@@ -82,6 +111,7 @@ extension LanguageEnumExtension on LanguageEnum {
   }
 }
 
+/// List of common Polish words
 const List<String> polishWords = [
   'i',
   'w',
