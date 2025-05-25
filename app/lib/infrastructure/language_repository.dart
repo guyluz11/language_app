@@ -48,7 +48,7 @@ class _LanguageRepository extends LanguageController {
         targetLanguage.translateLang,
         word,
       );
-      cardsCollection.cards.add(CardObject(name: word, answer: translatedWord));
+      cardsCollection.cards.add(CardObject(name: translatedWord, answer: word));
     }
 
     return cardsCollection;
