@@ -5,46 +5,39 @@ import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
-import 'package:word_link/presentation/organisms/detailed_card_organism.dart';
+import 'package:word_link/presentation/organisms/organisms.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final List<Widget> cards = [
+      LanguageCardMolecule(
+        language: LanguageEnum.polish,
+        onClick: () => practiceCollectionsClicked(context, LanguageEnum.polish),
+      ),
+      SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: DetailedCardOrganism(
+          titleText: 'Custom Collections',
+          subTitle: 'Create and manage your flip cards list',
+          buttonText: 'Open',
+          background: SvgPicture.asset(
+            'assets/images/folders_image.svg',
+            fit: BoxFit.cover,
+          ),
+          onClick: () => customCollectionClicked(context),
+        ),
+      ),
+    ];
+
     return PageEnclosureMolecule(
       title: GlobalVariables.appName,
       subTitle: 'What would you like to work on?',
       expendChild: false,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DetailedCardOrganism(
-              titleText: LanguageEnum.polish.displayName,
-              subTitle:
-                  'Practice your ${LanguageEnum.polish.displayName} vocabulary',
-              buttonText: 'Open',
-              background: SvgPicture.asset(
-                'assets/images/folders_image.svg',
-                fit: BoxFit.cover,
-              ),
-              onClick: () =>
-                  practiceCollectionsClicked(context, LanguageEnum.polish),
-            ),
-            const SeparatorAtom(variant: SeparatorVariant.farApart),
-            DetailedCardOrganism(
-              titleText: 'Custom Collections',
-              subTitle: 'Create and manage your flip cards list',
-              buttonText: 'Open',
-              background: SvgPicture.asset(
-                'assets/images/folders_image.svg',
-                fit: BoxFit.cover,
-              ),
-              onClick: () => customCollectionClicked(context),
-            ),
-            const SeparatorAtom(variant: SeparatorVariant.farApart),
-          ],
-        ),
+      child: CarouselAtom(
+        items: cards,
+        height: MediaQuery.of(context).size.height * 0.8,
       ),
     );
   }
@@ -56,9 +49,12 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  void practiceCollectionsClicked(BuildContext context, LanguageEnum language) {
-    final CollectionObject cardCollection =
-        LanguageController.instance.getMostUsedWords(language: language);
+  Future<void> practiceCollectionsClicked(
+      BuildContext context, LanguageEnum language,) async {
+    final CollectionObject cardCollection = await LanguageController.instance
+        .getMostUsedWords(sourceLanguage: language);
+
+    if (!context.mounted) return;
 
     Navigator.of(context).push(
       MaterialPageRoute(

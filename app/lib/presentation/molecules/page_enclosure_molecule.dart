@@ -18,7 +18,7 @@ class PageEnclosureMolecule extends StatelessWidget {
     this.topBarRightOnTap,
     this.rightPopupMenu,
     this.expendChild = true,
-    this.topBarRightIcon,
+    this.topBarRightWidget,
     this.logoBackgroundColor = false,
     super.key,
   });
@@ -36,7 +36,7 @@ class PageEnclosureMolecule extends StatelessWidget {
   final VoidCallback? topBarRightOnTap;
   final List<PopupMenuEntryAtom<Enum>>? rightPopupMenu;
   final bool expendChild;
-  final IconData? topBarRightIcon;
+  final Widget? topBarRightWidget;
   final bool logoBackgroundColor;
 
   Widget topBarHelper() {
@@ -51,7 +51,7 @@ class PageEnclosureMolecule extends StatelessWidget {
           leftOnTap: topBarLeftOnTap,
           rightOnTap: topBarRightOnTap,
           rightPopupMenu: rightPopupMenu,
-          rightIcon: topBarRightIcon,
+          rightWidget: topBarRightWidget,
         ),
         if (subTitle != null)
           TextAtom(
