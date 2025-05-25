@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';

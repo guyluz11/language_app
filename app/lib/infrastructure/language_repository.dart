@@ -10,7 +10,11 @@ class _LanguageRepository extends LanguageController {
     required LanguageEnum sourceLanguage,
     LanguageEnum targetLanguage = LanguageEnum.english,
     int numberOfWords = 10,
-  }) {
+  }) async {
+    if (!await isMLKitCompatible()) {
+      throw UnsupportedError('ML Kit is not supported on this device.');
+    }
+
     final List<String> words = getSourceLanguageWords(sourceLanguage);
 
     return createCollectionFromWords(
@@ -95,6 +99,31 @@ class _LanguageRepository extends LanguageController {
       _downloadedModels.add(code);
     }
   }
+
+  Future<bool> isMLKitCompatible() async {
+    final deviceInfo = DeviceInfoPlugin();
+
+    if (Platform.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      final systemVersion = iosInfo.systemVersion;
+
+      final parts = systemVersion.split('.');
+      final major = int.tryParse(parts[0]) ?? 0;
+      final minor = int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
+
+      // iOS 15.5 or higher
+      return major > 15 || (major == 15 && minor >= 5);
+    }
+
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.version.sdkInt >= 21; // Android 5.0+
+    }
+
+    return false;
+  }
+
+
 }
 
 /// Extension to convert LanguageEnum to TranslateLanguage
