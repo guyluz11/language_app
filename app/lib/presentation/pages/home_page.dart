@@ -50,9 +50,11 @@ class HomePage extends StatelessWidget {
       );
 
   Future<void> practiceCollectionsClicked(
-      BuildContext context, LanguageEnum language,) async {
-    final CollectionObject cardCollection = await LanguageController.instance
-        .getMostUsedWords(sourceLanguage: language);
+    BuildContext context,
+    LanguageEnum language,
+  ) async {
+    final CollectionObject cardCollection =
+        await LanguageController.instance.getMostUsedWords(learning: language);
 
     if (!context.mounted) return;
 

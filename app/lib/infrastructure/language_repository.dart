@@ -7,15 +7,15 @@ class _LanguageRepository extends LanguageController {
 
   @override
   Future<CollectionObject> getMostUsedWords({
-    required LanguageEnum sourceLanguage,
-    LanguageEnum targetLanguage = LanguageEnum.english,
+    required LanguageEnum learning,
+    LanguageEnum knows = LanguageEnum.english,
     int numberOfWords = 10,
   }) {
-    final List<String> words = getSourceLanguageWords(sourceLanguage);
+    final List<String> words = getSourceLanguageWords(learning);
 
     return createCollectionFromWords(
-      sourceLanguage,
-      targetLanguage,
+      learning,
+      knows,
       words.sublist(0, numberOfWords),
     );
   }
@@ -33,19 +33,19 @@ class _LanguageRepository extends LanguageController {
 
   /// Creates a collection of cards from the given words
   Future<CollectionObject> createCollectionFromWords(
-    LanguageEnum sourceLanguage,
-    LanguageEnum targetLanguage,
+    LanguageEnum learning,
+    LanguageEnum knows,
     List<String> words,
   ) async {
-    final CollectionObject cardsCollection =
-        CollectionObject(name: sourceLanguage.displayName);
+    final CollectionObject cardsCollection = CollectionObject(
+        name: learning.displayName, knows: knows, learning: learning);
 
-    await ensureModelDownloaded(targetLanguage.translateLang);
+    await ensureModelDownloaded(knows.translateLang);
 
     for (final word in words) {
       final translatedWord = await translateText(
-        sourceLanguage.translateLang,
-        targetLanguage.translateLang,
+        learning.translateLang,
+        knows.translateLang,
         word,
       );
       cardsCollection.cards.add(CardObject(name: translatedWord, answer: word));
