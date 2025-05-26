@@ -97,8 +97,9 @@ class _PracticeCollectionOrganismState
                           onFlipped: () {
                             setState(() => isCardFlipped = !isCardFlipped);
                             if (isCardFlipped) {
-                              TtsController.instance
-                                  .speak(currentCard!.answer ?? '');
+                              TtsController.instance.speak(
+                                  currentCard!.answer ?? '',
+                                  widget.cardCollection.learning!);
                             }
                           },
                           showSecond: showHint,
