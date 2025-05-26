@@ -11,9 +11,12 @@ env:
 
 
 jobs:
-  integration-tests:
-    name: Run Integration Tests with Android Emulator
+  build:
+    name: Run Integration Tests with Android Emulator then upload to android play store
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: app
 
     steps:
       # Checkout code
@@ -28,7 +31,6 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        working-directory: app
         run: flutter pub get
 
       # Open ios simulator
@@ -39,7 +41,6 @@ jobs:
 
       # Run Flutter Integration Tests
       - name: Run Integration Tests
-        working-directory: app
         run: flutter test integration_test
 
 
@@ -64,7 +65,6 @@ jobs:
 
       # Build and deploy using Fastlane
       - name: Build and deploy to Play Store
-        working-directory: app
         env:
           GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
