@@ -1,0 +1,70 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main, uploading]
+
+env:
+  flutter_channel: 'stable'
+  flutter_version: '3.29.3'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.flutter_channel }}
+          flutter-version: ${{ env.flutter_version }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+           # Open ios simulator
+      - uses: futureware-tech/simulator-action@v4
+        with:
+          model: 'iPhone 15'
+          wait_for_boot: true
+
+      # Run Flutter Integration Tests
+      - name: Run Integration Tests
+        run: flutter test integration_test
+
+
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+
+      # Set up Ruby for Fastlane
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      # Build and deploy using Fastlane
+      - name: Build and deploy to Play Store
+        env:
+          APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          
+          cd ios
+          export GITHUB_ACTIONS=true
+          fastlane deploy

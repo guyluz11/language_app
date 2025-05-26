@@ -1,27 +1,45 @@
-lane :get_last_version_code do
-  if ENV["GITHUB_ACTIONS"] == "true"
-    UI.message("Running in GitHub Actions")
-    json_key_path = "/tmp/file.json"
-  else
-    UI.message("Running locally")
-    json_key_path = "../../../passwords/language_app/play_store/file.json"
+# Need to get the current version from pubspec.yaml
+private_lane :get_current_version do
+  # Ensure we are in the app directory to run flutter commands
+  Dir.chdir("../") do
+    version = sh("flutter pubspec --version").strip
+    UI.message("Current version from pubspec.yaml: #{version}")
+    Actions.lane_context[:CURRENT_VERSION] = version
   end
+end
 
-  track = "production"
+# Need to get the latest build number for the current version from App Store Connect
+private_lane :get_last_build_number do
+  # Ensure app_identifier is set, preferably in Appfile
+  app_id = app_identifier # Reads from Appfile
 
-  version_codes = google_play_track_version_codes(
-    json_key: json_key_path,
-    package_name: Actions.lane_context[:PACKAGE_NAME],
-    track: track
-  )
+  # Get the current version first
+  get_current_version
 
-  last_version_code = version_codes.max
-  UI.message("Last version code: #{last_version_code}")
+  current_version = Actions.lane_context[:CURRENT_VERSION]
 
-  Actions.lane_context[:LAST_VERSION_CODE] = last_version_code
+  # Get the latest build number for the current version
+  # Use latest_testflight_build_number action
+  # This requires App Store Connect API key setup or login
+  # Assumes the version exists in App Store Connect
+  begin
+    last_build_number = latest_testflight_build_number(
+      app_identifier: app_id,
+      version: current_version,
+      # api_key: # Optional, if not using environment variables or Appfile
+    )
+    UI.message("Last build number for version #{current_version}: #{last_build_number}")
+    Actions.lane_context[:LAST_BUILD_NUMBER] = last_build_number.to_i # Ensure it's an integer
+  rescue => e
+    # If no build exists for this version yet, start with 0 or 1
+    UI.message("Could not get latest build number for version #{current_version}: #{e.message}")
+    UI.message("Assuming this is the first build for this version, starting with build number 0.")
+    Actions.lane_context[:LAST_BUILD_NUMBER] = 0
+  end
 end
 
 private_lane :clean_folder do
+  # Ensure this path is correct for iOS metadata
   folder_path = "metadata/ios/en-US/images/phoneScreenshots"
 
   if Dir.exist?(folder_path)
@@ -36,17 +54,20 @@ private_lane :clean_folder do
 end
 
 private_lane :populate_metadata do
+  # This initializes metadata for App Store Connect (Deliver)
   unless File.exist?("./fastlane/metadata")
-    puts "Running 'fastlane supply init' to initialize supply metadata..."
+    puts "Running 'fastlane deliver init' to initialize metadata..."
+    # deliver init needs to be run from the ios directory
     Dir.chdir("../") do
       UI.message("✅ Now in folder: #{Dir.pwd}")
-      system("fastlane supply init")
+      system("fastlane deliver init")
     end
   else
-    puts "Supply metadata already initialized."
+    puts "Deliver metadata already initialized."
   end
 
   screenshots_src = '/tmp/word_link_screenshots'  # Source folder with images
+  # Ensure this path is correct for iOS metadata
   screenshots_dest = 'metadata/ios/en-US/images/phoneScreenshots'  # Destination folder (for phone screenshots)
 
   clean_folder
@@ -56,31 +77,55 @@ private_lane :populate_metadata do
   FileUtils.mkdir_p(screenshots_dest)  # Create the phone folder inside fastlane/screenshots
 
   # Move all images from the source folder to the 'phone' folder
-  Dir.foreach(screenshots_src) do |filename|
-      next if filename == '.' || filename == '..'
-      src_file = File.join(screenshots_src, filename)
-      dest_file = File.join(screenshots_dest, filename)
-      FileUtils.mv(src_file, dest_file)
+  if Dir.exist?(screenshots_src)
+    Dir.foreach(screenshots_src) do |filename|
+        next if filename == '.' || filename == '..'
+        src_file = File.join(screenshots_src, filename)
+        dest_file = File.join(screenshots_dest, filename)
+        FileUtils.mv(src_file, dest_file)
+    end
+    UI.message("✅ Moved screenshots from '#{screenshots_src}' to '#{screenshots_dest}'.")
+  else
+    UI.message("❌ Source screenshots folder '#{screenshots_src}' does not exist.")
   end
 end
 
 lane :deploy do
-  Actions.lane_context[:PACKAGE_NAME] = "space.wordlink"
+  # Ensure app_identifier is set in your Appfile (e.g., "com.yourcompany.yourapp")
+  app_id = app_identifier
 
-  get_last_version_code
+  # Get the current version and last build number
+  get_current_version
+  get_last_build_number
 
-  new_version_code = Actions.lane_context[:LAST_VERSION_CODE] + 1
+  # Calculate the new build number
+  new_build_number = Actions.lane_context[:LAST_BUILD_NUMBER] + 1
+  current_version = Actions.lane_context[:CURRENT_VERSION]
 
+  UI.message("Building version #{current_version} with build number #{new_build_number}")
+
+  # Populate metadata (including screenshots)
   populate_metadata
 
-  # Build the Flutter app
-  sh("flutter clean")
-  sh("flutter build ios --release --build-number=#{new_version_code}")
+  # Build the Flutter app for iOS
+  # Ensure you are in the app directory for flutter commands
+  Dir.chdir("../") do
+    sh("flutter clean")
+    # Use --build-number and --build-name (for version)
+    sh("flutter build ios --release --build-number=#{new_build_number} --build-name=#{current_version}")
+  end
 
-  # Upload to App Store new version and screenshots
+  # Upload to App Store Connect (TestFlight or App Store)
+  # This uses the deliver tool under the hood
   upload_to_app_store(
-    skip_screenshots: false,
-    skip_metadata: false,
-    app: Actions.lane_context[:PACKAGE_NAME]
+    # app_identifier: app_id, # Can be omitted if set in Appfile
+    # skip_screenshots: false, # Set to true if you don't want to upload screenshots
+    # skip_metadata: false,    # Set to true if you don't want to upload metadata
+    # skip_binary_upload: false, # Set to true if you only want to upload metadata/screenshots
+    # automatic_release: false, # Set to true to automatically release to the App Store after review
+    # submit_for_review: true, # Set to true to automatically submit for review after upload
+    # force: true # Use with caution, forces upload even if version/build exists
   )
+
+  UI.success("Successfully deployed version #{current_version} build #{new_build_number} to App Store Connect!")
 end 
