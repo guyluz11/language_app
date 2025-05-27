@@ -2,7 +2,7 @@ name: iOS CI
 
 on:
   push:
-    branches: [ main, uploading]
+    branches: [ main, cd-iOS]
 
 env:
   flutter_channel: 'stable'
