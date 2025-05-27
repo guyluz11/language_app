@@ -25,32 +25,33 @@ class _SplashPageState extends State<SplashPage> {
     RandomIdController.instance.init();
     final int loginCounter =
         PreferencesController.instance.getInt(PreferenceKeys.loginCounter) ?? 0;
-    final bool isFirstLogin = loginCounter == 0;
     PreferencesController.instance
         .setInt(PreferenceKeys.loginCounter, loginCounter + 1);
+    final bool finishedIntroduction = PreferencesController.instance
+            .getBool(PreferenceKeys.finishedIntroduction) ??
+        false;
     CollectionsObject.init();
     AnswersCollectionsObject.init();
     TtsController.instance.init();
-    _navigate(isFirstLogin);
+    _navigate(finishedIntroduction);
   }
 
-  Future _navigate(bool isFirstLogin) async {
+  Future _navigate(bool finishedIntroduction) async {
     Navigator.of(context).pop();
 
-    if (isFirstLogin) {
-      Navigator.of(context).push(
+    if (!finishedIntroduction) {
+      return Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => WelcomePage(),
         ),
       );
     }
-    else {
-      Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => HomePage(),
-          ),
-      );
-    }
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => HomePage(),
+      ),
+    );
   }
 
   @override
