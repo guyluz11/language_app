@@ -71,7 +71,7 @@ jobs:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         run: |
-          
+          echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" > /tmp/app_store_key.p8
           cd ios
           export GITHUB_ACTIONS=true
           fastlane deploy
