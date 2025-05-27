@@ -24,7 +24,7 @@ private_lane :get_last_build_number do
   # Assumes the version exists in App Store Connect
   begin
     last_build_number = latest_testflight_build_number(
-      app_identifier: app_id,
+      app_identifier: ENV['APP_IDENTIFIER'], # Read from environment variable
       version: current_version,
       # api_key: # Optional, if not using environment variables or Appfile
     )
@@ -92,7 +92,7 @@ end
 
 lane :deploy do
   # Ensure app_identifier is set in your Appfile (e.g., "com.yourcompany.yourapp")
-  app_id = app_identifier
+  app_id = ENV['APP_IDENTIFIER'] # Read from environment variable
 
   # Get the current version and last build number
   get_current_version
