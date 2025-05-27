@@ -42,7 +42,7 @@ platform :ios do
     UI.message("🚀 Starting iOS deploy using Flutter...")
 
     # Fetch and increment build number
-    latest_build = app_store_build_number(bundle_id: ENV["APP_IDENTIFIER"])
+    latest_build = app_store_build_number(app_identifier: ENV["APP_IDENTIFIER"])
     new_build_number = latest_build + 1
     increment_build_number(build_number: new_build_number)
 
