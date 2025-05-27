@@ -6,7 +6,7 @@ on:
 
 env:
   flutter_channel: 'stable'
-  flutter_version: '3.29.3'
+  flutter_version: '3.32.0'
 
 jobs:
   build:
@@ -32,10 +32,15 @@ jobs:
           model: 'iPhone 16 Plus'
           wait_for_boot: true
 
-      # Run Flutter Integration Tests
-      - name: Run Integration Tests
-        run:  flutter drive --driver=integration_driver/integration_test_driver.dart --target=integration_test/app_test.dart -d "iPhone 16 Plus"
-          #        run: flutter test integration_test
+      - name: Install CocoaPods and Prebuild for Simulator
+        run: |
+          cd ios
+          pod install
+          cd ..
+          flutter build ios --simulator
+
+      - name: Run Integration Tests on iOS Simulator
+        run: flutter drive --driver=integration_driver/integration_test_driver.dart --target=integration_test/app_test.dart -d "iPhone 16 Plus"
 
 
 
