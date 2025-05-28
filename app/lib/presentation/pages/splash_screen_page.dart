@@ -27,16 +27,17 @@ class _SplashPageState extends State<SplashPage> {
         PreferencesController.instance.getInt(PreferenceKeys.loginCounter) ?? 0;
     PreferencesController.instance
         .setInt(PreferenceKeys.loginCounter, loginCounter + 1);
-    final bool finishedIntroduction = PreferencesController.instance
-            .getBool(PreferenceKeys.finishedIntroduction) ??
-        false;
     CollectionsObject.init();
     AnswersCollectionsObject.init();
     TtsController.instance.init();
-    _navigate(finishedIntroduction);
+    _navigate();
   }
 
-  Future _navigate(bool finishedIntroduction) async {
+  Future _navigate() async {
+    final bool finishedIntroduction = PreferencesController.instance
+            .getBool(PreferenceKeys.finishedIntroduction) ??
+        false;
+
     Navigator.of(context).pop();
 
     if (!finishedIntroduction) {
