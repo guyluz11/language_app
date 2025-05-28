@@ -34,11 +34,23 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future _navigate() async {
+    final bool finishedIntroduction = PreferencesController.instance
+            .getBool(PreferenceKeys.finishedIntroduction) ??
+        false;
+
     Navigator.of(context).pop();
+
+    if (!finishedIntroduction) {
+      return Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => WelcomePage(),
+        ),
+      );
+    }
 
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => WelcomePage(),
+        builder: (context) => HomePage(),
       ),
     );
   }
