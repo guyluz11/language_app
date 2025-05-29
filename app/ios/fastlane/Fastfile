@@ -60,8 +60,10 @@ platform :ios do
     # Copy screenshots for App Store Connect
     copy_ios_screenshots
 
+    sh("pwd")
+    sh("ls")
     # Build Flutter iOS app for release
-    sh("flutter build ipa --release --build-number=#{new_build_number} --export-options-plist=ExportOptions.plist")
+    sh("flutter build ipa --release --build-number=#{new_build_number} --export-options-plist=app/ios/ExportOptions.plist")
 
     # Upload to App Store Connect
     upload_to_app_store(
