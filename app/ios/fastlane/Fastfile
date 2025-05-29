@@ -60,18 +60,17 @@ platform :ios do
     # Copy screenshots for App Store Connect
     copy_ios_screenshots
     # Navigate from fastlane to ios folder
-    sh("cd ..")
     sh("pwd")
     sh("ls")
     # Build Flutter iOS app for release
-    sh("flutter build ipa --release --build-number=#{new_build_number} --export-options-plist=ExportOptions.plist")
+    sh("flutter build ipa --release --build-number=#{new_build_number} --export-options-plist=../ExportOptions.plist")
 
     # Upload to App Store Connect
     upload_to_app_store(
       skip_metadata: false,
       skip_screenshots: false,
       skip_binary_upload: false,
-      ipa: "../build/ios/ipa/*.ipa",
+      ipa: "../../build/ios/ipa/*.ipa",
       api_key: app_store_connect_api_key(
         key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
         issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
