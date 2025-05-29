@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
@@ -49,9 +50,7 @@ class _WelcomePageState extends State<WelcomePage> {
         children: [
           TextAtom(
             GlobalVariables.appName,
-            style: Theme.of(context)
-                .textTheme
-                .displayMedium,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
           const SeparatorAtom(variant: SeparatorVariant.relatedElements),
           if (showSubTitle)
@@ -96,6 +95,9 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   Future<void> onNext() async {
+    PreferencesController.instance
+        .setBool(PreferenceKeys.finishedIntroduction, value: true);
+
     Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(
