@@ -61,7 +61,7 @@ platform :ios do
     copy_ios_screenshots
 
     # Build Flutter iOS app for release
-    sh("flutter build ipa --release --build-number=#{new_build_number} --export-options-plist=ios/ExportOptions.plist")
+    sh("flutter build ipa --release --build-number=#{new_build_number} --export-options-plist=ExportOptions.plist")
 
     # Upload to App Store Connect
     upload_to_app_store(
