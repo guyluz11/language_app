@@ -1,4 +1,5 @@
 export 'package:word_link/domain/controllers/language_controller.dart';
+export 'package:word_link/domain/controllers/llm_controller.dart';
 export 'package:word_link/domain/controllers/player_controller.dart';
 export 'package:word_link/domain/controllers/preferences_controller.dart';
 export 'package:word_link/domain/controllers/random_id_controller.dart';

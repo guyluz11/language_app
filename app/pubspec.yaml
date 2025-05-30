@@ -33,6 +33,9 @@ dependencies:
   google_fonts: ^6.2.1
   google_mlkit_translation: ^0.13.0
   # Small, easy to use and extensible logger which prints beautiful logs.
+  llama_sdk:
+    git:
+      url: https://github.com/Mobile-Artificial-Intelligence/llama_sdk
   logger: ^2.5.0
   shared_preferences: ^2.3.5
   universal_io: ^2.2.2
