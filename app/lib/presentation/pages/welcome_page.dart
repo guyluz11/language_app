@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
-import 'package:word_link/presentation/pages/pages.dart';
 
 class WelcomePage extends StatefulWidget {
   static Duration startRenderNextButton = const Duration(seconds: 2);
@@ -66,27 +64,15 @@ class _WelcomePageState extends State<WelcomePage> {
             else
               const TextAtom('', variant: TextVariant.title),
             const SeparatorAtom(),
+            const SeparatorAtom(),
             const MarginedExpandedAtom(
               child: ImageAtom(
                 'assets/logo.png',
                 hero: 'full_logo',
               ),
             ),
-            const SeparatorAtom(),
           ],
         ),
-      ),
-    );
-  }
-
-  Future<void> onNext() async {
-    PreferencesController.instance
-        .setBool(PreferenceKeys.finishedIntroduction, value: true);
-
-    Navigator.of(context).pop();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => HomePage(),
       ),
     );
   }
