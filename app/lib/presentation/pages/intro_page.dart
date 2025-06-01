@@ -16,21 +16,16 @@ class _IntroPageState extends State<IntroPage> {
   final GlobalKey<IntroductionScreenState> _introKey =
       GlobalKey<IntroductionScreenState>();
 
-  bool showBackButton = true;
-  bool showNextButton = true;
+  bool backButton = true;
+  bool nextButton = true;
   bool isFinish = false;
   IntroState state = IntroState.welcomePage;
 
   void onIntroPageChange(int n) {
     state = IntroState.getStateByPageNumber(n);
     setState(() {
-      showNextButton = true;
-      // Handle last page
-      if (n == IntroState.values.length - 1) {
-        isFinish = true;
-      } else {
-        isFinish = false;
-      }
+      nextButton = true;
+      isFinish = n == IntroState.values.length - 1;
     });
   }
 
@@ -60,7 +55,7 @@ class _IntroPageState extends State<IntroPage> {
     if (details.primaryVelocity == 0) {
       return;
     } else if (details.primaryVelocity!.compareTo(0) == -1) {
-      if (showNextButton) {
+      if (nextButton) {
         nextPage();
       }
       return;
@@ -105,9 +100,9 @@ class _IntroPageState extends State<IntroPage> {
             overrideNext: Center(
               child: ButtonAtom(
                 variant: ButtonVariant.lowEmphasisIcon,
-                onPressed: showNextButton ? nextPage : () {},
+                onPressed: nextButton ? nextPage : () {},
                 icon: FontAwesomeIcons.arrowRight,
-                disabled: !showNextButton,
+                disabled: !nextButton,
               ),
             ),
             overrideBack: Center(
@@ -145,13 +140,13 @@ class _IntroPageState extends State<IntroPage> {
                 ),
               ),
             ],
-            showBackButton: showBackButton,
+            showBackButton: backButton,
             back: const Icon(Icons.arrow_back),
             next: const Icon(Icons.arrow_forward),
             scrollPhysics: const NeverScrollableScrollPhysics(),
             onChange: onIntroPageChange,
             showDoneButton: isFinish,
-            showNextButton: showNextButton && !isFinish,
+            showNextButton: nextButton && !isFinish,
             onDone: onDone,
           ),
         ),

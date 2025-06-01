@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
+import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/pages/pages.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -44,7 +45,8 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size * 0.8;
 
-    return SafeArea(
+    return PageEnclosureMolecule(
+      title: ' ',
       child: SizedBox(
         height: size.height,
         width: double.infinity,
@@ -63,15 +65,14 @@ class _WelcomePageState extends State<WelcomePage> {
               )
             else
               const TextAtom('', variant: TextVariant.title),
-            const Spacer(),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 280),
-              child: const ImageAtom(
+            const SeparatorAtom(),
+            const MarginedExpandedAtom(
+              child: ImageAtom(
                 'assets/logo.png',
                 hero: 'full_logo',
               ),
             ),
-            const Spacer(),
+            const SeparatorAtom(),
           ],
         ),
       ),
