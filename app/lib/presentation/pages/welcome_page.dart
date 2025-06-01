@@ -63,8 +63,8 @@ class _WelcomePageState extends State<WelcomePage> {
               )
             else
               const TextAtom('', variant: TextVariant.title),
-            const SeparatorAtom(),
-            const SeparatorAtom(),
+            const SeparatorAtom(variant: SeparatorVariant.farApart),
+
             const MarginedExpandedAtom(
               child: ImageAtom(
                 'assets/logo.png',

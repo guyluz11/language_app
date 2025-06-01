@@ -64,4 +64,5 @@ enum PreferenceKeys {
   sleepPermissionGranted,
   customCollections,
   answersCollections,
+  learningLanguage,
 }

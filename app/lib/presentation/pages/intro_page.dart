@@ -124,12 +124,7 @@ class _IntroPageState extends State<IntroPage> {
                 bodyWidget: WelcomePage(),
               ),
               customPageViewModel(
-                bodyWidget: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: TextAtom('Explanation Page'),
-                  ),
-                ),
+                bodyWidget: const PickLanguagePage(),
               ),
               customPageViewModel(
                 bodyWidget: const Center(
