@@ -1,9 +1,0 @@
-json_key_file(
-  if ENV["GITHUB_ACTIONS"] == "true"
-    "/tmp/file.json"
-  else
-    "../../../passwords/language_app/play_store/file.json"
-  end
-)
-
-package_name("space.wordlink")

@@ -19,6 +19,7 @@ private_lane :get_last_version_code do
   UI.message("Last version code: #{last_version_code}")
 
   Actions.lane_context[:LAST_VERSION_CODE] = last_version_code
+  Actions.lane_context[:JSON_KEY_PATH] = json_key_path
 end
 
 private_lane :clean_folder do
@@ -86,7 +87,8 @@ lane :deploy do
     track: 'production',
     package_name: Actions.lane_context[:PACKAGE_NAME],
     skip_upload_changelogs: true,
-    aab: aab_path
+    aab: aab_path,
+    json_key: Actions.lane_context[:JSON_KEY_PATH]
   )
 
 end

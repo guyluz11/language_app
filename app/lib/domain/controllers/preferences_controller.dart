@@ -53,6 +53,7 @@ abstract class PreferencesController {
 
 enum PreferenceKeys {
   loginCounter,
+  finishedIntroduction,
   isLockScreen,
   isSound,
   pausedTime,
