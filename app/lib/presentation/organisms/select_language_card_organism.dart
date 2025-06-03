@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/presentation/atoms/language_selection_indicator.dart';
+import 'package:word_link/presentation/atoms/language_selection_indicator_atom.dart';
 
 class SelectLanguageCardOrganism extends StatelessWidget {
   const SelectLanguageCardOrganism({
@@ -60,7 +60,23 @@ class SelectLanguageCardOrganism extends StatelessWidget {
                   ),
                 ),
               ),
-              if (isSelected) const LanguageSelectionIndicator(),
+              if (isSelected)
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      size: 20,
+                    ),
+                  ),
+                ),
               Positioned(
                 bottom: 15,
                 left: 15,
