@@ -65,4 +65,5 @@ enum PreferenceKeys {
   customCollections,
   answersCollections,
   learningLanguage,
+  knownLanguages,
 }
