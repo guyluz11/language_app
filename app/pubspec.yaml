@@ -31,7 +31,7 @@ dependencies:
   # Font Awesome Icon pack available as Flutter Icons.
   font_awesome_flutter: ^10.8.0
   google_fonts: ^6.2.1
-  google_mlkit_translation: ^0.13.0
+  google_mlkit_translation: ^0.12.0
   introduction_screen: ^3.1.17
   # Small, easy to use and extensible logger which prints beautiful logs.
   logger: ^2.5.0

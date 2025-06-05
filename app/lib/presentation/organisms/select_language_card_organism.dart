@@ -1,7 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/presentation/atoms/language_selection_indicator_atom.dart';
+import 'package:word_link/presentation/core/global_variables.dart';
 
 class SelectLanguageCardOrganism extends StatelessWidget {
   const SelectLanguageCardOrganism({
@@ -21,23 +20,21 @@ class SelectLanguageCardOrganism extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(GlobalVariables.defaultRadius),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(179),
+              color: Theme.of(context).colorScheme.shadow,
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
           ],
           border: isSelected
               ? Border.all(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 3,
-                )
+                  color: Theme.of(context).colorScheme.primary, width: 3)
               : null,
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(GlobalVariables.defaultRadius),
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -55,7 +52,7 @@ class SelectLanguageCardOrganism extends StatelessWidget {
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withAlpha(179),
+                      Theme.of(context).colorScheme.scrim,
                     ],
                   ),
                 ),
@@ -65,7 +62,7 @@ class SelectLanguageCardOrganism extends StatelessWidget {
                   top: 10,
                   right: 10,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: GlobalVariables.defaultPadding,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       shape: BoxShape.circle,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/presentation/atoms/grid_atom.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/organisms/organisms.dart';
 
