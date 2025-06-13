@@ -28,11 +28,10 @@ class PracticeCardMolecule extends StatelessWidget {
         width: double.infinity,
         child: Column(
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FlutterLogo(),
-              ],
+            Container(
+              height: 200,
+              alignment: Alignment.center,
+              child: ImageAtom('', url: card.uri),
             ),
             const SeparatorAtom(),
             TextAtom(card.name ?? ''),
