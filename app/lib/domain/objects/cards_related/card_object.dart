@@ -6,6 +6,7 @@ class CardObject {
     this.secondaryName,
     this.answer,
     this.uniqueId = '-1',
+    this.uri,
   }) {
     if (uniqueId == '-1') {
       uniqueId = RandomIdController.instance.getUniqueId();
@@ -26,6 +27,7 @@ class CardObject {
   String? secondaryName;
   String? answer;
   late String uniqueId;
+  Uri? uri;
 
   // Method to convert a CardObject to JSON
   Map<String, dynamic> toJson() {
