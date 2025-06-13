@@ -9,15 +9,16 @@ class _LanguageRepository extends LanguageController {
   Future<CollectionObject> getMostUsedWords({
     required LanguageEnum learning,
     LanguageEnum knows = LanguageEnum.english,
-    int numberOfWords = 10,
+    int? numberOfWords,
   }) {
-    final List<WordObject> words = getSourceLanguageWords(learning);
+    List<WordObject> words = getSourceLanguageWords(learning);
 
-    return createCollectionFromWords(
-      learning,
-      knows,
-      words.sublist(0, numberOfWords),
-    );
+    if (numberOfWords != null) {
+      final int length =
+          numberOfWords <= words.length ? numberOfWords : words.length;
+      words = words.sublist(0, length);
+    }
+    return createCollectionFromWords(learning, knows, words);
   }
 
   /// Returns a list of words for the given language

@@ -15,7 +15,7 @@ abstract class LanguageController {
   Future<CollectionObject> getMostUsedWords({
     required LanguageEnum learning,
     LanguageEnum knows = LanguageEnum.english,
-    int numberOfWords = 10,
+    int? numberOfWords,
   });
 }
 
