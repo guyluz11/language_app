@@ -54,7 +54,6 @@ platform :ios do
     match(
       type: "appstore",
       git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
-      branch: "master"
       app_identifier: ENV["APP_IDENTIFIER"],
       username: ENV["FASTLANE_USER"],
       api_key: connect_api_key
