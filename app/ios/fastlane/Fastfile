@@ -1,5 +1,14 @@
 default_platform(:ios)
 
+def connect_api_key
+  app_store_connect_api_key(
+    key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+    issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+    key_filepath: "/tmp/app_store_key.p8"
+  )
+end
+
+
 platform :ios do
   private_lane :clean_ios_screenshots do
     folder_path = "fastlane/metadata/ios/en-US/screenshots"
@@ -46,17 +55,14 @@ platform :ios do
       type: "appstore",
       git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
       app_identifier: ENV["APP_IDENTIFIER"],
-      username: ENV["FASTLANE_USER"]
+      username: ENV["FASTLANE_USER"],
+      api_key: connect_api_key
     )
 
     # Fetch and increment build number
     latest_build = app_store_build_number(
       app_identifier: ENV["APP_IDENTIFIER"],
-      api_key: app_store_connect_api_key(
-        key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
-        issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-        key_filepath: "/tmp/app_store_key.p8"
-      )
+      api_key: connect_api_key
     )
 
     new_build_number = latest_build + 1
@@ -74,11 +80,7 @@ platform :ios do
       skip_screenshots: false,
       skip_binary_upload: false,
       ipa: "../../build/ios/ipa/*.ipa",
-      api_key: app_store_connect_api_key(
-        key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
-        issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-        key_filepath: "/tmp/app_store_key.p8"
-      )
+      api_key: connect_api_key
     )
 
     UI.success("🎉 iOS app uploaded with screenshots and build number #{new_build_number}!")
