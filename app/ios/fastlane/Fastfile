@@ -41,26 +41,30 @@ platform :ios do
   lane :deploy do
     UI.message("🚀 Starting iOS deploy using Flutter...")
 
+    # 🔐 Use match to get certificates and profiles
+    match(
+      type: "appstore",
+      git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
+      app_identifier: ENV["APP_IDENTIFIER"],
+      username: ENV["FASTLANE_USER"]
+    )
+
     # Fetch and increment build number
     latest_build = app_store_build_number(
-     app_identifier: ENV["APP_IDENTIFIER"],
-     api_key: app_store_connect_api_key(
-       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
-       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-       key_filepath: "/tmp/app_store_key.p8"
-     )
+      app_identifier: ENV["APP_IDENTIFIER"],
+      api_key: app_store_connect_api_key(
+        key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+        issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+        key_filepath: "/tmp/app_store_key.p8"
+      )
     )
 
     new_build_number = latest_build + 1
     increment_build_number(build_number: new_build_number)
-
     UI.message("New build number: #{new_build_number}")
 
-    # Copy screenshots for App Store Connect
     copy_ios_screenshots
-    # Navigate from fastlane to ios folder
-    sh("pwd")
-    sh("ls")
+
     # Build Flutter iOS app for release
     sh("flutter build ipa --release --build-number=#{new_build_number}")
 
@@ -77,6 +81,6 @@ platform :ios do
       )
     )
 
-    UI.success("iOS app uploaded with screenshots and build number #{new_build_number}!")
+    UI.success("🎉 iOS app uploaded with screenshots and build number #{new_build_number}!")
   end
 end
