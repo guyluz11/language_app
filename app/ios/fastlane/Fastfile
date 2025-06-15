@@ -48,13 +48,26 @@ end
 lane :deploy do
   UI.message("🚀 Starting iOS deploy using Flutter...")
 
+  create_keychain(
+    name: "build.keychain",
+    password: "password",
+    default_keychain: true,
+    unlock: true,
+    timeout: 3600,
+    lock_when_sleeps: false
+  )
+
   # 🔐 Use match to get certificates and profiles
   match(
     type: "appstore",
     git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
     app_identifier: ENV["APP_IDENTIFIER"],
     username: ENV["FASTLANE_USER"],
-    api_key: connect_api_key
+    api_key: connect_api_key,
+    readonly: true,
+    keychain_name: "build.keychain",
+    keychain_password: "password",
+    team_id: "B8Y5J572KK",
   )
 
   require 'spaceship'
