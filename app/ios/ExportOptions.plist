@@ -6,9 +6,14 @@
   <key>method</key>
   <string>app-store</string>
   <key>signingStyle</key>
-  <string>automatic</string>
+  <string>manual</string>
   <key>teamID</key>
   <string>B8Y5J572KK</string>
+  <key>provisioningProfiles</key>
+  <dict>
+    <key>space.wordlink</key>
+    <string>match AppStore space.wordlink 1749986316</string>
+  </dict>
   <key>compileBitcode</key>
   <false/>
 </dict>

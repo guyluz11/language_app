@@ -97,7 +97,7 @@ lane :deploy do
   copy_ios_screenshots
 
   # Build the Flutter app
-  sh("flutter build ipa --release --build-number=#{new_build_number} --build-name=#{new_version}")
+  sh("cd .. && flutter build ipa --release --build-number=#{new_build_number} --build-name=#{new_version} --export-options-plist=ios/ExportOptions.plist")
   ipa_path = Dir["../build/ios/ipa/*.ipa"].first
 
   # Upload to App Store Connect
