@@ -1,4 +1,3 @@
-default_platform(:ios)
 
 def connect_api_key
   app_store_connect_api_key(
@@ -9,8 +8,7 @@ def connect_api_key
 end
 
 
-platform :ios do
-  private_lane :clean_ios_screenshots do
+private_lane :clean_ios_screenshots do
     folder_path = "fastlane/metadata/ios/en-US/screenshots"
 
     if Dir.exist?(folder_path)
@@ -23,9 +21,9 @@ platform :ios do
       UI.message("Creating screenshots folder at #{folder_path}")
       FileUtils.mkdir_p(folder_path)
     end
-  end
+end
 
-  private_lane :copy_ios_screenshots do
+private_lane :copy_ios_screenshots do
     screenshots_src = "/tmp/word_link_screenshots"
     screenshots_dest = "fastlane/metadata/ios/en-US/screenshots"
 
@@ -45,55 +43,79 @@ platform :ios do
     end
 
     UI.message("✅ Copied iOS screenshots to: #{screenshots_dest}")
+end
+
+lane :deploy do
+  UI.message("🚀 Starting iOS deploy using Flutter...")
+
+  # 🔐 Use match to get certificates and profiles
+  match(
+    type: "appstore",
+    git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
+    app_identifier: ENV["APP_IDENTIFIER"],
+    username: ENV["FASTLANE_USER"],
+    api_key: connect_api_key
+  )
+
+  require 'spaceship'
+  Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+    issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+    filepath: "/tmp/app_store_key.p8"
+  )
+
+  app = Spaceship::ConnectAPI::App.find(ENV["APP_IDENTIFIER"])
+  version_info = app.get_edit_app_store_version(platform: "IOS")
+
+  current_version = version_info&.version_string || "1.0.0"
+  UI.message("🔍 Current version in App Store: #{current_version}")
+
+  # Bump patch version
+  major, minor, patch = current_version.split(".").map(&:to_i)
+  new_version = "#{major}.#{minor}.#{patch + 1}"
+  UI.message("📦 Bumping to new version: #{new_version}")
+
+  # Create a new app version if it doesn't exist
+  begin
+    Spaceship::ConnectAPI::AppStoreVersion.create(
+      app_id: app.id,
+      version_string: new_version,
+      platform: "IOS",
+      release_type: "MANUAL"
+    )
+    UI.success("🆕 Created App Store version #{new_version}")
+  rescue => e
+    UI.important("⚠️ App version #{new_version} may already exist: #{e.message}")
   end
 
-  lane :deploy do
-    UI.message("🚀 Starting iOS deploy using Flutter...")
 
-    # 🔐 Use match to get certificates and profiles
-    match(
-      type: "appstore",
-      git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
-      app_identifier: ENV["APP_IDENTIFIER"],
-      username: ENV["FASTLANE_USER"],
-      api_key: connect_api_key,
-    )
+  latest_build = app_store_build_number(
+    app_identifier: ENV["APP_IDENTIFIER"],
+    api_key: connect_api_key
+  )
+  new_build_number = latest_build + 1
+  copy_ios_screenshots
 
-    # Fetch and increment build number
-    latest_build = app_store_build_number(
-      app_identifier: ENV["APP_IDENTIFIER"],
-      api_key: connect_api_key
-    )
+  # Build the Flutter app
+  sh("flutter build ipa --release --build-number=#{new_build_number} --build-name=#{new_version}")
+  ipa_path = Dir["../build/ios/ipa/*.ipa"].first
 
-    new_build_number = latest_build + 1
-    increment_build_number(build_number: new_build_number)
-    UI.message("New build number: #{new_build_number}")
+  # Upload to App Store Connect
+  upload_to_app_store(
+    force: true,
+    app_identifier: ENV["APP_IDENTIFIER"],
+    skip_metadata: false,
+    skip_screenshots: false,
+    submit_for_review: true,
+    automatic_release: true,
+    skip_binary_upload: false,
+    run_precheck_before_submit: false,
+    ipa: ipa_path,
+    api_key: connect_api_key,
+    release_notes: {
+      "en-US" => "Bug fixes and performance improvements"
+    }
+  )
 
-    copy_ios_screenshots
-
-    # Build Flutter iOS app for release
-    sh("flutter build ipa --release --build-number=#{new_build_number}")
-
-    ipa_path = Dir["../build/ios/ipa/*.ipa"].first
-
-    # Upload to App Store Connect
-    upload_to_app_store(
-      # Skipping HTML preview because the code runs in CI
-      force: true,
-      app_identifier: ENV["APP_IDENTIFIER"],
-      skip_metadata: false,
-      skip_screenshots: false,
-      submit_for_review: true,
-      automatic_release: true,
-      skip_binary_upload: false,
-      run_precheck_before_submit: false,
-      ipa: ipa_path,
-      api_key: connect_api_key,
-      release_notes: {
-        "en-US" => "Bug fixes and performance improvements"
-      }
-    )
-
-    UI.success("🎉 iOS app uploaded with screenshots and build number #{new_build_number}!")
-  end
+  UI.success("🎉 Uploaded iOS app version #{new_version} (build #{new_build_number})!")
 end
