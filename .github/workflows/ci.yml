@@ -9,7 +9,7 @@ on:
 
 env:
   flutter_channel: 'stable'
-  flutter_version: '3.29.3'
+  flutter_version: '3.32.4'
 
 jobs:
   build:

@@ -24,7 +24,7 @@ private_lane :clean_ios_screenshots do
 end
 
 private_lane :copy_ios_screenshots do
-    screenshots_src = "/tmp/word_link_screenshots"
+    screenshots_src = "/tmp/#{ENV["APP_NAME_FOR_FOLDERS"]}_screenshots"
     screenshots_dest = "fastlane/metadata/ios/en-US/screenshots"
 
     clean_ios_screenshots

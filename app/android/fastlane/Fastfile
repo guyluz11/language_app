@@ -48,7 +48,7 @@ private_lane :populate_metadata do
     puts "Supply metadata already initialized."
   end
 
-  screenshots_src = '/tmp/word_link_screenshots'  # Source folder with images
+  screenshots_src = "/tmp/#{ENV["APP_NAME_FOR_FOLDERS"]}_screenshots"  # Source folder with images
   screenshots_dest = 'metadata/android/en-US/images/phoneScreenshots'  # Destination folder (for phone screenshots)
 
   clean_folder
@@ -68,7 +68,7 @@ end
 
 
 lane :deploy do
-  Actions.lane_context[:PACKAGE_NAME] = "space.wordlink"
+  Actions.lane_context[:PACKAGE_NAME] = ENV["APP_IDENTIFIER"]
 
   get_last_version_code
 
