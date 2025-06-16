@@ -76,17 +76,23 @@ lane :deploy do
     issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
     filepath: "/tmp/app_store_key.p8"
   )
-
   app = Spaceship::ConnectAPI::App.find(ENV["APP_IDENTIFIER"])
   version_info = app.get_edit_app_store_version(platform: "IOS")
+  current_version = version_info&.version_string
 
-  current_version = version_info&.version_string || "1.0.0"
-  UI.message("🔍 Current version in App Store: #{current_version}")
+  if current_version.nil?
+    live_version_info = app.get_live_app_store_version(platform: "IOS")
+    current_version = live_version_info&.version_string || "1.0.0"
+  end
+
+  UI.message("🔍 Current version in App Store: #{current_version} ..")
 
   # Bump patch version
   major, minor, patch = current_version.split(".").map(&:to_i)
   new_version = "#{major}.#{minor}.#{patch + 1}"
-  UI.message("📦 Bumping to new version: #{new_version}")
+  new_version = current_version
+  UI.message("📦 Bumping to new version: #{new_version} ..")
+
 
   # Create a new app version if it doesn't exist
   begin
@@ -96,13 +102,13 @@ lane :deploy do
       platform: "IOS",
       release_type: "MANUAL"
     )
-    UI.success("🆕 Created App Store version #{new_version}")
+    UI.success("🆕 Created App Store version #{new_version} ..")
   rescue => e
     UI.important("⚠️ App version #{new_version} may already exist: #{e.message}")
   end
 
 
-  latest_build = app_store_build_number(
+  latest_build = latest_testflight_build_number(
     app_identifier: ENV["APP_IDENTIFIER"],
     api_key: connect_api_key
   )
@@ -111,7 +117,8 @@ lane :deploy do
 
   # Build the Flutter app
   sh("cd ../.. && flutter build ipa --release --build-number=#{new_build_number} --build-name=#{new_version} --export-options-plist=ios/ExportOptions.plist")
-  ipa_path = Dir["../build/ios/ipa/*.ipa"].first
+  ipa_path = File.expand_path("../../build/ios/ipa/*.ipa", __dir__)
+  ipa_path = Dir[ipa_path].first
 
   # Upload to App Store Connect
   upload_to_app_store(
@@ -125,6 +132,9 @@ lane :deploy do
     run_precheck_before_submit: false,
     ipa: ipa_path,
     api_key: connect_api_key,
+    submission_information: {
+      export_compliance_uses_encryption: false,
+    },
     release_notes: {
       "en-US" => "Bug fixes and performance improvements"
     }
