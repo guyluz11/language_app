@@ -19,6 +19,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Confirm Xcode version
+        run: xcodebuild -version
+
+      - name: List available Xcode versions
+        run: ls /Applications | grep Xcode
+
+      - name: Select Xcode 16
+        run: sudo xcode-select -s "/Applications/Xcode_16.app"
+
+      - name: Confirm Xcode version
+        run: xcodebuild -version
+
+      # Open ios simulator
+      - uses: futureware-tech/simulator-action@v4
+        with:
+          model: 'iPhone 16 Plus'
+          wait_for_boot: true
+
+
       # Set up Flutter
       - uses: subosito/flutter-action@v2
         with:
@@ -28,21 +47,6 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: flutter pub get
-
-      # Open ios simulator
-      - uses: futureware-tech/simulator-action@v4
-        with:
-          model: 'iPhone 16 Plus'
-          wait_for_boot: true
-
-      - name: Confirm Xcode version
-        run: xcodebuild -version
-
-      - name: Select Xcode 16
-        run: sudo xcode-select -s /Applications/Xcode_16.0.app
-
-      - name: Confirm Xcode version
-        run: xcodebuild -version
 
       - name: Install CocoaPods and Prebuild for Simulator
         run: |
