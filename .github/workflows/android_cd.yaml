@@ -7,7 +7,7 @@ on:
 
 env:
   flutter_channel: 'stable'
-  flutter_version: '3.29.3'
+  flutter_version: '3.32.4'
 
 
 jobs:
@@ -68,7 +68,9 @@ jobs:
         env:
           GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
           KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+          APP_NAME_FOR_FOLDERS: ${{ secrets.APP_NAME_FOR_FOLDERS }}
         run: |
           # Decode the .jks file
           echo $ANDROID_KEYSTORE_BASE64 | base64 -d > /tmp/key.jks

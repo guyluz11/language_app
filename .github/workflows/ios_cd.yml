@@ -2,7 +2,7 @@ name: iOS CI
 
 on:
   push:
-    branches: [ main, cd-iOS]
+    branches: [ main ]
 
 env:
   flutter_channel: 'stable'
@@ -64,12 +64,16 @@ jobs:
         run: gem install fastlane
 
       # Build and deploy using Fastlane
-      - name: Build and deploy to Play Store
+      - name: Build and deploy to App Store
         env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_TOKEN: ${{ secrets.MATCH_GIT_TOKEN }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
           APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
-          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_NAME_FOR_FOLDERS: ${{ secrets.APP_NAME_FOR_FOLDERS }}
         run: |
           echo "${{ secrets.APP_STORE_CONNECT_API_KEY }}" > /tmp/app_store_key.p8
           cd ios

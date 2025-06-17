@@ -1,7 +1,14 @@
-default_platform(:ios)
 
-platform :ios do
-  private_lane :clean_ios_screenshots do
+def connect_api_key
+  app_store_connect_api_key(
+    key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+    issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+    key_filepath: "/tmp/app_store_key.p8"
+  )
+end
+
+
+private_lane :clean_ios_screenshots do
     folder_path = "fastlane/metadata/ios/en-US/screenshots"
 
     if Dir.exist?(folder_path)
@@ -14,10 +21,10 @@ platform :ios do
       UI.message("Creating screenshots folder at #{folder_path}")
       FileUtils.mkdir_p(folder_path)
     end
-  end
+end
 
-  private_lane :copy_ios_screenshots do
-    screenshots_src = "/tmp/word_link_screenshots"
+private_lane :copy_ios_screenshots do
+    screenshots_src = "/tmp/#{ENV["APP_NAME_FOR_FOLDERS"]}_screenshots"
     screenshots_dest = "fastlane/metadata/ios/en-US/screenshots"
 
     clean_ios_screenshots
@@ -36,47 +43,102 @@ platform :ios do
     end
 
     UI.message("✅ Copied iOS screenshots to: #{screenshots_dest}")
+end
+
+lane :deploy do
+  UI.message("🚀 Starting iOS deploy using Flutter...")
+
+  create_keychain(
+    name: "build.keychain",
+    password: "password",
+    default_keychain: true,
+    unlock: true,
+    timeout: 3600,
+    lock_when_sleeps: false
+  )
+
+  # 🔐 Use match to get certificates and profiles
+  match(
+    type: "appstore",
+    git_url: "https://#{ENV["MATCH_GIT_TOKEN"]}@github.com/guyluz11/match-certificates.git",
+    app_identifier: ENV["APP_IDENTIFIER"],
+    username: ENV["FASTLANE_USER"],
+    api_key: connect_api_key,
+    readonly: true,
+    keychain_name: "build.keychain",
+    keychain_password: "password",
+    team_id: "B8Y5J572KK",
+  )
+
+  require 'spaceship'
+  Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+    issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+    filepath: "/tmp/app_store_key.p8"
+  )
+  app = Spaceship::ConnectAPI::App.find(ENV["APP_IDENTIFIER"])
+  version_info = app.get_edit_app_store_version(platform: "IOS")
+  current_version = version_info&.version_string
+
+  if current_version.nil?
+    live_version_info = app.get_live_app_store_version(platform: "IOS")
+    current_version = live_version_info&.version_string || "1.0.0"
   end
 
-  lane :deploy do
-    UI.message("🚀 Starting iOS deploy using Flutter...")
+  UI.message("🔍 Current version in App Store: #{current_version} ..")
 
-    # Fetch and increment build number
-    latest_build = app_store_build_number(
-     app_identifier: ENV["APP_IDENTIFIER"],
-     api_key: app_store_connect_api_key(
-       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
-       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-       key_filepath: "/tmp/app_store_key.p8"
-     )
+  # Bump patch version
+  major, minor, patch = current_version.split(".").map(&:to_i)
+  new_version = "#{major}.#{minor}.#{patch + 1}"
+  new_version = current_version
+  UI.message("📦 Bumping to new version: #{new_version} ..")
+
+
+  # Create a new app version if it doesn't exist
+  begin
+    Spaceship::ConnectAPI::AppStoreVersion.create(
+      app_id: app.id,
+      version_string: new_version,
+      platform: "IOS",
+      release_type: "MANUAL"
     )
-
-    new_build_number = latest_build + 1
-    increment_build_number(build_number: new_build_number)
-
-    UI.message("New build number: #{new_build_number}")
-
-    # Copy screenshots for App Store Connect
-    copy_ios_screenshots
-    # Navigate from fastlane to ios folder
-    sh("pwd")
-    sh("ls")
-    # Build Flutter iOS app for release
-    sh("flutter build ipa --release --build-number=#{new_build_number}")
-
-    # Upload to App Store Connect
-    upload_to_app_store(
-      skip_metadata: false,
-      skip_screenshots: false,
-      skip_binary_upload: false,
-      ipa: "../../build/ios/ipa/*.ipa",
-      api_key: app_store_connect_api_key(
-        key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
-        issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
-        key_filepath: "/tmp/app_store_key.p8"
-      )
-    )
-
-    UI.success("iOS app uploaded with screenshots and build number #{new_build_number}!")
+    UI.success("🆕 Created App Store version #{new_version} ..")
+  rescue => e
+    UI.important("⚠️ App version #{new_version} may already exist: #{e.message}")
   end
+
+
+  latest_build = latest_testflight_build_number(
+    app_identifier: ENV["APP_IDENTIFIER"],
+    api_key: connect_api_key
+  )
+  new_build_number = latest_build + 1
+  copy_ios_screenshots
+
+  # Build the Flutter app
+  sh("cd ../.. && flutter build ipa --release --build-number=#{new_build_number} --build-name=#{new_version} --export-options-plist=ios/ExportOptions.plist")
+  ipa_path = File.expand_path("../../build/ios/ipa/*.ipa", __dir__)
+  ipa_path = Dir[ipa_path].first
+
+  # Upload to App Store Connect
+  upload_to_app_store(
+    force: true,
+    app_identifier: ENV["APP_IDENTIFIER"],
+    skip_metadata: false,
+    skip_screenshots: false,
+    submit_for_review: true,
+    automatic_release: true,
+    skip_binary_upload: false,
+    run_precheck_before_submit: false,
+    ipa: ipa_path,
+    api_key: connect_api_key,
+    submission_information: {
+      export_compliance_uses_encryption: false,
+    },
+    release_notes: {
+      "en-US" => "Bug fixes and performance improvements"
+    }
+  )
+
+  UI.success("🎉 Uploaded iOS app version #{new_version} (build #{new_build_number})!")
 end
