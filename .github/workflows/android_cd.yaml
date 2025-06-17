@@ -19,7 +19,6 @@ jobs:
         working-directory: app
 
     steps:
-      # Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -36,23 +35,27 @@ jobs:
       # Open ios simulator
       - uses: futureware-tech/simulator-action@v4
         with:
-          model: 'iPhone 15'
+          model: 'iPhone 16 Plus'
           wait_for_boot: true
 
-      # Run Flutter Integration Tests
-      - name: Run Integration Tests
-        run: flutter test integration_test
+      - name: Install CocoaPods and Prebuild for Simulator
+        run: |
+          cd ios
+          pod install
+          cd ..
+          flutter build ios --simulator
 
+      # Run Flutter Integration Tests and take screenshots
+      - name: Run Integration Tests on iOS Simulator
+        run: flutter drive --driver=integration_driver/integration_test_driver.dart --target=integration_test/app_test.dart -d "iPhone 16 Plus"
 
       - uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'zulu'
 
-
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-
 
       # Set up Ruby for Fastlane
       - name: Set up Ruby

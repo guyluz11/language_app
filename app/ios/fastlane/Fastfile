@@ -90,7 +90,6 @@ lane :deploy do
   # Bump patch version
   major, minor, patch = current_version.split(".").map(&:to_i)
   new_version = "#{major}.#{minor}.#{patch + 1}"
-  new_version = current_version
   UI.message("📦 Bumping to new version: #{new_version} ..")
 
 
@@ -113,6 +112,8 @@ lane :deploy do
     api_key: connect_api_key
   )
   new_build_number = latest_build + 1
+  UI.message("📦📦 Bumping to new build: #{new_build_number}....")
+
   copy_ios_screenshots
 
   # Build the Flutter app
