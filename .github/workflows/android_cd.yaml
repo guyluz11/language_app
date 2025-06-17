@@ -1,18 +1,15 @@
-name: Deploy Android App
+name: Android CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 env:
   flutter_channel: 'stable'
   flutter_version: '3.32.4'
 
-
 jobs:
   build:
-    name: Run Integration Tests with Android Emulator then upload to android play store
     runs-on: macos-latest
     defaults:
       run:
@@ -21,6 +18,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Select Xcode 16
+        run: sudo xcode-select -s "/Applications/Xcode_16.2.app"
+
+      # Open ios simulator
+      - uses: futureware-tech/simulator-action@v4
+        with:
+          model: 'iPhone 16 Plus'
+          wait_for_boot: true
 
       # Set up Flutter
       - uses: subosito/flutter-action@v2
@@ -31,12 +37,6 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: flutter pub get
-
-      # Open ios simulator
-      - uses: futureware-tech/simulator-action@v4
-        with:
-          model: 'iPhone 16 Plus'
-          wait_for_boot: true
 
       - name: Install CocoaPods and Prebuild for Simulator
         run: |
