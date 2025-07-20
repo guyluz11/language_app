@@ -4,6 +4,7 @@ export 'package:word_link/presentation/atoms/card_atom.dart';
 export 'package:word_link/presentation/atoms/carousel_atom.dart';
 export 'package:word_link/presentation/atoms/check_box_atom.dart';
 export 'package:word_link/presentation/atoms/flip_atom.dart';
+export 'package:word_link/presentation/atoms/grid_atom.dart';
 export 'package:word_link/presentation/atoms/image_atom.dart';
 export 'package:word_link/presentation/atoms/list_tile_atom.dart';
 export 'package:word_link/presentation/atoms/margined_expanded_atom.dart';
