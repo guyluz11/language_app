@@ -7,6 +7,7 @@ import 'package:word_link/presentation/core/global_variables.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 import 'package:word_link/presentation/organisms/organisms.dart';
 import 'package:word_link/presentation/pages/pages.dart';
+import 'package:word_link/presentation/pages/speech_practice_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -29,6 +30,19 @@ class HomePage extends StatelessWidget {
           onClick: () => customCollectionClicked(context),
         ),
       ),
+      SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        child: DetailedCardOrganism(
+          titleText: 'Speech Practice',
+          subTitle: 'Practice your pronunciation',
+          buttonText: 'Open',
+          background: SvgPicture.asset(
+            'assets/images/folders_image.svg',
+            fit: BoxFit.cover,
+          ),
+          onClick: () => speechPracticeClicked(context),
+        ),
+      ),
     ];
 
     return PageEnclosureMolecule(
@@ -46,6 +60,13 @@ class HomePage extends StatelessWidget {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => CustomCollectionsPage(),
+        ),
+      );
+
+  void speechPracticeClicked(BuildContext context) =>
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const SpeechPracticePage(),
         ),
       );
 

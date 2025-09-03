@@ -1,0 +1,21 @@
+import 'package:flutter/foundation.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+part 'package:word_link/infrastructure/speech_to_text_repository.dart';
+
+abstract class SpeechToTextController extends ChangeNotifier {
+  static SpeechToTextController? _instance;
+
+  static SpeechToTextController get instance => _instance ??= _SpeechToTextRepository();
+
+  Future<void> initialize();
+
+  Future<void> startListening();
+
+  Future<void> stopListening();
+
+  String get lastWords;
+
+  bool get isListening;
+}

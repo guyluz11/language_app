@@ -56,6 +56,7 @@ class _LanguageRepository extends LanguageController {
   }
 
   /// Translates a word from source language to target language
+  @override
   Future<String> translateText(
     TranslateLanguage sourceLanguage,
     TranslateLanguage targetLanguage,
