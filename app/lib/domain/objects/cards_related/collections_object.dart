@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/global_variables/logger.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';
-import 'package:word_link/infrastructure/core/logger.dart';
 
 class CollectionsObject {
   /// Custom collections mapped by their unique identifiers

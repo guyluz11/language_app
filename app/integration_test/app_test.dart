@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:word_link/infrastructure/core/logger.dart';
+import 'package:word_link/domain/global_variables/logger.dart';
 import 'package:word_link/main.dart' as app;
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';

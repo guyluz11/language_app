@@ -1,4 +1,4 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_soloud/flutter_soloud.dart';
 
 part 'package:word_link/infrastructure/player_repository.dart';
 
@@ -7,21 +7,24 @@ abstract class PlayerController {
 
   static PlayerController get instance => _instance ??= _PlayerRepository();
 
-  void init();
+  Future<void> init();
 
-  void setIsSound(bool value);
+  Future<void> dispose();
+
+  void setIsSound({required bool value});
 
   bool isSound();
 
-  Future play(SoundType type);
+  Future play(SoundType type, {double volume = 1});
 }
 
 enum SoundType {
+  click1('ui_click1.ogg'),
+  click2('ui_click2.ogg'),
+  click3('ui_click3.ogg'),
   startSession('start_session.wav'),
   sessionCompleted('session_completed.wav'),
-  breakEnded('break_ended.wav'),
   checkBoxChecked('writing_on_a_book_with_a_pen_signing_v.wav'),
-  strikethrough('straight_line_whoosh_pen_on_paper.wav'),
   ;
 
   const SoundType(this.fileName);
