@@ -24,6 +24,7 @@ dependencies:
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
+  flutter_soloud: ^3.2.7
   flutter_svg: ^2.0.17
   flutter_tts: ^4.2.2
   # Toast Library for Flutter, Easily create toast messages in single line of code.
@@ -56,7 +57,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
-
+    - assets/sound_effects/
 
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:

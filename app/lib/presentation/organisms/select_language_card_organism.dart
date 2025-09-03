@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 
 class SelectLanguageCardOrganism extends StatelessWidget {
@@ -78,7 +79,7 @@ class SelectLanguageCardOrganism extends StatelessWidget {
                 bottom: 15,
                 left: 15,
                 right: 15,
-                child: Text(
+                child: TextAtom(
                   language.displayName,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,
