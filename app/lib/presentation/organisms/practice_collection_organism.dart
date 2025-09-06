@@ -4,9 +4,9 @@ import 'package:word_link/domain/objects/answers_related/answer_card_object.dart
 import 'package:word_link/domain/objects/answers_related/answer_cards_object.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
-import 'package:word_link/domain/objects/language_enum.dart';
 
 class PracticeCollectionOrganism extends StatefulWidget {
   const PracticeCollectionOrganism({

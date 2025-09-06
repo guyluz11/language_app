@@ -86,8 +86,13 @@ enum LanguageEnum {
     TranslateLanguage.japanese,
   );
 
-  const LanguageEnum(this.displayName, this.flagUrl, this.gifUrl, this.locale,
-      this.translateLanguage);
+  const LanguageEnum(
+    this.displayName,
+    this.flagUrl,
+    this.gifUrl,
+    this.locale,
+    this.translateLanguage,
+  );
   final String displayName;
   final String flagUrl;
   final String gifUrl;

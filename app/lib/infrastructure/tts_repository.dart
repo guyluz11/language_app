@@ -4,7 +4,6 @@ class _TtsRepository extends TtsController {
   late FlutterTts _flutterTts;
   bool _isSupported = false;
   bool _isSpeaking = false;
-  String? _currentLocale;
 
   @override
   Future<void> initialize() async {

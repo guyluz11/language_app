@@ -13,12 +13,12 @@ class _SpeechToTextRepository extends SpeechToTextController {
     if (await Permission.microphone.request().isGranted) {
       _isInitialized = await _speechToText.initialize(
         onError: (error) {
-          print('Error: $error');
+          logger.i('Error: $error');
           _status = 'error';
           notifyListeners();
         },
         onStatus: (status) {
-          print('Status: $status');
+          logger.i('Status: $status');
           _status = status;
           if (status == 'done' || status == 'notListening') {
             _isDone = true;
@@ -44,7 +44,8 @@ class _SpeechToTextRepository extends SpeechToTextController {
           _lastWords = result.recognizedWords;
           notifyListeners();
         },
-        pauseFor: const Duration(seconds: 3),
+        listenFor: const Duration(minutes: 3),
+        pauseFor: const Duration(minutes: 3),
       );
     }
   }
