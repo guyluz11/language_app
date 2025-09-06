@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:word_link/domain/global_variables/logger.dart';
 import 'package:word_link/domain/objects/json_helper_object.dart';
-import 'package:word_link/infrastructure/core/logger.dart';
 
 part 'package:word_link/infrastructure/preferences_repository.dart';
 
