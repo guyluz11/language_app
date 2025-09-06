@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:word_link/infrastructure/core/logger.dart';
+import 'package:word_link/domain/global_variables/logger.dart';
 
 part 'package:word_link/infrastructure/speech_to_text_repository.dart';
 

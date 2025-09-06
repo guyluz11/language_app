@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:word_link/infrastructure/core/logger.dart';
+import 'package:word_link/domain/global_variables/logger.dart';
 
 part 'package:word_link/infrastructure/tts_repository.dart';
 
