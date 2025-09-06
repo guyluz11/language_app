@@ -13,13 +13,13 @@ abstract class SpeechToTextController extends ChangeNotifier {
 
   Future<void> initialize();
 
-  Future<void> startListening();
-
-  Future<void> stopListening();
+  Future<void> startListening({required String localeId});
 
   String get lastWords;
 
   bool get isListening;
+
+  Future<List<dynamic>> getLocales();
 
   bool get isDone;
 

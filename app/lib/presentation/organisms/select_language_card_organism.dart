@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 
 class SelectLanguageCardOrganism extends StatelessWidget {

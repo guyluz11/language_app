@@ -23,18 +23,28 @@ class _TtsRepository extends TtsController {
   }
 
   @override
-  Future<void> speak(String text, {LanguageEnum language = LanguageEnum.polish}) async {
+  Future<void> speak(String text, {required String language}) async {
     if (!_isSupported) {
       return;
     }
-    if (_currentLocale != language.locale) {
-      _currentLocale = language.locale;
-      await _flutterTts.setLanguage(_currentLocale!);
+    await _flutterTts.setLanguage(language);
+    await _flutterTts.speak(text);
+  }
+
+  @override
+  Future<List<String>> getLanguages() async {
+    if (!_isSupported) {
+      return [];
+    }
+    try {
+      final List languagesTemp = (await _flutterTts.getLanguages) as List;
+
+      return List<String>.from(languagesTemp);
+    } catch (e) {
+      logger.e('Error getting languages $e');
     }
 
-    _isSpeaking = true;
-    notifyListeners();
-    await _flutterTts.speak(text);
+    return [];
   }
 
   @override

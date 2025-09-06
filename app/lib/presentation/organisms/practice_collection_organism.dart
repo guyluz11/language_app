@@ -6,6 +6,7 @@ import 'package:word_link/domain/objects/cards_related/card_object.dart';
 import 'package:word_link/domain/objects/cards_related/collection_object.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 
 class PracticeCollectionOrganism extends StatefulWidget {
   const PracticeCollectionOrganism({
@@ -98,8 +99,10 @@ class _PracticeCollectionOrganismState
                             setState(() => isCardFlipped = !isCardFlipped);
                             if (isCardFlipped) {
                               TtsController.instance.speak(
-                                  currentCard!.answer ?? '',
-                                  language: widget.cardCollection.learning!);
+                                currentCard!.answer ?? '',
+                                language:
+                                    widget.cardCollection.learning!.locale,
+                              );
                             }
                           },
                           showSecond: showHint,

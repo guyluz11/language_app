@@ -28,6 +28,16 @@ class _LanguageRepository extends LanguageController {
         return polishWords;
 
       case LanguageEnum.english:
+      case LanguageEnum.german:
+      case LanguageEnum.french:
+      case LanguageEnum.spanish:
+      case LanguageEnum.italian:
+      case LanguageEnum.hebrew:
+      case LanguageEnum.chinese:
+      case LanguageEnum.hindi:
+      case LanguageEnum.portuguese:
+      case LanguageEnum.russian:
+      case LanguageEnum.japanese:
         return [];
     }
   }
@@ -109,6 +119,26 @@ extension LanguageEnumExtension on LanguageEnum {
 
       case LanguageEnum.english:
         return TranslateLanguage.english;
+      case LanguageEnum.german:
+        return TranslateLanguage.german;
+      case LanguageEnum.french:
+        return TranslateLanguage.french;
+      case LanguageEnum.spanish:
+        return TranslateLanguage.spanish;
+      case LanguageEnum.italian:
+        return TranslateLanguage.italian;
+      case LanguageEnum.hebrew:
+        return TranslateLanguage.hebrew;
+      case LanguageEnum.chinese:
+        return TranslateLanguage.chinese;
+      case LanguageEnum.hindi:
+        return TranslateLanguage.hindi;
+      case LanguageEnum.portuguese:
+        return TranslateLanguage.portuguese;
+      case LanguageEnum.russian:
+        return TranslateLanguage.russian;
+      case LanguageEnum.japanese:
+        return TranslateLanguage.japanese;
     }
   }
 }

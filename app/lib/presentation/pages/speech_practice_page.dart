@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
 
@@ -17,6 +18,7 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
   String _translatedText = '';
   String _spokenText = '';
   bool _isProcessing = false;
+
   LanguageEnum _sourceLanguage = LanguageEnum.english;
   LanguageEnum _targetLanguage = LanguageEnum.polish;
 
@@ -34,7 +36,6 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
   void dispose() {
     _speechToTextController.removeListener(_onSpeechStateChanged);
     _ttsController.removeListener(_onTtsStateChanged);
-    _speechToTextController.stopListening();
     _ttsController.stop();
     super.dispose();
   }
@@ -56,6 +57,14 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
     }
   }
 
+  void _swapLanguages() {
+    setState(() {
+      final temp = _sourceLanguage;
+      _sourceLanguage = _targetLanguage;
+      _targetLanguage = temp;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return PageEnclosureMolecule(
@@ -68,27 +77,15 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
           TextAtom(_spokenText,
               style: Theme.of(context).textTheme.headlineMedium),
           const SeparatorAtom(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ButtonAtom(
-                variant: ButtonVariant.highEmphasisFilled,
-                onPressed: !_speechToTextController.isListening
-                    ? () => _startListening()
-                    : () {},
-                text: 'Speak',
-                icon: Icons.mic,
-              ),
-              const SizedBox(width: 16),
-              ButtonAtom(
-                variant: ButtonVariant.highEmphasisFilled,
-                onPressed: _speechToTextController.isListening
-                    ? _stopListening
-                    : () {},
-                text: 'Stop',
-                icon: Icons.stop,
-              ),
-            ],
+          ButtonAtom(
+            variant: ButtonVariant.highEmphasisFilled,
+            onPressed: _speechToTextController.isListening
+                ? () {}
+                : () => _startListening(),
+            text:
+                _speechToTextController.isListening ? 'Listening...' : 'Speak',
+            icon:
+                _speechToTextController.isListening ? Icons.mic_off : Icons.mic,
           ),
           const SeparatorAtom(),
           if (_translatedText.isNotEmpty)
@@ -107,12 +104,18 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
           const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildLanguageButton('From', _sourceLanguage, (lang) {
                 setState(() {
                   _sourceLanguage = lang;
                 });
               }),
+              IconButton(
+                icon: const Icon(Icons.swap_horiz),
+                onPressed: _swapLanguages,
+                tooltip: 'Swap languages',
+              ),
               _buildLanguageButton('To', _targetLanguage, (lang) {
                 setState(() {
                   _targetLanguage = lang;
@@ -162,17 +165,10 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
 
   void _startListening({bool fromInit = false}) {
     if (!_speechToTextController.isListening) {
-      _speechToTextController.startListening();
+      _speechToTextController.startListening(localeId: _sourceLanguage.locale);
       if (!fromInit) {
         setState(() {});
       }
-    }
-  }
-
-  void _stopListening() {
-    if (_speechToTextController.isListening) {
-      _speechToTextController.stopListening();
-      setState(() {});
     }
   }
 
@@ -180,7 +176,9 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
     final String recognizedWords = _speechToTextController.lastWords;
     if (recognizedWords.isNotEmpty) {
       _isProcessing = true;
-      final String translated = await LanguageController.instance.translateText(
+
+      final String translated =
+          await LanguageController.instance.translateText(
         _sourceLanguage.translateLanguage,
         _targetLanguage.translateLanguage,
         recognizedWords,
@@ -188,7 +186,7 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
       setState(() {
         _translatedText = translated;
       });
-      await _ttsController.speak(translated, language: _targetLanguage);
+      await _ttsController.speak(translated, language: _targetLanguage.locale);
     }
   }
 
