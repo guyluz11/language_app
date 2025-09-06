@@ -99,7 +99,7 @@ class _PracticeCollectionOrganismState
                             if (isCardFlipped) {
                               TtsController.instance.speak(
                                   currentCard!.answer ?? '',
-                                  widget.cardCollection.learning!);
+                                  language: widget.cardCollection.learning!);
                             }
                           },
                           showSecond: showHint,

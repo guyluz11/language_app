@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/presentation/atoms/atoms.dart';
 import 'package:word_link/presentation/molecules/molecules.dart';
@@ -14,22 +13,47 @@ class SpeechPracticePage extends StatefulWidget {
 class _SpeechPracticePageState extends State<SpeechPracticePage> {
   final SpeechToTextController _speechToTextController =
       SpeechToTextController.instance;
-  final List<String> _words = ['hello', 'world', 'flutter', 'dart'];
-  String _currentWord = '';
+  final TtsController _ttsController = TtsController.instance;
   String _translatedText = '';
+  String _spokenText = '';
+  bool _isProcessing = false;
+  LanguageEnum _sourceLanguage = LanguageEnum.english;
+  LanguageEnum _targetLanguage = LanguageEnum.polish;
 
   @override
   void initState() {
     super.initState();
     _speechToTextController.initialize();
-    _getRandomWord();
+    _ttsController.initialize();
+    _speechToTextController.addListener(_onSpeechStateChanged);
+    _ttsController.addListener(_onTtsStateChanged);
+    _startListening(fromInit: true);
   }
 
-  void _getRandomWord() {
-    _words.shuffle();
-    setState(() {
-      _currentWord = _words.first;
-    });
+  @override
+  void dispose() {
+    _speechToTextController.removeListener(_onSpeechStateChanged);
+    _ttsController.removeListener(_onTtsStateChanged);
+    _speechToTextController.stopListening();
+    _ttsController.stop();
+    super.dispose();
+  }
+
+  void _onSpeechStateChanged() {
+    if (_speechToTextController.isDone && !_isProcessing) {
+      _onSpeechEnd();
+    }
+    if (mounted) {
+      setState(() {
+        _spokenText = _speechToTextController.lastWords;
+      });
+    }
+  }
+
+  void _onTtsStateChanged() {
+    if (!_ttsController.isSpeaking && _isProcessing) {
+      _clearTextAndListen();
+    }
   }
 
   @override
@@ -40,111 +64,142 @@ class _SpeechPracticePageState extends State<SpeechPracticePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const TextAtom('Say the word:'),
-          TextAtom(_currentWord,
+          TextAtom('Say something in ${_sourceLanguage.displayName}:'),
+          TextAtom(_spokenText,
               style: Theme.of(context).textTheme.headlineMedium),
           const SeparatorAtom(),
-          ButtonAtom(
-            variant: ButtonVariant.highEmphasisFilled,
-            onPressed: _speechToTextController.isListening
-                ? _stopListening
-                : _startListening,
-            text: _speechToTextController.isListening ? 'Stop' : 'Speak',
-            icon:
-                _speechToTextController.isListening ? Icons.mic_off : Icons.mic,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ButtonAtom(
+                variant: ButtonVariant.highEmphasisFilled,
+                onPressed: !_speechToTextController.isListening
+                    ? () => _startListening()
+                    : () {},
+                text: 'Speak',
+                icon: Icons.mic,
+              ),
+              const SizedBox(width: 16),
+              ButtonAtom(
+                variant: ButtonVariant.highEmphasisFilled,
+                onPressed: _speechToTextController.isListening
+                    ? _stopListening
+                    : () {},
+                text: 'Stop',
+                icon: Icons.stop,
+              ),
+            ],
           ),
           const SeparatorAtom(),
-          if (_speechToTextController.lastWords.isNotEmpty)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const TextAtom('You said: '),
-                TextAtom(_speechToTextController.lastWords,
-                    style: Theme.of(context).textTheme.bodyLarge),
-              ],
-            ),
           if (_translatedText.isNotEmpty)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const TextAtom('In Polish: '),
-                TextAtom(_translatedText,
-                    style: Theme.of(context).textTheme.bodyLarge),
+                TextAtom('In ${_targetLanguage.displayName}: '),
+                TextAtom(
+                  _translatedText,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ],
             )
           else
             const SizedBox(height: 24),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildLanguageButton('From', _sourceLanguage, (lang) {
+                setState(() {
+                  _sourceLanguage = lang;
+                });
+              }),
+              _buildLanguageButton('To', _targetLanguage, (lang) {
+                setState(() {
+                  _targetLanguage = lang;
+                });
+              }),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  void _startListening() {
-    _speechToTextController.startListening();
-    _speechToTextController.addListener(_processSpeech);
-    setState(() {});
+  Widget _buildLanguageButton(String label, LanguageEnum language,
+      void Function(LanguageEnum) onSelected) {
+    return Column(
+      children: [
+        TextAtom(label),
+        const SizedBox(height: 8),
+        ButtonAtom(
+          variant: ButtonVariant.lowEmphasisText,
+          onPressed: () => _showLanguagePicker(language, onSelected),
+          text: language.displayName,
+        ),
+      ],
+    );
+  }
+
+  void _showLanguagePicker(
+      LanguageEnum currentLanguage, void Function(LanguageEnum) onSelected) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView(
+          children: LanguageEnum.values
+              .map((lang) => ListTile(
+                    title: Text(lang.displayName),
+                    onTap: () {
+                      onSelected(lang);
+                      Navigator.of(context).pop();
+                    },
+                  ))
+              .toList(),
+        );
+      },
+    );
+  }
+
+  void _startListening({bool fromInit = false}) {
+    if (!_speechToTextController.isListening) {
+      _speechToTextController.startListening();
+      if (!fromInit) {
+        setState(() {});
+      }
+    }
   }
 
   void _stopListening() {
-    _speechToTextController.stopListening();
-    _speechToTextController.removeListener(_processSpeech);
-    _checkAnswer();
-    setState(() {});
-  }
-
-  void _processSpeech() {
-    if (mounted) {
+    if (_speechToTextController.isListening) {
+      _speechToTextController.stopListening();
       setState(() {});
     }
   }
 
-  void _checkAnswer() async {
+  Future _onSpeechEnd() async {
     final String recognizedWords = _speechToTextController.lastWords;
-    final String correctAnswer = _currentWord;
-
     if (recognizedWords.isNotEmpty) {
+      _isProcessing = true;
       final String translated = await LanguageController.instance.translateText(
-        TranslateLanguage.english,
-        TranslateLanguage.polish,
+        _sourceLanguage.translateLanguage,
+        _targetLanguage.translateLanguage,
         recognizedWords,
       );
       setState(() {
         _translatedText = translated;
       });
+      await _ttsController.speak(translated, language: _targetLanguage);
     }
+  }
 
-    if (recognizedWords.toLowerCase() == correctAnswer.toLowerCase()) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Correct!'),
-          content: Text('You said: $recognizedWords'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _getRandomWord();
-              },
-              child: const Text('Next'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Incorrect'),
-          content: Text(
-              'You said: $recognizedWords\nCorrect answer: $correctAnswer'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Try Again'),
-            ),
-          ],
-        ),
-      );
+  void _clearTextAndListen() {
+    if (mounted) {
+      setState(() {
+        _spokenText = '';
+        _translatedText = '';
+      });
     }
+    _isProcessing = false;
+    _startListening();
   }
 }

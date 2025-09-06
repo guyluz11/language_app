@@ -5,13 +5,27 @@ class _SpeechToTextRepository extends SpeechToTextController {
   bool _isInitialized = false;
   bool _isListening = false;
   String _lastWords = '';
+  String _status = '';
+  bool _isDone = false;
 
   @override
   Future<void> initialize() async {
     if (await Permission.microphone.request().isGranted) {
       _isInitialized = await _speechToText.initialize(
-        onError: (error) => print('Error: $error'),
-        onStatus: (status) => print('Status: $status'),
+        onError: (error) {
+          logger.i('Error: $error');
+          _status = 'error';
+          notifyListeners();
+        },
+        onStatus: (status) {
+          logger.i('Status: $status');
+          _status = status;
+          if (status == 'done' || status == 'notListening') {
+            _isDone = true;
+            _isListening = false;
+          }
+          notifyListeners();
+        },
       );
     }
   }
@@ -21,6 +35,8 @@ class _SpeechToTextRepository extends SpeechToTextController {
     if (!_isInitialized) await initialize();
     if (_isInitialized && !_isListening) {
       _isListening = true;
+      _isDone = false;
+      _lastWords = '';
       notifyListeners();
       await _speechToText.listen(
         onResult: (result) {
@@ -36,6 +52,7 @@ class _SpeechToTextRepository extends SpeechToTextController {
     if (_isListening) {
       await _speechToText.stop();
       _isListening = false;
+      _isDone = true;
       notifyListeners();
     }
   }
@@ -45,4 +62,10 @@ class _SpeechToTextRepository extends SpeechToTextController {
 
   @override
   bool get isListening => _isListening;
+
+  @override
+  String get status => _status;
+
+  @override
+  bool get isDone => _isDone;
 }
