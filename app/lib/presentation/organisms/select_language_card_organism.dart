@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/controllers/controllers.dart';
-import 'package:word_link/presentation/atoms/atoms.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 import 'package:word_link/presentation/core/global_variables.dart';
 
 class SelectLanguageCardOrganism extends StatelessWidget {
@@ -31,7 +30,9 @@ class SelectLanguageCardOrganism extends StatelessWidget {
           ],
           border: isSelected
               ? Border.all(
-                  color: Theme.of(context).colorScheme.primary, width: 3)
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 3,
+                )
               : null,
         ),
         child: ClipRRect(
@@ -79,7 +80,7 @@ class SelectLanguageCardOrganism extends StatelessWidget {
                 bottom: 15,
                 left: 15,
                 right: 15,
-                child: TextAtom(
+                child: Text(
                   language.displayName,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Colors.white,

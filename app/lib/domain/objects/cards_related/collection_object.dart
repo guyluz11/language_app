@@ -1,6 +1,7 @@
 import 'package:word_link/domain/controllers/controllers.dart';
 import 'package:word_link/domain/objects/cards_related/card_object.dart';
 import 'package:word_link/domain/objects/json_helper_object.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 
 class CollectionObject extends JsonHelperObject {
   CollectionObject({

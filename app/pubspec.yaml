@@ -36,7 +36,9 @@ dependencies:
   introduction_screen: ^3.1.17
   # Small, easy to use and extensible logger which prints beautiful logs.
   logger: ^2.5.0
+  permission_handler: ^12.0.1
   shared_preferences: ^2.3.5
+  speech_to_text: ^7.3.0
   universal_io: ^2.2.2
   uuid: ^4.5.1
   vibration: ^3.1.2

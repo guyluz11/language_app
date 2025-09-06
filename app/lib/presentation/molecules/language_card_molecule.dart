@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:word_link/domain/controllers/language_controller.dart';
+import 'package:word_link/domain/objects/language_enum.dart';
 import 'package:word_link/presentation/organisms/organisms.dart';
 
 class LanguageCardMolecule extends StatelessWidget {
   const LanguageCardMolecule({
-    required this.language, required this.onClick, super.key,
+    required this.language,
+    required this.onClick,
+    super.key,
   });
 
   final LanguageEnum language;
